@@ -6,7 +6,10 @@ import React, {
     useEffect
 } from 'react'
 import classNames from 'classnames'
+import { requestAnimFrame, canCelRequestAnimFrame } from '../../util/refreshRate'
+import omit from 'omit.js'
 
+var refreshrate = require('refreshrate');
 
 /**
  * Button组件的3种状态
@@ -21,7 +24,7 @@ type ButtonSize = 'sm' | 'md' | 'lg'
 /**
  * Button组件的类型
  */
-type ButtonType = 'primary' | 'default' | 'warning' | 'danger' | 'link'
+type ButtonType = 'primary' | 'default' | 'warning' | 'danger' | 'link' | 'success'
 
 interface BaseButtonProps {
     type?: ButtonType,
@@ -58,40 +61,51 @@ export const Button: FC<ButtonProps> = props => {
         'disabled': disabled
     })
     
+    //开启水波纹动画
+    
     const rippleComponent = useRef<HTMLCanvasElement>(null)
+    const animateId = useRef<number>()
     const rippleData = useRef({
+        animating: false,
         centerX: 0,
         centerY: 0,
         radius: 0,
-        opacity: 0.18,
-        bgColor: '#ffffff'
+        radiusSpeed: 10,
+        opacitySpeed: 0.012,
+        opacity: 0,
+        bgColor: type === 'default' ? '#dddddd' : '#ffffff'
     })
 
     useEffect(() => {
-        console.warn(rippleComponent)
-        if(rippleComponent.current) {
-            let canvas = rippleComponent.current
-            canvas.width  = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
+        if(ripple) {
+            if(rippleComponent.current) {
+                let canvas = rippleComponent.current
+                canvas.width  = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            refreshrate((hz: number) => {fixSpeed(hz)}, 10)
         }
-        return () => {  };
+        return () => { 
+
+        };
     }, []);
 
-    
-    const requestAnimFrame = (function() {
-    return  window.requestAnimationFrame || 
-            window.webkitRequestAnimationFrame || 
-            // window.mozRequestAnimationFrame || 
-            // window.oRequestAnimationFrame || 
-            // window.msRequestAnimationFrame ||
-        function(callback: Function, element: FC<HTMLElement>) {
-            return window.setTimeout(callback, 1000 / 60);
-        };
-    })()
-
+    const fixSpeed = (hz: number) => {
+        if(hz > 300) {
+            refreshrate((hz: number) => {fixSpeed(hz)}, 10)
+        }else if(hz < 60) {
+            hz = 60
+        }
+        let { radiusSpeed, opacitySpeed } = rippleData.current
+        rippleData.current.radiusSpeed = radiusSpeed * (60 / hz)
+        rippleData.current.opacitySpeed = opacitySpeed * (60 / hz)
+    }
 
     const handleRippleClick = (e: React.MouseEvent<HTMLElement>) => {
         e.persist()
+        if(disabled) {
+            return
+        }
         if(onClick) {
             onClick(e)
         }
@@ -102,7 +116,7 @@ export const Button: FC<ButtonProps> = props => {
             rippleData.current.centerY = e.nativeEvent.offsetY
             if(context) {
                 resetAnime()
-                context.clearRect(0, 0, rippleComponent.current?.width, rippleComponent.current?.height);
+                context.clearRect(0, 0, rippleComponent.current.width, rippleComponent.current.height);
                 rippleDrawRadius(context)
             }         
         }
@@ -110,55 +124,88 @@ export const Button: FC<ButtonProps> = props => {
 
     const resetAnime = () => {
         rippleData.current.radius = 0
-        rippleData.current.opacity = 0.18
+        rippleData.current.opacity = 0.24
         if(rippleComponent.current) {
-            rippleComponent.current.style.opacity = '0.18'
+            rippleComponent.current.style.opacity = '0.25'
         }
     }
 
     const rippleDrawRadius = (context: CanvasRenderingContext2D) => {
-        let { centerX, centerY, radius, bgColor, opacity } = rippleData.current
+        let { centerX, centerY, radius, bgColor, opacity, radiusSpeed, animating } = rippleData.current
+        if(animateId.current) {
+            canCelRequestAnimFrame(animateId.current)
+        }
         context.beginPath();
         context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
         context.fillStyle = bgColor;
         context.fill();
-        rippleData.current.radius = radius += 2.2
+        rippleData.current.radius = radius += radiusSpeed
         if (rippleComponent.current && radius < rippleComponent.current.width) {
-            requestAnimFrame(() => rippleDrawRadius(context));
+            animateId.current = requestAnimFrame(() => rippleDrawRadius(context));
         }else if(rippleComponent.current && opacity > 0.001){
-            requestAnimFrame(() => rippleDrawOpacity());
+            animateId.current = requestAnimFrame(() => rippleDrawOpacity());
         }
     };
 
     const rippleDrawOpacity = () => {
-        let { opacity } = rippleData.current
+        let { opacity, opacitySpeed } = rippleData.current
         if(rippleComponent.current) {
             rippleComponent.current.style.opacity = opacity + ''
             if (rippleComponent.current &&  rippleData.current.opacity > 0.001) {
-                rippleData.current.opacity = opacity -= 0.001
-                requestAnimFrame(() => rippleDrawOpacity())
+                rippleData.current.opacity = opacity -= opacitySpeed
+                animateId.current = requestAnimFrame(() => rippleDrawOpacity())
             }
         }
     }
 
+    //未开启动画的按钮
+    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+        if(disabled) {
+            return
+        }
+        e.persist()
+        if(onClick) {
+            onClick(e)
+        }
+    }
+    let omitProps = restProps
+    if(disabled) {
+        omitProps = omit(restProps, ['onTouchStart', 'onTouchMove', 'onTouchEnd', 'onTouchCancel'])
+    }
+    
     return  <>
-                <a 
-                    className={classes}
-                    {...restProps}
-                >
-                    <div
-                        className="ararin-ripple-box"
-                    >
-                        {children}
-                    </div>
-                    {ripple && <canvas 
-                                    style={{opacity: rippleData.current.opacity}}
-                                    className="ararin-btn-ripple"  
-                                    ref={rippleComponent} 
-                                    onClick={handleRippleClick}
-                                />
-                    }
-                </a>
+                {
+                    ripple ?
+                        <a 
+                            href={href}
+                            className={classes}
+                            {...omitProps}
+                        >
+                            <div
+                                className="ararin-ripple-bg"
+                            >
+                                {children}
+                            </div>
+                             <canvas 
+                                style={{opacity: rippleData.current.opacity}}
+                                className="ararin-btn-ripple"  
+                                ref={rippleComponent} 
+                                onClick={handleRippleClick}
+                            />
+                        </a> :
+                        <a 
+                            href={href}
+                            className={classes}
+                            {...omitProps}
+                            onClick={handleClick}
+                        >
+                            <div
+                                className="ararin-ripple-bg"
+                            >
+                                {children}
+                            </div>
+                        </a>
+                }
             </>
 }
 

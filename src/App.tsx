@@ -3,16 +3,22 @@ import Button from './components/Button/button'
 
 function App() {
   return (
-    <div className="App" style={{padding: '4vw'}}>
+    <div className="App" style={{height: '130vh', padding: '4vw', paddingTop: '30vw'}}>
       <Button
         ripple
-        type="danger"
-        onClick={e => {console.log(e.target)}}
+        type="success"
+        state="loading"
+        onClick={e => {console.log(e)}}
+        onTouchStart={e => {console.log(e)}}
+        onDoubleClick={e => {console.log(e)}}
       >测试测试1</Button>
       <Button
         style={{marginTop: '15px'}}
         type="primary"
-        onClick={e => {console.log(e.target)}}
+        size="lg"
+        disabled
+        onTouchStart={e => {console.log(e)}}
+        onClick={e => {console.log(e)}}
       >测试测试2</Button>
     </div>
   );
