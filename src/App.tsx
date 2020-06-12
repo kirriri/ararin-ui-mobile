@@ -6,9 +6,14 @@ function App() {
     <div className="App" style={{padding: '4vw'}}>
       <Button
         ripple
-        type="primary"
+        type="danger"
         onClick={e => {console.log(e.target)}}
       >测试测试1</Button>
+      <Button
+        style={{marginTop: '15px'}}
+        type="primary"
+        onClick={e => {console.log(e.target)}}
+      >测试测试2</Button>
     </div>
   );
 }

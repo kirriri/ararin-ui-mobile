@@ -12,17 +12,23 @@
     width: 100%;
     padding: 0;
     transition: $btn-transition;
-    z-index: 1;
-    @include button-size($btn-font-size, $border-radius);
     overflow: hidden;
+    box-sizing: border-box;
+    box-shadow: $box-shadow;
+    
+    @include button-size($btn-font-size, $border-radius);
 }
 
 .ararin-button-default {
-    @include button-style($white, $gray-100, $body-color, $white, $primary, $primary)
+    @include button-style($gray-100, $white, $body-color, $white, $primary, $primary)
 }
 
 .ararin-button-primary {
-    @include button-style($primary, $primary, $white)
+    @include button-style($white, $primary)
+}
+
+.ararin-button-danger {
+    @include button-style($white, $danger)
 }
 
 .ararin-btn-ripple {
@@ -31,7 +37,6 @@
     position: absolute;
     left: 0;
     top: 0;
-    z-index: 1;
 }
 
 .ararin-ripple-box {
