@@ -7,9 +7,9 @@ import React, {
 } from 'react'
 import classNames from 'classnames'
 import { requestAnimFrame, canCelRequestAnimFrame } from '../../util/refreshRate'
-import omit from 'omit.js'
+import TouchFeedback from 'rmc-feedback';
 
-var refreshrate = require('refreshrate');
+const refreshrate = require('refreshrate');
 
 /**
  * Button组件的3种状态
@@ -27,14 +27,17 @@ type ButtonSize = 'sm' | 'md' | 'lg'
 type ButtonType = 'primary' | 'default' | 'warning' | 'danger' | 'link' | 'success'
 
 interface BaseButtonProps {
+    href?: string,
     type?: ButtonType,
     size?: ButtonSize,
     className?: string,
     disabled?: boolean,
     state?: ButtonState,
     children?: React.ReactNode,
-    href?: string,
     ripple?: boolean;
+    style?: React.CSSProperties,
+    activeClassName?: string,
+    activeStyle?: React.CSSProperties,
 }
 
 type NativeButtonProps = BaseButtonProps & Omit<ButtonHTMLAttributes<HTMLElement>, 'type'>
@@ -47,11 +50,14 @@ export const Button: FC<ButtonProps> = props => {
         disabled,
         state,
         children,
-        href,
         type,
         size,
         ripple,
         onClick,
+        href,
+        activeStyle,
+        activeClassName,
+        style,
         ...restProps
     } = props
 
@@ -62,35 +68,32 @@ export const Button: FC<ButtonProps> = props => {
     })
     
     //开启水波纹动画
-    
     const rippleComponent = useRef<HTMLCanvasElement>(null)
     const animateId = useRef<number>()
     const rippleData = useRef({
-        animating: false,
         centerX: 0,
         centerY: 0,
         radius: 0,
         radiusSpeed: 10,
         opacitySpeed: 0.012,
         opacity: 0,
-        bgColor: type === 'default' ? '#dddddd' : '#ffffff'
+        defaultRadiusSpeed: 10,
+        defaultOpacity: '0.25',
+        bgColor: type === 'default' ? '#999' : '#ffffff'
     })
 
+    //检查屏幕帧率
     useEffect(() => {
         if(ripple) {
-            if(rippleComponent.current) {
-                let canvas = rippleComponent.current
-                canvas.width  = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-            }
             refreshrate((hz: number) => {fixSpeed(hz)}, 10)
         }
         return () => { 
-
         };
     }, []);
 
+    //修复水波纹扩散速度
     const fixSpeed = (hz: number) => {
+        console.log()
         if(hz > 300) {
             refreshrate((hz: number) => {fixSpeed(hz)}, 10)
         }else if(hz < 60) {
@@ -101,11 +104,9 @@ export const Button: FC<ButtonProps> = props => {
         rippleData.current.opacitySpeed = opacitySpeed * (60 / hz)
     }
 
+    //水波纹开始，转发点击事件
     const handleRippleClick = (e: React.MouseEvent<HTMLElement>) => {
         e.persist()
-        if(disabled) {
-            return
-        }
         if(onClick) {
             onClick(e)
         }
@@ -116,22 +117,31 @@ export const Button: FC<ButtonProps> = props => {
             rippleData.current.centerY = e.nativeEvent.offsetY
             if(context) {
                 resetAnime()
+                console.log(rippleComponent.current.width, rippleComponent.current.height)
                 context.clearRect(0, 0, rippleComponent.current.width, rippleComponent.current.height);
                 rippleDrawRadius(context)
             }         
         }
     }
 
+    //重置开始
     const resetAnime = () => {
+        const canvas = rippleComponent.current
+        if(canvas) {
+            canvas.width  = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            rippleData.current.radiusSpeed = rippleData.current.defaultRadiusSpeed * Math.max(canvas.width / 343, 1)
+        }
         rippleData.current.radius = 0
-        rippleData.current.opacity = 0.24
+        rippleData.current.opacity = 0.25
         if(rippleComponent.current) {
-            rippleComponent.current.style.opacity = '0.25'
+            rippleComponent.current.style.opacity = rippleData.current.defaultOpacity
         }
     }
 
+    //圆扩散动画
     const rippleDrawRadius = (context: CanvasRenderingContext2D) => {
-        let { centerX, centerY, radius, bgColor, opacity, radiusSpeed, animating } = rippleData.current
+        let { centerX, centerY, radius, bgColor, opacity, radiusSpeed } = rippleData.current
         if(animateId.current) {
             canCelRequestAnimFrame(animateId.current)
         }
@@ -147,69 +157,51 @@ export const Button: FC<ButtonProps> = props => {
         }
     };
 
+    //透明度扩散
     const rippleDrawOpacity = () => {
         let { opacity, opacitySpeed } = rippleData.current
         if(rippleComponent.current) {
             rippleComponent.current.style.opacity = opacity + ''
             if (rippleComponent.current &&  rippleData.current.opacity > 0.001) {
-                rippleData.current.opacity = opacity -= opacitySpeed
+                rippleData.current.opacity = Math.max((opacity -= opacitySpeed), 0) 
                 animateId.current = requestAnimFrame(() => rippleDrawOpacity())
             }
         }
     }
 
-    //未开启动画的按钮
-    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-        if(disabled) {
-            return
-        }
-        e.persist()
-        if(onClick) {
-            onClick(e)
-        }
-    }
-    let omitProps = restProps
-    if(disabled) {
-        omitProps = omit(restProps, ['onTouchStart', 'onTouchMove', 'onTouchEnd', 'onTouchCancel'])
-    }
-    
     return  <>
-                {
-                    ripple ?
-                        <a 
-                            href={href}
-                            className={classes}
-                            {...omitProps}
+                <TouchFeedback
+                    activeClassName={
+                        activeClassName || (ripple ? undefined : `ararin-button-${type}-active`)
+                    }
+                    disabled={disabled}
+                    activeStyle={activeStyle}
+                >
+                    <a 
+                        style={style}
+                        href={disabled ? undefined : href}
+                        className={classes}
+                        {...restProps}
+                        onClick={disabled ? undefined : (ripple? handleRippleClick : onClick)}
+                    >
+                        {ripple && <canvas 
+                                        style={{opacity: rippleData.current.opacity}}
+                                        className="ararin-btn-ripple"  
+                                        ref={rippleComponent} 
+                                    />
+                        }
+                        <div
+                            className="ararin-button-box"
                         >
-                            <div
-                                className="ararin-ripple-bg"
-                            >
-                                {children}
-                            </div>
-                             <canvas 
-                                style={{opacity: rippleData.current.opacity}}
-                                className="ararin-btn-ripple"  
-                                ref={rippleComponent} 
-                                onClick={handleRippleClick}
-                            />
-                        </a> :
-                        <a 
-                            href={href}
-                            className={classes}
-                            {...omitProps}
-                            onClick={handleClick}
-                        >
-                            <div
-                                className="ararin-ripple-bg"
-                            >
-                                {children}
-                            </div>
-                        </a>
-                }
+                            {children}
+                        </div>
+                    </a>
+                </TouchFeedback>
             </>
 }
 
 Button.defaultProps = {
+    size: "md",
     disabled: false,
     type: 'default'
 } 

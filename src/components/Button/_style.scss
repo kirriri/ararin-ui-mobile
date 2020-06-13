@@ -4,20 +4,21 @@
     font-weight: $btn-font-weight;
     white-space: nowrap;
     text-align: center;
-    height: $btn-height-base;
+    // height: $btn-height-base;
     cursor: pointer;
     border: $btn-border-width solid transparent;
     outline: none;
     width: 100%;
-    padding: 0;
+    padding: 1vw 4vw;
     letter-spacing: 0.2vw;
     transition: $btn-transition;
     overflow: hidden;
     box-sizing: border-box;
-    box-shadow: $box-shadow;
-    
-    @include button-size($btn-font-size, $border-radius);
-
+    box-shadow: $box-shadow-default;
+    border-radius: 1vw;
+    .ararin-button-box {
+        position: relative;    
+    }
     &.disabled,
     &[disabled] {
         cursor: not-allowed;
@@ -29,21 +30,38 @@
     }
 }
 
-.ararin-button-default {
-    @include button-style($gray-600, $white, $btn-border-color);
+.ararin-button-lg {
+    @include button-size($font-size-lg, $line-height-lg);
 }
 
-.ararin-button-primary {
-    @include button-style($white, $primary)
+.ararin-button-md {
+    @include button-size($font-size-base, $line-height-base);
 }
 
-.ararin-button-danger {
-    @include button-style($white, $danger)
+.ararin-button-sm {
+    @include button-size($font-size-sm, $line-height-sm);
 }
 
-.ararin-button-success {
-    @include button-style($white, $success)
+
+@each $key, $val in $theme-colors {
+    @if $key == 'default' {
+        .ararin-button-#{$key} {
+            @include button-style($gray-800, $white, $btn-border-color);
+        }
+        .ararin-button-#{$key}-active {
+            background-color: darken($color: $val, $amount: 10%);
+        }
+    }
+    @else if $key != 'default' {
+        .ararin-button-#{$key} {
+            @include button-style($white, $val);
+        }
+        .ararin-button-#{$key}-active {
+            @include button-style($white, darken($color: $val, $amount: 10%))
+        }
+    }
 }
+
 
 .ararin-btn-ripple {
     width: 100%;

@@ -1,37 +1,16 @@
-// 按钮计算
-@mixin button-size($font-size, $border-radius) {
+// 按钮大小计算
+@mixin button-size($font-size, $line-height) {
     font-size: $font-size;
-    border-radius: $border-radius;
+    line-height: $line-height;
 }
 
 // 按钮样式计算
 @mixin button-style(
     $color,
-    $background,
-    $border: darken($color: $background, $amount: 7.5%),
-    // $hover-background: lighten($background, 7.5%),
-    // $hover-border: lighten($border, 10%),
-    // $hover-color: $color
+    $backgroundColor,
+    $border: darken($color: $backgroundColor, $amount: 7.5%),
 ) {
     color: $color;
-    background: $background;
+    background: $backgroundColor;
     border-color: $border;
-
-    // &:hover {
-    //     color: $hover-color;
-    //     background: $hover-background;
-    //     border-color: $hover-border;
-    // }
-    // &:focus,
-    // &.hover {
-    //     color: $hover-color;
-    //     background: $hover-background;
-    //     border-color: $hover-border;
-    // }
-    // &:disabled,
-    // &.disabled {
-    //     color: $color;
-    //     background: $background;
-    //     border-color: $border;
-    // }
 }
