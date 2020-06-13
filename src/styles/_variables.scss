@@ -11,7 +11,7 @@ $gray-900: #191919 !default;
 $black: #000000 !default;
 
 $blue: #5698c3 !default;
-$indigo: #1a94bc !default;
+$indigo: #5cb3cc !default;
 $red: #ed5a65 !default;
 $orange: #fba414 !default;
 $green: #40a070 !default;
@@ -32,7 +32,7 @@ $theme-colors: (
     "primary": $primary,
     "success": $success,
     "warning": $warning,
-    "default": $gray-300,
+    "default": $gray-100,
     "danger": $danger,
 );
 
@@ -221,7 +221,7 @@ $btn-border-radius:           $border-radius !default;
 $btn-border-radius-lg:        $border-radius-lg !default;
 $btn-border-radius-sm:        $border-radius-sm !default;
 
-$btn-transition:              color .3s ease-in-out, background-color .3s ease-in-out, border-color .3s ease-in-out, box-shadow .3s ease-in-out !default;
+$btn-transition:              color .1s ease-in-out, background-color .1s ease-in-out, border-color .1s ease-in-out, box-shadow .1s ease-in-out !default;
 
 // menu
 $menu-border-width:            $border-width !default;

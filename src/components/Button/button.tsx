@@ -75,9 +75,9 @@ export const Button: FC<ButtonProps> = props => {
         centerY: 0,
         radius: 0,
         radiusSpeed: 10,
-        opacitySpeed: 0.012,
+        opacitySpeed: 0.015,
         opacity: 0,
-        defaultRadiusSpeed: 10,
+        defaultRadiusSpeed: 12,
         defaultOpacity: '0.25',
         bgColor: type === 'default' ? '#999' : '#ffffff'
     })
@@ -87,6 +87,9 @@ export const Button: FC<ButtonProps> = props => {
         if(ripple) {
             refreshrate((hz: number) => {fixSpeed(hz)}, 10)
         }
+
+
+        
         return () => { 
         };
     }, []);
@@ -130,7 +133,7 @@ export const Button: FC<ButtonProps> = props => {
         if(canvas) {
             canvas.width  = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
-            rippleData.current.radiusSpeed = rippleData.current.defaultRadiusSpeed * Math.max(canvas.width / 343, 1)
+            rippleData.current.radiusSpeed = rippleData.current.defaultRadiusSpeed * Math.max(canvas.width / 375, 1)
         }
         rippleData.current.radius = 0
         rippleData.current.opacity = 0.25
@@ -169,6 +172,9 @@ export const Button: FC<ButtonProps> = props => {
         }
     }
 
+    //处理图标
+    let iconEle
+        
     return  <>
                 <TouchFeedback
                     activeClassName={
@@ -193,6 +199,7 @@ export const Button: FC<ButtonProps> = props => {
                         <div
                             className="ararin-button-box"
                         >
+                            {iconEle}
                             {children}
                         </div>
                     </a>
