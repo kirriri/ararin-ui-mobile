@@ -8,6 +8,7 @@ import React, {
 import classNames from 'classnames'
 import { requestAnimFrame, canCelRequestAnimFrame } from '../../util/refreshRate'
 import TouchFeedback from 'rmc-feedback';
+import Icon, { IconType } from '../Icon'
 
 const refreshrate = require('refreshrate');
 
@@ -26,7 +27,10 @@ type ButtonSize = 'sm' | 'md' | 'lg'
  */
 type ButtonType = 'primary' | 'default' | 'warning' | 'danger' | 'link' | 'success'
 
+
 interface BaseButtonProps {
+    icon?: React.ReactNode,
+    iconState?: IconType,
     href?: string,
     type?: ButtonType,
     size?: ButtonSize,
@@ -46,8 +50,9 @@ export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>
 
 export const Button: FC<ButtonProps> = props => {
     const {
+        icon,
+        iconState,
         className,
-        disabled,
         state,
         children,
         type,
@@ -60,6 +65,28 @@ export const Button: FC<ButtonProps> = props => {
         style,
         ...restProps
     } = props
+
+    let {
+        disabled
+    } = props
+
+    //处理图标
+    let iconEle
+
+    if(state === 'loading') {
+        disabled = true
+        iconEle =   <Icon
+                        iconState="spin"
+                        type="loading"
+                    ></Icon>
+    }else if(typeof icon === 'string') {
+        iconEle =   <Icon
+                        iconState={iconState}
+                        type={icon}
+                    ></Icon>
+    }else if(icon) {
+        // console.log(icon.props)
+    }
 
     const classes = classNames('ararin-button',className , {
         [`ararin-button-${type}`] : type,
@@ -87,9 +114,6 @@ export const Button: FC<ButtonProps> = props => {
         if(ripple) {
             refreshrate((hz: number) => {fixSpeed(hz)}, 10)
         }
-
-
-        
         return () => { 
         };
     }, []);
@@ -120,7 +144,6 @@ export const Button: FC<ButtonProps> = props => {
             rippleData.current.centerY = e.nativeEvent.offsetY
             if(context) {
                 resetAnime()
-                console.log(rippleComponent.current.width, rippleComponent.current.height)
                 context.clearRect(0, 0, rippleComponent.current.width, rippleComponent.current.height);
                 rippleDrawRadius(context)
             }         
@@ -171,9 +194,6 @@ export const Button: FC<ButtonProps> = props => {
             }
         }
     }
-
-    //处理图标
-    let iconEle
         
     return  <>
                 <TouchFeedback
@@ -210,7 +230,8 @@ export const Button: FC<ButtonProps> = props => {
 Button.defaultProps = {
     size: "md",
     disabled: false,
-    type: 'default'
+    type: 'default',
+    iconState: 'static'
 } 
 
 export default Button;
