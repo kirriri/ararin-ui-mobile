@@ -9,7 +9,6 @@ import classNames from 'classnames'
 import { requestAnimFrame, canCelRequestAnimFrame } from '../../util/animateJs'
 import TouchFeedback from 'rmc-feedback';
 import Icon, { IconType } from '../Icon'
-
 import { refreshRate }  from '../../util/refreshRate';
 
 /**
@@ -26,7 +25,6 @@ type ButtonSize = 'sm' | 'md' | 'lg'
  * Button组件的类型
  */
 type ButtonType = 'primary' | 'default' | 'warning' | 'danger' | 'link' | 'success'
-
 
 interface BaseButtonProps {
     icon?: React.ReactNode,
