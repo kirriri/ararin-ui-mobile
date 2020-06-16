@@ -73,22 +73,26 @@ export const Button: FC<ButtonProps> = props => {
 
     if(state === 'loading') {
         disabled = true
-        iconEle =   <Icon
+        iconEle =  <Icon
                         iconState="spin"
                         type="loading"
                     ></Icon>
+    }else if (state === 'disabled') {
+        disabled = true
     }else if(typeof icon === 'string') {
         iconEle =   <Icon
                         iconState={iconState}
                         type={icon}
                     ></Icon>
     }else if(icon) {
-        // console.log(icon.props)
+        iconEle = icon
     }
 
     const classes = classNames('ararin-button',className , {
         [`ararin-button-${type}`] : type,
         [`ararin-button-${size}`] : size,
+        // loading样式，临时放在这，等后期再次开发
+        [`ararin-button-${state}`] : state,
         'disabled': disabled
     })
     
@@ -133,7 +137,7 @@ export const Button: FC<ButtonProps> = props => {
     //水波纹点击，转发点击事件，开始水波纹计算
     const handleRippleClick = (e: React.MouseEvent<HTMLElement>) => {
         e.persist()
-        if(onClick) {
+        if(onClick && !disabled) {
             onClick(e)
         }
         if(rippleComponent.current) {
