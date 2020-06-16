@@ -6,11 +6,10 @@ import React, {
     useEffect
 } from 'react'
 import classNames from 'classnames'
-import { requestAnimFrame, canCelRequestAnimFrame } from '../../util/refreshRate'
+import { requestAnimFrame, canCelRequestAnimFrame } from '../../util/animateJs'
 import TouchFeedback from 'rmc-feedback';
 import Icon, { IconType } from '../Icon'
-
-const refreshrate = require('refreshrate');
+import { refreshRate }  from '../../util/refreshRate';
 
 /**
  * Button组件的3种状态
@@ -26,7 +25,6 @@ type ButtonSize = 'sm' | 'md' | 'lg'
  * Button组件的类型
  */
 type ButtonType = 'primary' | 'default' | 'warning' | 'danger' | 'link' | 'success'
-
 
 interface BaseButtonProps {
     icon?: React.ReactNode,
@@ -108,7 +106,7 @@ export const Button: FC<ButtonProps> = props => {
         radiusSpeed: 10,
         opacitySpeed: 0.015,
         opacity: 0,
-        defaultRadiusSpeed: 12,
+        defaultRadiusSpeed: 10,
         defaultOpacity: '0.25',
         bgColor: type === 'default' ? '#999' : '#ffffff'
     })
@@ -116,7 +114,7 @@ export const Button: FC<ButtonProps> = props => {
     //检查屏幕帧率
     useEffect(() => {
         if(ripple) {
-            refreshrate((hz: number) => {fixSpeed(hz)}, 10)
+            refreshRate((hz: number) => {fixSpeed(hz)}, 10)
         }
         return () => { 
         };
@@ -124,18 +122,19 @@ export const Button: FC<ButtonProps> = props => {
 
     //修复水波纹扩散速度
     const fixSpeed = (hz: number) => {
-        console.log()
+        console.log(hz)
         if(hz > 300) {
-            refreshrate((hz: number) => {fixSpeed(hz)}, 10)
+            refreshRate((hz: number) => {fixSpeed(hz)}, 10)
         }else if(hz < 60) {
             hz = 60
         }
         let { radiusSpeed, opacitySpeed } = rippleData.current
         rippleData.current.radiusSpeed = radiusSpeed * (60 / hz)
+        rippleData.current.defaultRadiusSpeed = radiusSpeed * (60 / hz)
         rippleData.current.opacitySpeed = opacitySpeed * (60 / hz)
     }
 
-    //水波纹开始，转发点击事件
+    //水波纹点击，转发点击事件，开始水波纹计算
     const handleRippleClick = (e: React.MouseEvent<HTMLElement>) => {
         e.persist()
         if(onClick && !disabled) {
@@ -171,6 +170,7 @@ export const Button: FC<ButtonProps> = props => {
 
     //圆扩散动画
     const rippleDrawRadius = (context: CanvasRenderingContext2D) => {
+        console.log(rippleData)
         let { centerX, centerY, radius, bgColor, opacity, radiusSpeed } = rippleData.current
         if(animateId.current) {
             canCelRequestAnimFrame(animateId.current)
@@ -179,7 +179,8 @@ export const Button: FC<ButtonProps> = props => {
         context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
         context.fillStyle = bgColor;
         context.fill();
-        rippleData.current.radius = radius += radiusSpeed
+        console.log(rippleData.current.radiusSpeed)
+        rippleData.current.radius = radius += rippleData.current.radiusSpeed
         if (rippleComponent.current && radius < rippleComponent.current.width) {
             animateId.current = requestAnimFrame(() => rippleDrawRadius(context));
         }else if(rippleComponent.current && opacity > 0.001){
@@ -192,7 +193,7 @@ export const Button: FC<ButtonProps> = props => {
         let { opacity, opacitySpeed } = rippleData.current
         if(rippleComponent.current) {
             rippleComponent.current.style.opacity = opacity + ''
-            if (rippleComponent.current &&  rippleData.current.opacity > 0.001) {
+            if (rippleComponent.current &&  rippleData.current.opacity > 0) {
                 rippleData.current.opacity = Math.max((opacity -= opacitySpeed), 0) 
                 animateId.current = requestAnimFrame(() => rippleDrawOpacity())
             }
