@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from './components/Button/button'
 import Icon from './components/Icon/icon'
+import Dialog from './components/dialog/dialog'
 
 type StateType = {
     buttonState: string;
@@ -15,42 +16,33 @@ class App extends React.Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
-            buttonState : 'static'
+            buttonState: 'static',
+            visible: false
         }
     }
     
     render() {
 
-        const { buttonState } = this.state
+        const { visible } = this.state
         
         return (
             <div className="App" style={{ height: '130vh', padding: '4vw', paddingTop: '30vw' }}>
-                {/* <Button
-                    size="sm"
-                >测试测试1</Button>
                 <Button
-                    icon="loading"
                     style={{
-                        marginTop: '15px'
+                        position: 'relative',
+                        zIndex: 999
                     }}
-                    size="md"
-                    onClick={e => { console.log(e) }}
-                >测试测试2</Button>
-                <Button
+                    type="primary"
                     ripple
-                    state={buttonState}
-                    style={{marginTop: '15px'}}
-                    type="success"
-                    onClick={() => {
-                        this.setState({buttonState: 'loading'})
-                        setTimeout(() => {
-                            this.setState({
-                                buttonState: 'disabled'
-                            })
-                        }, 1000)
-                    }}
-                >测试测试3</Button> */}
-                
+                    onClick={() => {this.setState({visible: !visible})}}
+                >弹窗</Button>
+                <Dialog 
+                    title="测试" 
+                    visible={visible}
+                    maskAnimation="fade"
+                >
+                    <p>first dialog</p>
+                </Dialog>
             </div>
         );
     }

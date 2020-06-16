@@ -1,0 +1,103 @@
+.ararin-dialog-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(55, 55, 55);
+    background-color: rgba(55, 55, 55, 0.6);
+    filter: alpha(opacity=50);
+}
+@mixin fade-effect() {
+    animation-duration: .3s;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+  }
+
+  .ararin-dialog-fade-enter,.ararin-dialog-fade-appear {
+    opacity: 0;
+    @include fade-effect();
+    animation-play-state: paused;
+  }
+
+  .ararin-dialog-fade-leave {
+    @include fade-effect();
+    animation-play-state: paused;
+  }
+
+  .ararin-dialog-fade-enter.ararin-dialog-fade-enter-active,.ararin-dialog-fade-appear.ararin-dialog-fade-appear-active  {
+    animation-name: rcDialogFadeIn;
+    animation-play-state: running;
+  }
+
+  .ararin-dialog-fade-leave.ararin-dialog-fade-leave-active {
+    animation-name: rcDialogFadeOut;
+    animation-play-state: running;
+  }
+
+  @keyframes rcDialogFadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes rcDialogFadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes rcDialogZoomIn {
+    0% {
+      opacity: 0;
+      transform: scale(0, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1, 1);
+    }
+  }
+  @keyframes rcDialogZoomOut {
+    0% {
+
+      transform: scale(1, 1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0, 0);
+    }
+  }
+
+@mixin effect() {
+    animation-duration: .3s;
+    animation-fill-mode: both;
+  }
+  
+.ararin-dialog-zoom-enter, .ararin-dialog-zoom-appear {
+    opacity: 0;
+    @include effect();
+    animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
+    animation-play-state: paused;
+  }
+
+  .ararin-dialog-zoom-leave {
+    @include effect();
+    animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+    animation-play-state: paused;
+  }
+
+  .ararin-dialog-zoom-enter.ararin-dialog-zoom-enter-active, .ararin-dialog-zoom-appear.ararin-dialog-zoom-appear-active {
+    animation-name: rcDialogZoomIn;
+    animation-play-state: running;
+  }
+
+  .ararin-dialog-zoom-leave.ararin-dialog-zoom-leave-active {
+    animation-name: rcDialogZoomOut;
+    animation-play-state: running;
+  }
