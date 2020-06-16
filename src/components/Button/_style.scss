@@ -50,6 +50,9 @@
         .ararin-button-#{$key} {
             @include button-style($gray-600, lighten($val, 10%), $btn-border-color);
         }
+        .ararin-button-#{$key}.ararin-button-loading {
+            box-shadow: 0 0vw 2vw darken($color: $val, $amount: 10%);
+        }
         .ararin-button-#{$key}-active {
             background-color: darken($color: $val, $amount: 10%);
         }
@@ -57,10 +60,12 @@
     @else if $key != 'default' {
         .ararin-button-#{$key} {
             @include button-style($white, $val);
-            box-shadow: 0 0.06rem 0.25rem $val;
         }
         .ararin-button-#{$key}-active {
-            @include button-style($white, darken($color: $val, $amount: 10%))
+            @include button-style($white, darken($color: $val, $amount: 10%));
+        }
+        .ararin-button-#{$key}.ararin-button-loading {
+            box-shadow: 0 0vw 2vw darken($color: $val, $amount: 10%);
         }
     }
 }
@@ -73,6 +78,10 @@
     left: 0;
     top: 0;
     opacity: 0;
+}
+
+.ararin-button-loading {
+
 }
 
 .ararin-ripple-bg {
