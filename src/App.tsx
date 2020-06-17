@@ -3,14 +3,6 @@ import Button from './components/Button/button'
 import Icon from './components/Icon/icon'
 import Dialog from './components/dialog/dialog'
 
-type StateType = {
-    buttonState: string;
-};
-
-type propType = {
-    buttonState: string;
-};
-
 class App extends React.Component<any, any> {
 
     constructor(props: any) {
@@ -37,6 +29,7 @@ class App extends React.Component<any, any> {
                     onClick={() => {this.setState({visible: !visible})}}
                 >弹窗</Button>
                 <Dialog 
+                    maskClosable={true}
                     title="测试" 
                     visible={visible}
                     maskAnimation="fade"
