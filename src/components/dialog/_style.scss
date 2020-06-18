@@ -7,9 +7,11 @@
     background-color: rgb(55, 55, 55);
     background-color: rgba(55, 55, 55, 0.35);
     filter: alpha(opacity=50);
+    z-index: 999;
 }
 
 .ararin-dialog-wrap  {
+  z-index: 999;
   position: fixed;
   left: 0;
   right: 0;
@@ -25,10 +27,20 @@
   height: 80vw;
   background-color: #fff;
   border-radius: 1.5vw;
+  box-shadow: 0 0.5vw 1vw rgba(55, 55, 55, 0.35);
+  position: relative;
+  .ararin-dialog-close {
+    position: absolute;
+    right: 3vw;
+    top: 3vw;
+    background-color: aqua;
+    widows: 5vw;
+    height: 5vw;
+  }
 }
 
 @mixin fade-effect() {
-    animation-duration: .5s;
+    animation-duration: .35s;
     animation-fill-mode: both;
     animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
 }
@@ -73,34 +85,18 @@
     }
   }
 
-  @keyframes rcDialogZoomIn {
-    0% {
-      opacity: 0.2;
-      top: 4vw;
-    }
 
-    100% {
-      opacity: 1;
-      top: 0vw;
-    }
-  }
-  @keyframes rcDialogZoomOut {
-    0% {
-      opacity: 1;
-      top: 0vw;
-    }
-    100% {
-      opacity: 0.2;
-      top: 4vw;
-    }
-  }
+
+
+
+
 
 @mixin effect() {
-    animation-duration: .5s;
+    animation-duration: .3s;
     animation-fill-mode: both;
   }
   
-.ararin-dialog-zoom-enter, .ararin-dialog-zoom-appear {
+.ad-enter, .ad-appear {
     opacity: 0;
     @include effect();
     animation-timing-function: cubic-bezier(0,.1,.3,1);
@@ -108,21 +104,46 @@
     position: relative;
   }
 
-  .ararin-dialog-zoom-leave {
+  .ad-leave {
     @include effect();
     animation-timing-function: cubic-bezier(0,.1,.3,1);
     animation-play-state: paused;
     position: relative;
   }
 
-  .ararin-dialog-zoom-enter.ararin-dialog-zoom-enter-active, .ararin-dialog-zoom-appear.ararin-dialog-zoom-appear-active {
+  .ad-enter.ad-enter-active, .ad-appear.ad-appear-active {
     animation-name: rcDialogZoomIn;
     animation-play-state: running;
     position: relative;
   }
 
-  .ararin-dialog-zoom-leave.ararin-dialog-zoom-leave-active {
+  .ad-leave.ad-leave-active {
     animation-name: rcDialogZoomOut;
     animation-play-state: running;
     position: relative;
+  }
+
+  @keyframes rcDialogZoomIn {
+    0% {
+      opacity: 0.2;
+      transform: translate3d(0, 3vw, 0);
+    }
+    55% {
+      transform: translate3d(0, -1.4vw, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  @keyframes rcDialogZoomOut {
+    0% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      
+    }
+    100% {
+      opacity: 0.2;
+      transform: translate3d(0, 3vw, 0);
+    }
   }

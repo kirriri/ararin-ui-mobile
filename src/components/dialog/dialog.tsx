@@ -2,6 +2,7 @@ import React from 'react'
 import TouchFeedback from 'rmc-feedback';
 import Dialog from 'rmc-dialog';
 import classnames from 'classnames'
+import Icon from '../Icon'
 
 export interface DialogBaseProps {
     prefixCls?: string,
@@ -10,7 +11,7 @@ export interface DialogBaseProps {
     title?: string,
     maskAnimation?: string
     maskClosable?: boolean,
-    // onClose?:
+    onClose?: (e: any) => void
 }
 
 export const TDialog: React.FC<DialogBaseProps> = props => {
@@ -21,13 +22,16 @@ export const TDialog: React.FC<DialogBaseProps> = props => {
         className,
         maskAnimation,
         children,
+        onClose,
         ...restProps
     } = props
 
     return (
         <Dialog
+            onClose={onClose}
+            wrapClassName="test"
             maskClosable={maskClosable}
-            animation="zoom"
+            // animation="zoom"
             maskAnimation="fade"
             className={className}
             prefixCls={prefixCls}
@@ -39,9 +43,10 @@ export const TDialog: React.FC<DialogBaseProps> = props => {
 }
 
 TDialog.defaultProps = {
-    prefixCls: 'ararin-dialog',
+    prefixCls: 'ad',
     maskAnimation: 'fade',
     maskClosable: false,
+    // animation: "ad"
 }
 
 export default TDialog

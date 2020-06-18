@@ -29,6 +29,7 @@ class App extends React.Component<any, any> {
                     onClick={() => {this.setState({visible: !visible})}}
                 >弹窗</Button>
                 <Dialog 
+                    onClose={() => this.setState({visible: false})}
                     maskClosable={true}
                     title="测试" 
                     visible={visible}
