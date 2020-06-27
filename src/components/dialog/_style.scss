@@ -1,4 +1,4 @@
-.ararin-dialog-mask {
+.ad-mask {
     position: fixed;
     top: 0;
     left: 0;
@@ -10,7 +10,7 @@
     z-index: 999;
 }
 
-.ararin-dialog-wrap  {
+.ad-wrap  {
   z-index: 999;
   position: fixed;
   left: 0;
@@ -22,19 +22,19 @@
   align-items: center;
 }
 
-.ararin-dialog {
+.ad {
   width: 70vw;
   height: 80vw;
   background-color: #fff;
   border-radius: 1.5vw;
   box-shadow: 0 0.5vw 1vw rgba(55, 55, 55, 0.35);
   position: relative;
-  .ararin-dialog-close {
+  .ad-close {
     position: absolute;
     right: 3vw;
     top: 3vw;
     background-color: aqua;
-    widows: 5vw;
+    width: 5vw;
     height: 5vw;
   }
 }
@@ -45,24 +45,24 @@
     animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
 }
 
-  .ararin-dialog-fade-enter,.ararin-dialog-fade-appear {
+  .ad-fade-enter,.ad-fade-appear {
     opacity: 0;
     @include fade-effect();
     animation-play-state: paused;
   }
 
-  .ararin-dialog-fade-leave {
+  .ad-fade-leave {
     @include fade-effect();
     animation-play-state: paused;
   }
 
-  .ararin-dialog-fade-enter.ararin-dialog-fade-enter-active,
-  .ararin-dialog-fade-appear.ararin-dialog-fade-appear-active  {
+  .ad-fade-enter.ad-fade-enter-active,
+  .ad-fade-appear.ad-fade-appear-active  {
     animation-name: rcDialogFadeIn;
     animation-play-state: running;
   }
 
-  .ararin-dialog-fade-leave.ararin-dialog-fade-leave-active {
+  .ad-fade-leave.ad-fade-leave-active {
     animation-name: rcDialogFadeOut;
     animation-play-state: running;
   }
@@ -85,18 +85,12 @@
     }
   }
 
-
-
-
-
-
-
 @mixin effect() {
     animation-duration: .3s;
     animation-fill-mode: both;
   }
   
-.ad-enter, .ad-appear {
+.ad-zone-enter, .ad-zone-appear {
     opacity: 0;
     @include effect();
     animation-timing-function: cubic-bezier(0,.1,.3,1);
@@ -104,20 +98,20 @@
     position: relative;
   }
 
-  .ad-leave {
+  .ad-zone-leave {
     @include effect();
     animation-timing-function: cubic-bezier(0,.1,.3,1);
     animation-play-state: paused;
     position: relative;
   }
 
-  .ad-enter.ad-enter-active, .ad-appear.ad-appear-active {
+  .ad-zone-enter.ad-zone-enter-active, .ad-zone-appear.ad-zone-appear-active {
     animation-name: rcDialogZoomIn;
     animation-play-state: running;
     position: relative;
   }
 
-  .ad-leave.ad-leave-active {
+  .ad-zone-leave.ad-zone-leave-active {
     animation-name: rcDialogZoomOut;
     animation-play-state: running;
     position: relative;
@@ -146,4 +140,10 @@
       opacity: 0.2;
       transform: translate3d(0, 3vw, 0);
     }
+  }
+
+  .ad-dialog-close {
+    position: absolute;
+    right: 3vw;
+    top: 3vw;
   }

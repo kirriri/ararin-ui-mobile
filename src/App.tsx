@@ -20,10 +20,6 @@ class App extends React.Component<any, any> {
         return (
             <div className="App" style={{ height: '130vh', padding: '4vw', paddingTop: '30vw' }}>
                 <Button
-                    style={{
-                        position: 'relative',
-                        zIndex: 999
-                    }}
                     type="primary"
                     ripple
                     onClick={() => {this.setState({visible: !visible})}}
@@ -31,7 +27,7 @@ class App extends React.Component<any, any> {
                 <Dialog 
                     onClose={() => this.setState({visible: false})}
                     maskClosable={true}
-                    title="测试" 
+                    // title="测试" 
                     visible={visible}
                     maskAnimation="fade"
                 >

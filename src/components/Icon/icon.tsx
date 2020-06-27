@@ -59,9 +59,10 @@ export const Icon: FC<BaseIconProps> = props => {
 
             const symbols = Object.keys(IconRes).map(iconName => {
                 const svgContent = IconRes[iconName].split('svg')[1];
-                console.log(svgContent)
                 return `<symbol id=${iconName}${svgContent}symbol>`;
-            }).join('');
+            }).join('')
+
+            console.log(symbols)
             if (!existing) {
                 mountNode.insertAdjacentHTML('afterbegin', svgSprite(symbols));
             }
