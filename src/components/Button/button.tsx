@@ -170,7 +170,6 @@ export const Button: FC<ButtonProps> = props => {
 
     //圆扩散动画
     const rippleDrawRadius = (context: CanvasRenderingContext2D) => {
-        console.log(rippleData)
         let { centerX, centerY, radius, bgColor, opacity, radiusSpeed } = rippleData.current
         if(animateId.current) {
             canCelRequestAnimFrame(animateId.current)
@@ -179,7 +178,6 @@ export const Button: FC<ButtonProps> = props => {
         context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
         context.fillStyle = bgColor;
         context.fill();
-        console.log(rippleData.current.radiusSpeed)
         rippleData.current.radius = radius += rippleData.current.radiusSpeed
         if (rippleComponent.current && radius < rippleComponent.current.width) {
             animateId.current = requestAnimFrame(() => rippleDrawRadius(context));

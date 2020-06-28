@@ -31,7 +31,7 @@ export const TDialog: React.FC<DialogBaseProps> = props => {
 
     return (
         <Dialog
-            closable={false}
+            // closable={false}
             onClose={onClose}
             wrapClassName="test"
             maskClosable={maskClosable}
@@ -41,7 +41,7 @@ export const TDialog: React.FC<DialogBaseProps> = props => {
             prefixCls={prefixCls}
             {...restProps}
         >
-            <span className="ad-dialog-close"><Icon type="close"/></span>
+            {/* <span className="ad-dialog-close"><Icon type="close"/></span> */}
             {children}
         </Dialog>
     )
