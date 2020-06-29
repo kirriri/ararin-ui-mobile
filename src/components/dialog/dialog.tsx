@@ -3,13 +3,17 @@ import TouchFeedback from 'rmc-feedback';
 import Dialog from 'rmc-dialog';
 import classnames from 'classnames'
 import Icon from '../Icon'
-import omit from 'omit.js'
 
 export interface FooterBaseProps {
     text?: string,
     style?: React.CSSProperties,
-    onClick?: (e: React.MouseEvent) => void
+    activeStyle?: React.CSSProperties,
+    higlight?: boolean,
+    onPress?: (e: React.MouseEvent) => void,
+    className?: string
 }
+
+type dialogAnimation = 'bounce' | 'scale' | ''
 
 export interface DialogBaseProps {
     afterClose?: () => void,
@@ -22,7 +26,7 @@ export interface DialogBaseProps {
     title?: React.ReactNode,
     maskAnimation?: string
     maskClosable?: boolean,
-    footer?: [],
+    footer?: FooterBaseProps[],
     onClose?: (e: React.MouseEvent<HTMLSpanElement>) => void
 }
 
@@ -48,29 +52,43 @@ export const TDialog: React.FC<DialogBaseProps> = props => {
         }
     }
 
-    const footerWrap = (footer) => {
-        return footer.length > 0 ?
+    const footerWrap = footer && footer.length ?
             <div className={`${prefixCls}-footer-btn-group`}>
                 {footer.map((item, index) => {
-                        const sitem = omit(item, ['text', 'onClick', 'style', 'className'])
-                        const classes = classnames(`${prefixCls}-footer-item`, sitem.className)
+                        const classes = classnames(
+                            {
+                                [`${prefixCls}-footer-item`]: true,
+                                [`${prefixCls}-footer-item-highlight`]: item.higlight
+                            },
+                            item.className
+                        )
+                        const activeClasses = classnames(
+                            {
+                                [`${prefixCls}-footer-active-highlight`]: item.higlight,
+                            }
+                        )
                         return  <TouchFeedback
-                                    activeClassName={`${prefixCls}-footer-item-active`}
+                                    activeClassName={activeClasses}
+                                    key={`ad-f-${index}`}
+                                    activeStyle={!item.higlight ? item.activeStyle : ''}
                                 >
-                                    <div className={classes}>
-                                        {sitem.text}
+                                    <div 
+                                        style={!item.higlight ? item.style : {}}
+                                        className={classes}
+                                        onClick={item.onPress}
+                                    >
+                                        {item.text}
                                     </div>
                                 </TouchFeedback>
                     }
                 )}
             </div> : ''
-    }
-    
+            
     return (
         <Dialog
             closable={false}
             onClose={onClose}
-            wrapClassName="test"
+            wrapClassName=""
             maskClosable={maskClosable}
             animation={animation}
             maskAnimation="fade"
@@ -89,7 +107,7 @@ TDialog.defaultProps = {
     prefixCls: 'ad',
     maskAnimation: 'fade',
     maskClosable: false,
-    animation: 'zone',
+    animation: 'bounce',
     closeIcon: true
 }
 

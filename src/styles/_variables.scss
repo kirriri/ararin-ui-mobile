@@ -10,7 +10,7 @@ $gray-800: #333333 !default;
 $gray-900: #191919 !default;
 $black: #000000 !default;
 
-$blue: #5698c3 !default;
+$blue: #32b5e9 !default;
 $indigo: #5cb3cc !default;
 $red: #ed5a65 !default;
 $orange: #fba414 !default;
@@ -20,7 +20,7 @@ $teal: #20c997 !default;
 $cyan: #17a2b8 !default;
 $pink: #eea2a4 !default;
 
-$primary: $indigo !default;
+$primary: $blue !default;
 $secondray: $gray-500 !default;
 $success: $green !default;
 $warning: $yellow !default;
@@ -160,7 +160,6 @@ $mark-bg:                     #fcf8e3 !default;
 $hr-margin-y:                 $spacer !default;
 
 // Code
-
 $code-font-size:                    $small-font-size !default;
 $code-color:                        $pink !default;
 $pre-color:                         null !default;
@@ -169,7 +168,6 @@ $pre-color:                         null !default;
 $enable-pointer-cursor-for-buttons:           true !default;
 
 // 边框 和 border radius
-
 $border-width:                0.15vw !default;
 $border-color:                $gray-300 !default;
 
@@ -180,7 +178,7 @@ $border-radius-sm:            .2rem !default;
 // 不同类型的 box shadow
 $box-shadow-sm:               0 .125rem .25rem rgba($black, .075) !default;
 $box-shadow-default:          0 0.05rem 0.2rem rgba($black, 0.15) !default;
-$box-shadow-lg:               0 1rem 3rem rgba($black, .175) !default;
+$box-shadow-lg:               0 1rem 2rem rgba($black, .175) !default;
 $box-shadow-inset:            inset 0 1px 2px rgba($black, .075) !default;
 
 // 按钮
@@ -221,10 +219,15 @@ $btn-border-radius:           $border-radius !default;
 $btn-border-radius-lg:        $border-radius-lg !default;
 $btn-border-radius-sm:        $border-radius-sm !default;
 
-$btn-transition:              color .2s ease-in-out, 
-                              background-color .2s ease-in-out, 
-                              border-color .2s ease-in-out, 
+$btn-transition:              color .15s ease-in-out, 
+                              background-color .15s ease-in-out, 
+                              border-color .15s ease-in-out, 
                               box-shadow 1s ease-in-out !default;
+// dialog
+$border-bottom-radius: 0 0 1.5vw 1.5vw;
+$border-top-radius: 1.5vw 1.5vw 0 0;
+$border-left-radius: 1.5vw 0 0 1.5vw;
+$border-right-radius: 0 1.5vw 1.5vw 0;                       
 
 // menu
 $menu-border-width:            $border-width !default;

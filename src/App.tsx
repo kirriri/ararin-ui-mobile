@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from './components/Button/button'
-import Icon from './components/Icon/icon'
 import Dialog from './components/dialog/dialog'
 
 class App extends React.Component<any, any> {
@@ -30,6 +29,7 @@ class App extends React.Component<any, any> {
                     visible={visible}
                     maskAnimation="fade"
                 >
+                    <div></div>
                 </Dialog>
             </div>
         );

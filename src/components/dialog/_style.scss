@@ -9,31 +9,30 @@
     z-index: 999;
 }
 
-.ad-wrap  {
-  z-index: 999;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.ad-wrap {
+    z-index: 999;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .ad {
-  width: 80vw;
-  background-color: #fff;
-  border-radius: 1.5vw;
-  box-shadow: 0 0.5vw 1.8vw rgba(55, 55, 55, 0.35);
-  position: relative;
-  .ad-close {
-    position: absolute;
-    right: 3vw;
-    top: 3vw;
-    width: 5vw;
-    height: 5vw;
-  }
+    width: 80vw;
+    background-color: #fff;
+    border-radius: 1.5vw;
+    box-shadow: 0 0.5vw 1.8vw rgba(55, 55, 55, 0.35);
+    position: relative;
+
+    .ad-close {
+        position: absolute;
+        right: 3vw;
+        top: 3vw;
+    }
 }
 
 @mixin fade-effect() {
@@ -42,111 +41,135 @@
     animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
 }
 
-  .ad-fade-enter,.ad-fade-appear {
+.ad-fade-enter,
+.ad-fade-appear {
     opacity: 0;
     @include fade-effect();
     animation-play-state: paused;
-  }
+}
 
-  .ad-fade-leave {
+.ad-fade-leave {
     @include fade-effect();
     animation-play-state: paused;
-  }
+}
 
-  .ad-fade-enter.ad-fade-enter-active,
-  .ad-fade-appear.ad-fade-appear-active  {
+.ad-fade-enter.ad-fade-enter-active,
+.ad-fade-appear.ad-fade-appear-active {
     animation-name: rcDialogFadeIn;
     animation-play-state: running;
-  }
+}
 
-  .ad-fade-leave.ad-fade-leave-active {
+.ad-fade-leave.ad-fade-leave-active {
     animation-name: rcDialogFadeOut;
     animation-play-state: running;
-  }
+}
 
-  @keyframes rcDialogFadeIn {
+@keyframes rcDialogFadeIn {
     0% {
-      opacity: 0;
+        opacity: 0;
     }
-    100% {
-      opacity: 1;
-    }
-  }
 
-  @keyframes rcDialogFadeOut {
-    0% {
-      opacity: 1;
-    }
     100% {
-      opacity: 0;
+        opacity: 1;
     }
-  }
+}
+
+@keyframes rcDialogFadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
 
 @mixin effect() {
     animation-duration: .3s;
     animation-fill-mode: both;
-  }
-  
-.ad-zone-enter, .ad-zone-appear {
+}
+
+.ad-bounce-enter,
+.ad-bounce-appear {
     opacity: 0;
     @include effect();
-    animation-timing-function: cubic-bezier(0,.1,.3,1);
+    animation-timing-function: cubic-bezier(0, .1, .3, 1);
     animation-play-state: paused;
     position: relative;
-  }
+}
 
-  .ad-zone-leave {
+.ad-bounce-leave {
     @include effect();
-    animation-timing-function: cubic-bezier(0,.1,.3,1);
+    animation-timing-function: cubic-bezier(0, .1, .3, 1);
     animation-play-state: paused;
     position: relative;
-  }
+}
 
-  .ad-zone-enter.ad-zone-enter-active, .ad-zone-appear.ad-zone-appear-active {
-    animation-name: rcDialogZoomIn;
+.ad-bounce-enter.ad-bounce-enter-active,
+.ad-bounce-appear.ad-bounce-appear-active {
+    animation-name: adBounceIn;
     animation-play-state: running;
     position: relative;
-  }
+}
 
-  .ad-zone-leave.ad-zone-leave-active {
-    animation-name: rcDialogZoomOut;
+.ad-bounce-leave.ad-bounce-leave-active {
+    animation-name: adBounceOut;
     animation-play-state: running;
     position: relative;
-  }
+}
 
-  @keyframes rcDialogZoomIn {
+@keyframes adBounceIn {
     0% {
-      opacity: 0.2;
-      transform: translate3d(0, 3vw, 0);
+        opacity: 0.2;
+        transform: translate3d(0, 3vw, 0);
     }
+
     55% {
-      transform: translate3d(0, -1.4vw, 0);
+        transform: translate3d(0, -1.6vw, 0);
     }
-    100% {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-    }
-  }
-  @keyframes rcDialogZoomOut {
-    0% {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      
-    }
-    100% {
-      opacity: 0.2;
-      transform: translate3d(0, 3vw, 0);
-    }
-  }
 
-  .ad-title {
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes adBounceOut {
+    0% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+
+    }
+
+    100% {
+        opacity: 0.2;
+        transform: translate3d(0, 3vw, 0);
+    }
+}
+
+//modal 样式
+.ad-title {
     text-align: center;
     font-size: 4.6vw;
-  }
+}
 
-  .ad-footer-btn-group {
+.ad-footer-btn-group {
+    border-radius: $border-bottom-radius;
+    overflow: hidden;
+    border-top: 0.2vw solid rgba(55, 55, 55, 0.15);
     display: flex;
-    & > div {
-      flex: 1;
+    & >.ad-footer-item {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background-color .15s ease;
     }
-  }
+    & >.ad-footer-item-highlight {
+        background-color: $primary;
+        color: #fff;
+    }
+    .ad-footer-active-highlight {
+        background-color: darken($color: $primary, $amount: 10%);
+    }
+}

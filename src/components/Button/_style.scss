@@ -8,13 +8,14 @@
     border: $btn-border-width solid transparent;
     outline: none;
     width: 100%;
-    padding: 1rem 4rem;
+    padding: 1vw 2vw;
     letter-spacing: 0.2vw;
     transition: $btn-transition;
     overflow: hidden;
     box-sizing: border-box;
     box-shadow: $box-shadow-default;
     border-radius: 1vw;
+    letter-spacing: 0.5vw;
     .ararin-button-box {
         display: flex;
         justify-content: center;
