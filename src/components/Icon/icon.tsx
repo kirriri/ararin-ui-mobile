@@ -13,7 +13,7 @@ export interface BaseIconProps {
     iconState?: IconType,
     style?: React.CSSProperties,
     className?: string,
-    onclick?: React.MouseEvent<HTMLSpanElement>,
+    onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void
 }
 
 type IconSvgProps = BaseIconProps & SVGAttributes<SVGSVGElement>
@@ -28,6 +28,7 @@ export const Icon: FC<BaseIconProps> = props => {
         className,
         iconState,
         children,
+        onClick,
         ...restProps
     } = props
 
@@ -62,7 +63,6 @@ export const Icon: FC<BaseIconProps> = props => {
                 return `<symbol id=${iconName}${svgContent}symbol>`;
             }).join('')
 
-            console.log(symbols)
             if (!existing) {
                 mountNode.insertAdjacentHTML('afterbegin', svgSprite(symbols));
             }
@@ -87,6 +87,7 @@ export const Icon: FC<BaseIconProps> = props => {
     return  <span
                 style={style}
                 className={classes}
+                onClick={onClick}
                 {...restProps}
             >
                 {renderChildren()}

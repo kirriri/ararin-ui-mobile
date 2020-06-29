@@ -4,7 +4,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgb(55, 55, 55);
     background-color: rgba(55, 55, 55, 0.35);
     filter: alpha(opacity=50);
     z-index: 999;
@@ -23,17 +22,15 @@
 }
 
 .ad {
-  width: 70vw;
-  height: 80vw;
+  width: 80vw;
   background-color: #fff;
   border-radius: 1.5vw;
-  box-shadow: 0 0.5vw 1vw rgba(55, 55, 55, 0.35);
+  box-shadow: 0 0.5vw 1.8vw rgba(55, 55, 55, 0.35);
   position: relative;
   .ad-close {
     position: absolute;
     right: 3vw;
     top: 3vw;
-    background-color: aqua;
     width: 5vw;
     height: 5vw;
   }
@@ -142,8 +139,14 @@
     }
   }
 
-  .ad-dialog-close {
-    position: absolute;
-    right: 3vw;
-    top: 3vw;
+  .ad-title {
+    text-align: center;
+    font-size: 4.6vw;
+  }
+
+  .ad-footer-btn-group {
+    display: flex;
+    & > div {
+      flex: 1;
+    }
   }

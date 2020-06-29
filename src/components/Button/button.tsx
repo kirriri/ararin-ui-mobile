@@ -114,7 +114,7 @@ export const Button: FC<ButtonProps> = props => {
     //检查屏幕帧率
     useEffect(() => {
         if(ripple) {
-            refreshRate((hz: number) => {fixSpeed(hz)}, 10)
+            refreshRate((hz: number) => {fixSpeed(hz)}, 30)
         }
         return () => { 
         };
@@ -124,9 +124,11 @@ export const Button: FC<ButtonProps> = props => {
     const fixSpeed = (hz: number) => {
         console.log(hz)
         if(hz > 300) {
-            refreshRate((hz: number) => {fixSpeed(hz)}, 10)
+            refreshRate((hz: number) => {fixSpeed(hz)}, 30)
+            return
         }else if(hz < 60) {
             hz = 60
+            return
         }
         let { radiusSpeed, opacitySpeed } = rippleData.current
         rippleData.current.radiusSpeed = radiusSpeed * (60 / hz)
