@@ -93,26 +93,32 @@
 
 .test-enter, .test-appear {
     opacity: 0;
+    margin-right: -1vw;
 }
 //enter-active指入场后到入场结束的过程，appear-active则是页面第一次加载自动执行
 .test-enter-active, .test-appear-active { 
     opacity: 1;
-    transition: opacity 1s ease-in;
+    transition: opacity 1s ease-out,margin-right 1s ease-out;
+    margin-right: 3vw;
 }
 //入场动画执行完毕后，保持状态
 .test-enter-done {
     opacity: 1;
+    margin-right: 3vw;
 }
 //同理，出场前的一刹那，以下就不详细解释了，一样的道理
 .test-exit {
     opacity: 1;
+    margin-right: 3vw;
 }
 
 .test-exit-active {
     opacity: 0;
-    transition: opacity 1s ease-in;
+    transition: opacity 1s ease-out,margin-right 1s ease-out;
+    margin-right: 0vw;
 }
 
 .test-exit-done {
     opacity: 0;
+    margin-right: 0vw;
 }

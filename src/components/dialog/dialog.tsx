@@ -1,6 +1,6 @@
 import React from 'react'
 import TouchFeedback from 'rmc-feedback';
-import Dialog from 'rmc-dialog';
+import BaseDialog from 'rmc-dialog';
 import classnames from 'classnames'
 import Icon from '../Icon'
 
@@ -31,7 +31,7 @@ export interface DialogBaseProps {
     onClose?: (e: React.MouseEvent<HTMLSpanElement>) => void
 }
 
-export const TDialog: React.FC<DialogBaseProps> = props => {
+export const Dialog: React.FC<DialogBaseProps> = props => {
 
     const {
         maskClosable,
@@ -87,27 +87,29 @@ export const TDialog: React.FC<DialogBaseProps> = props => {
                     }
                 )}
             </div> : ''
-            
+    
+    
+    
     return (
-        <Dialog
+        <BaseDialog
             closable={false}
             onClose={onClose}
             wrapClassName=""
             maskClosable={maskClosable}
             animation={animation}
             maskAnimation="fade"
-            className={className}
+            className='test'
             prefixCls={prefixCls}
             footer={footerWrap}
             {...restProps}
         >
             {closeIcon && <span className="ad-close"><Icon onClick={onHandleClose} type="close"/></span>}
             {children}
-        </Dialog>
+        </BaseDialog>
     )
 }
 
-TDialog.defaultProps = {
+Dialog.defaultProps = {
     prefixCls: 'ad',
     maskAnimation: 'fade',
     maskClosable: false,
@@ -115,4 +117,4 @@ TDialog.defaultProps = {
     closeIcon: true
 }
 
-export default TDialog
+export default Dialog

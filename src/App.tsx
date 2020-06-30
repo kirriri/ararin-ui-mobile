@@ -7,9 +7,17 @@ class App extends React.Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
-            buttonState: 'static',
+            buttonState: 'loading',
             visible: false
         }
+    }
+    
+    componentDidMount() {
+        // setTimeout(() => {
+        //     this.setState({
+        //         buttonState: 'failed'
+        //     })
+        // }, 2000)
     }
     
     render() {
@@ -19,6 +27,12 @@ class App extends React.Component<any, any> {
         return (
             <div className="App" style={{ height: '130vh', padding: '4vw', paddingTop: '30vw' }}>
                 <Button
+                    ripple
+                    type="primary"
+                    onClick={() => {this.setState({visible: !visible})}}
+                >弹窗</Button>
+                <Button
+                    style={{marginTop: '5vw'}}
                     ripple
                     type="primary"
                     onClick={() => {this.setState({visible: !visible})}}
