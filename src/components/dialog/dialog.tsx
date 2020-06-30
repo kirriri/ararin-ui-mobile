@@ -13,12 +13,13 @@ export interface FooterBaseProps {
     className?: string
 }
 
-type dialogAnimation = 'bounce' | 'scale' | ''
+type DialogAnimation = 'bounce' | 'scale' | 'fall'
 
 export interface DialogBaseProps {
     afterClose?: () => void,
+    activeClassName?: string,
     wrapClassName?: string,
-    animation?: string,
+    animation?: DialogAnimation,
     prefixCls?: string,
     className?: string,
     visible?: boolean,
@@ -37,6 +38,7 @@ export const TDialog: React.FC<DialogBaseProps> = props => {
         prefixCls,
         className,
         maskAnimation,
+        activeClassName,
         onClose,
         animation,
         closeIcon,
@@ -64,11 +66,13 @@ export const TDialog: React.FC<DialogBaseProps> = props => {
                         )
                         const activeClasses = classnames(
                             {
-                                [`${prefixCls}-footer-active-highlight`]: item.higlight,
+                                [`${prefixCls}-footer-item-active-highlight`]: item.higlight,
+                                [`${prefixCls}-footer-item-active`]: !item.higlight && !activeClassName,
+                                [`${activeClassName}`]: !item.higlight && activeClassName
                             }
                         )
                         return  <TouchFeedback
-                                    activeClassName={activeClasses}
+                                    activeClassName={activeClassName || activeClasses}
                                     key={`ad-f-${index}`}
                                     activeStyle={!item.higlight ? item.activeStyle : ''}
                                 >

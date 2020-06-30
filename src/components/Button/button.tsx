@@ -10,11 +10,12 @@ import { requestAnimFrame, canCelRequestAnimFrame } from '../../util/animateJs'
 import TouchFeedback from 'rmc-feedback';
 import Icon, { IconType } from '../Icon'
 import { refreshRate }  from '../../util/refreshRate';
+import { CSSTransition } from 'react-transition-group'
 
 /**
  * Button组件的3种状态
  */
-type ButtonState = 'loading' | 'static' | 'disabled'
+type ButtonState = 'loading' | 'static' | 'disabled' | 'failed'
 
 /**
  * Button组件的大小
@@ -68,17 +69,49 @@ export const Button: FC<ButtonProps> = props => {
         disabled
     } = props
 
+    //开启水波纹动画
+    const rippleComponent = useRef<HTMLCanvasElement>(null)
+    const animateId = useRef<number>()
+    const rippleData = useRef({
+        centerX: 0,
+        centerY: 0,
+        radius: 0,
+        radiusSpeed: 10,
+        opacitySpeed: 0.015,
+        opacity: 0,
+        defaultRadiusSpeed: 10,
+        defaultOpacity: '0.25',
+        bgColor: type === 'default' ? '#999' : '#ffffff'
+    })
+
     //处理图标
     let iconEle
-
     if(state === 'loading') {
         disabled = true
-        iconEle =  <Icon
+        iconEle =   <Icon
                         iconState="spin"
                         type="loading"
                     ></Icon>
+        // iconEle =  <CSSTransition
+        //                 in={state === 'loading'} // 如果this.state.show从false变为true，则动画入场，反之out出场
+        //                 timeout={500} //动画执行1秒
+        //                 classNames='test' //自定义的class名
+        //                 unMountOnExit
+        //                 appear={true}
+        //             >
+        //                 <Icon
+        //                     iconState="spin"
+        //                     type="loading"
+        //                 ></Icon>
+        //             </CSSTransition>
     }else if (state === 'disabled') {
         disabled = true
+    }else if (state === 'failed') {
+        disabled = true
+        iconEle =   <Icon
+                        type="failed"
+                    >
+                    </Icon>
     }else if(typeof icon === 'string') {
         iconEle =   <Icon
                         iconState={iconState}
@@ -94,21 +127,6 @@ export const Button: FC<ButtonProps> = props => {
         // loading样式，临时放在这，等后期再次开发
         [`ararin-button-${state}`] : state,
         'disabled': disabled
-    })
-    
-    //开启水波纹动画
-    const rippleComponent = useRef<HTMLCanvasElement>(null)
-    const animateId = useRef<number>()
-    const rippleData = useRef({
-        centerX: 0,
-        centerY: 0,
-        radius: 0,
-        radiusSpeed: 10,
-        opacitySpeed: 0.015,
-        opacity: 0,
-        defaultRadiusSpeed: 10,
-        defaultOpacity: '0.25',
-        bgColor: type === 'default' ? '#999' : '#ffffff'
     })
 
     //检查屏幕帧率
@@ -128,7 +146,6 @@ export const Button: FC<ButtonProps> = props => {
             return
         }else if(hz < 60) {
             hz = 60
-            return
         }
         let { radiusSpeed, opacitySpeed } = rippleData.current
         rippleData.current.radiusSpeed = radiusSpeed * (60 / hz)

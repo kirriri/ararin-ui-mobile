@@ -27,14 +27,14 @@
     border-radius: 1.5vw;
     box-shadow: 0 0.5vw 1.8vw rgba(55, 55, 55, 0.35);
     position: relative;
-
+    margin-top: -10vw;
     .ad-close {
         position: absolute;
         right: 3vw;
         top: 3vw;
     }
 }
-
+// mask动画效果
 @mixin fade-effect() {
     animation-duration: .35s;
     animation-fill-mode: both;
@@ -84,25 +84,133 @@
     }
 }
 
+// dialog动画效果
+
+
 @mixin effect() {
-    animation-duration: .3s;
+    animation-duration: 0.3s;
     animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0, .1, .3, 1);
+    animation-play-state: paused;
+    position: relative;
 }
 
+.ad-fall-enter,
+.ad-fall-appear {
+    opacity: 0;
+    @include effect();
+    animation-duration: 0.3s;
+    animation-timing-function: ease;
+}
+
+.ad-fall-leave {
+    @include effect();
+    transition-timing-function: ease;
+}
+
+.ad-fall-enter.ad-fall-enter-active,
+.ad-fall-appear.ad-fall-appear-active {
+    animation-name: adfallIn;
+    animation-play-state: running;
+    position: relative;
+}
+
+.ad-fall-leave.ad-fall-leave-active {
+    animation-name: adfallOut;
+    animation-play-state: running;
+    position: relative;
+}
+
+@keyframes adfallIn {
+    0% {
+        opacity: 0.5;
+        transform: translate3d(0, -20vw, 0)scale(0.8, 0.8);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0)scale(1, 1);
+    }
+}
+@keyframes adfallOut {
+    0% {
+        opacity: 1;
+        transform: fall(1, 1);
+    }
+
+    50% {
+        transform: fall(1.105, 1.105);
+    }
+
+    100% {
+        opacity: 0.2;
+        transform: fall(0.7, 0.7);
+    }
+}
+
+// 放大动画
+.ad-scale-enter,
+.ad-scale-appear {
+    opacity: 0;
+    @include effect();
+}
+
+.ad-scale-leave {
+    @include effect();
+}
+
+.ad-scale-enter.ad-scale-enter-active,
+.ad-scale-appear.ad-scale-appear-active {
+    animation-name: adscaleIn;
+    animation-play-state: running;
+    position: relative;
+}
+
+.ad-scale-leave.ad-scale-leave-active {
+    animation-name: adscaleOut;
+    animation-play-state: running;
+    position: relative;
+}
+
+@keyframes adscaleIn {
+    0% {
+        opacity: 0.2;
+        transform: scale(0.4, 0.4);
+    }
+
+    55% {
+        transform: scale(1.1, 1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1, 1);
+    }
+}
+@keyframes adscaleOut {
+    0% {
+        opacity: 1;
+        transform: scale(1, 1);
+    }
+
+    50% {
+        transform: scale(1.105, 1.105);
+    }
+
+    100% {
+        opacity: 0.2;
+        transform: scale(0.7, 0.7);
+    }
+}
+// 弹出动画
 .ad-bounce-enter,
 .ad-bounce-appear {
     opacity: 0;
     @include effect();
-    animation-timing-function: cubic-bezier(0, .1, .3, 1);
-    animation-play-state: paused;
-    position: relative;
 }
 
 .ad-bounce-leave {
     @include effect();
-    animation-timing-function: cubic-bezier(0, .1, .3, 1);
-    animation-play-state: paused;
-    position: relative;
 }
 
 .ad-bounce-enter.ad-bounce-enter-active,
@@ -164,12 +272,18 @@
         justify-content: center;
         align-items: center;
         transition: background-color .15s ease;
+        letter-spacing: 0.2vw;
+        color: $gray-600;
     }
+    .ad-footer-item-active {
+        background-color: darken($color: $gray-100, $amount: 5%);
+    }
+
     & >.ad-footer-item-highlight {
         background-color: $primary;
         color: #fff;
     }
-    .ad-footer-active-highlight {
+    .ad-footer-item-active-highlight {
         background-color: darken($color: $primary, $amount: 10%);
     }
 }

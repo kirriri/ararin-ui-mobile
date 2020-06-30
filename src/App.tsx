@@ -19,17 +19,19 @@ class App extends React.Component<any, any> {
         return (
             <div className="App" style={{ height: '130vh', padding: '4vw', paddingTop: '30vw' }}>
                 <Button
+                    ripple
                     type="primary"
                     onClick={() => {this.setState({visible: !visible})}}
                 >弹窗</Button>
                 <Dialog 
                     onClose={() => this.setState({visible: false})}
-                    maskClosable={true}
-                    title={<h3>1111111</h3>} 
+                    title={<h3>标题测试</h3>} 
                     visible={visible}
-                    maskAnimation="fade"
+                    footer={[
+                        {text: '取消', onPress: () => {this.setState({visible: false})}}, 
+                        {text: '确定', onPress: () => {this.setState({visible: false})}, higlight: true}]}
                 >
-                    <div></div>
+                   
                 </Dialog>
             </div>
         );
