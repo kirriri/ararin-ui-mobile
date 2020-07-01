@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from './components/Button/button'
-import Dialog from './components/dialog/dialog'
+import Dialog from './components/Dialog/dialog'
+import Popup from './components/Dialog/popup'
 
 class App extends React.Component<any, any> {
 
@@ -8,7 +9,8 @@ class App extends React.Component<any, any> {
         super(props)
         this.state = {
             buttonState: 'loading',
-            visible: false
+            visible: false,
+            popupVisible: false,
         }
     }
     
@@ -35,7 +37,7 @@ class App extends React.Component<any, any> {
                     style={{marginTop: '5vw'}}
                     ripple
                     type="primary"
-                    onClick={() => {this.setState({visible: !visible})}}
+                    onClick={() => {this.setState({popupVisible: !visible})}}
                 >弹窗</Button>
                 <Dialog 
                     onClose={() => this.setState({visible: false})}
@@ -45,8 +47,12 @@ class App extends React.Component<any, any> {
                         {text: '取消', onPress: () => {this.setState({visible: false})}}, 
                         {text: '确定', onPress: () => {this.setState({visible: false})}, higlight: true}]}
                 >
-                   
                 </Dialog>
+                <Popup
+                    visible={this.state.popupVisible}
+                >
+                    11111
+                </Popup>
             </div>
         );
     }

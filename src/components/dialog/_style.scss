@@ -1,4 +1,5 @@
-.ad-mask {
+.ad-mask,
+.ap-mask {
     position: fixed;
     top: 0;
     left: 0;
@@ -9,7 +10,8 @@
     z-index: 999;
 }
 
-.ad-wrap {
+.ad-wrap,
+.ap-wrap {
     z-index: 999;
     position: fixed;
     left: 0;
@@ -42,24 +44,30 @@
 }
 
 .ad-fade-enter,
-.ad-fade-appear {
+.ad-fade-appear,
+.ap-fade-enter,
+.ap-fade-appear {
     opacity: 0;
     @include fade-effect();
     animation-play-state: paused;
 }
 
-.ad-fade-leave {
+.ad-fade-leave,
+.ap-fade-leave {
     @include fade-effect();
     animation-play-state: paused;
 }
 
 .ad-fade-enter.ad-fade-enter-active,
-.ad-fade-appear.ad-fade-appear-active {
+.ad-fade-appear.ad-fade-appear-active,
+.ap-fade-enter.ap-fade-enter-active,
+.ap-fade-appear.ap-fade-appear-active {
     animation-name: rcDialogFadeIn;
     animation-play-state: running;
 }
 
-.ad-fade-leave.ad-fade-leave-active {
+.ad-fade-leave.ad-fade-leave-active,
+.ap-fade-leave.ap-fade-leave-active {
     animation-name: rcDialogFadeOut;
     animation-play-state: running;
 }
@@ -288,3 +296,14 @@
     }
 }
 
+// popup
+.ap {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    background-color: $white;
+
+    &-slide-up {
+        bottom: 0;
+    }
+}

@@ -88,7 +88,10 @@ export const Dialog: React.FC<DialogBaseProps> = props => {
                 )}
             </div> : ''
     
-    
+    const classes = classnames({
+        [`${prefixCls}`]: prefixCls && !className,
+        [`${className}`]: className
+    })
     
     return (
         <BaseDialog
@@ -98,7 +101,7 @@ export const Dialog: React.FC<DialogBaseProps> = props => {
             maskClosable={maskClosable}
             animation={animation}
             maskAnimation="fade"
-            className='test'
+            className={classes}
             prefixCls={prefixCls}
             footer={footerWrap}
             {...restProps}
@@ -110,6 +113,7 @@ export const Dialog: React.FC<DialogBaseProps> = props => {
 }
 
 Dialog.defaultProps = {
+    className:' test',
     prefixCls: 'ad',
     maskAnimation: 'fade',
     maskClosable: false,

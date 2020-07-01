@@ -38,6 +38,7 @@ export const Poup: React.FC<DialogBaseProps> = props => {
         maskClosable,
         prefixCls,
         className,
+        wrapClassName,
         maskAnimation,
         activeClassName,
         onClose,
@@ -55,17 +56,21 @@ export const Poup: React.FC<DialogBaseProps> = props => {
         }
     }
 
-    // const classes = className('a')
+    const classes = classnames({
+        [`${prefixCls}`]: prefixCls && !className,
+        [`${className}`]: className,
+        [`${prefixCls}-${animation}`]: animation
+    })
     
     return (
         <BaseDialog
             closable={false}
             onClose={onClose}
-            wrapClassName=""
+            wrapClassName={wrapClassName}
             maskClosable={maskClosable}
             animation={animation}
             maskAnimation="fade"
-            className={className}
+            className={classes}
             prefixCls={prefixCls}
             {...restProps}
         >
@@ -75,7 +80,7 @@ export const Poup: React.FC<DialogBaseProps> = props => {
 }
 
 Poup.defaultProps = {
-    prefixCls: 'ad',
+    prefixCls: 'ap',
     maskAnimation: 'fade',
     maskClosable: false,
     animation: 'slide-up',
