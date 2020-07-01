@@ -1,9 +1,6 @@
 import React from 'react'
-import TouchFeedback from 'rmc-feedback';
 import BaseDialog from 'rmc-dialog';
 import classnames from 'classnames'
-import Icon from '../Icon'
-import omit from 'omit.js'
 
 export interface FooterBaseProps {
     text?: string,
@@ -17,6 +14,7 @@ export interface FooterBaseProps {
 type DialogAnimation = 'slide-up' | 'slide-down'
 
 export interface DialogBaseProps {
+    style?: React.CSSProperties,
     afterClose?: () => void,
     activeClassName?: string,
     wrapClassName?: string,
@@ -65,7 +63,7 @@ export const Poup: React.FC<DialogBaseProps> = props => {
     return (
         <BaseDialog
             closable={false}
-            onClose={onClose}
+            onClose={onHandleClose}
             wrapClassName={wrapClassName}
             maskClosable={maskClosable}
             animation={animation}

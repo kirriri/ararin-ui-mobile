@@ -306,4 +306,55 @@
     &-slide-up {
         bottom: 0;
     }
+
+    &-slide-down {
+        bottom: 0;
+    }
+}
+
+@mixin apEffect() {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+    animation-timing-function: ease;
+    animation-play-state: paused;
+}
+
+.ap-slide-up-enter,
+.ap-slide-up-appear {
+    transform: translate3d(0, 100%, 0);
+    @include apEffect();
+}
+
+.ap-slide-up-leave {
+    transform: translate3d(0, 0, 0);
+    @include apEffect();
+}
+
+.ap-slide-up-enter.ap-slide-up-enter-active,
+.ap-slide-up-appear.ap-slide-up-appear-active {
+    animation-name: apSlideUpIn;
+    animation-play-state: running;
+}
+
+.ap-slide-up-leave.ap-slide-up-leave-active {
+    animation-name: apSlideUpOut;
+    animation-play-state: running;
+}
+
+@keyframes apSlideUpIn {
+    0% {
+        transform: translate3d(0, 100%, 0);
+    }
+    100% {
+        transform: translate3d(0 ,0 ,0);
+    }
+}
+
+@keyframes apSlideUpOut {
+    0% {
+        transform:  translate3d(0, 0, 0);
+    }
+    100% {
+        transform:  translate3d(0, 100%, 0);
+    }
 }

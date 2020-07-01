@@ -49,6 +49,8 @@ class App extends React.Component<any, any> {
                 >
                 </Dialog>
                 <Popup
+                    maskClosable
+                    onClose={() => {this.setState({popupVisible: false})}}
                     visible={this.state.popupVisible}
                 >
                     11111
