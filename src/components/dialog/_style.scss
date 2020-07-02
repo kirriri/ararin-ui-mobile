@@ -93,8 +93,6 @@
 }
 
 // dialog动画效果
-
-
 @mixin effect() {
     animation-duration: 0.3s;
     animation-fill-mode: both;
@@ -107,13 +105,10 @@
 .ad-fall-appear {
     opacity: 0;
     @include effect();
-    animation-duration: 0.3s;
-    animation-timing-function: ease;
 }
 
 .ad-fall-leave {
     @include effect();
-    transition-timing-function: ease;
 }
 
 .ad-fall-enter.ad-fall-enter-active,
@@ -282,9 +277,13 @@
         transition: background-color .15s ease;
         letter-spacing: 0.2vw;
         color: $gray-600;
+        border-right: 0.2vw solid rgba(55, 55, 55, 0.15);
+        &:last-child {
+            border-right: none;
+        }
     }
     .ad-footer-item-active {
-        background-color: darken($color: $gray-100, $amount: 5%);
+        @include TouchFeedbackActive();
     }
 
     & >.ad-footer-item-highlight {

@@ -2,7 +2,7 @@
 		let hz;
 		let time;
 		let sample = opt_sampleCount || 45;
-		let typicalHz = [0,24,25,30,50,60,72,96,100,120,144];
+		let typicalHz = [0,24,25,30,50,60,72,96,100,120,144,240,300];
 		let startTime = performance.now();
 		
 		const getFrame = (now: number) => {

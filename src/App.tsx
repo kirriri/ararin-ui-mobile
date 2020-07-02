@@ -2,6 +2,8 @@ import React from 'react';
 import Button from './components/Button/button'
 import Dialog from './components/Dialog/dialog'
 import Popup from './components/Dialog/popup'
+import Picker from './components/Picker/picker'
+import { PickerTestData } from './util/dataTest'
 
 class App extends React.Component<any, any> {
 
@@ -11,6 +13,7 @@ class App extends React.Component<any, any> {
             buttonState: 'loading',
             visible: false,
             popupVisible: false,
+            pickerState: true,
         }
     }
     
@@ -24,7 +27,7 @@ class App extends React.Component<any, any> {
     
     render() {
 
-        const { visible } = this.state
+        const { visible, pickerState } = this.state
         
         return (
             <div className="App" style={{ height: '130vh', padding: '4vw', paddingTop: '30vw' }}>
@@ -37,9 +40,10 @@ class App extends React.Component<any, any> {
                     style={{marginTop: '5vw'}}
                     ripple
                     type="primary"
-                    onClick={() => {this.setState({popupVisible: !visible})}}
-                >弹窗</Button>
+                    onClick={() => {this.setState({pickerState: !pickerState})}}
+                >选择器</Button>
                 <Dialog 
+                    maskClosable
                     onClose={() => this.setState({visible: false})}
                     title={<h3>标题测试</h3>} 
                     visible={visible}
@@ -48,13 +52,18 @@ class App extends React.Component<any, any> {
                         {text: '确定', onPress: () => {this.setState({visible: false})}, higlight: true}]}
                 >
                 </Dialog>
-                <Popup
+                {/* <Popup
                     maskClosable
                     onClose={() => {this.setState({popupVisible: false})}}
                     visible={this.state.popupVisible}
                 >
                     11111
-                </Popup>
+                </Popup> */}
+                <Picker
+                    cancelPress={() => {this.setState({pickerState: !pickerState})}}
+                    data={PickerTestData}
+                    visible={this.state.pickerState}
+                ></Picker>
             </div>
         );
     }

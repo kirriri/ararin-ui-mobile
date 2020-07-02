@@ -1,0 +1,28 @@
+.apk-mask {
+
+}
+
+.apk-header {
+    line-height: 11vw;
+    height: 11vw;
+    font-size: 4.3vw;
+    border-bottom: 0.2vw solid $border-color;
+    display: flex;
+
+     & > span {
+         width: 16vw;
+         letter-spacing: 0.2vw;
+         text-align: center;
+         transition: background-color .18s ease;
+     }
+     & > span:not(.apk-header-item) {
+         flex: 1 1 0%;
+     }
+    
+     .apk-header-item-active {
+         @include TouchFeedbackActive();
+     }
+     .apk-header-item-highlight {
+         color: $primary;
+     }
+}

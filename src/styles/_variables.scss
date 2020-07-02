@@ -169,7 +169,7 @@ $enable-pointer-cursor-for-buttons:           true !default;
 
 // 边框 和 border radius
 $border-width:                0.15vw !default;
-$border-color:                $gray-300 !default;
+$border-color:                $gray-100 !default;
 
 $border-radius:               .25rem !default;
 $border-radius-lg:            .3rem !default;
@@ -228,6 +228,10 @@ $border-bottom-radius: 0 0 1.5vw 1.5vw;
 $border-top-radius: 1.5vw 1.5vw 0 0;
 $border-left-radius: 1.5vw 0 0 1.5vw;
 $border-right-radius: 0 1.5vw 1.5vw 0;                       
+
+
+
+
 
 // menu
 $menu-border-width:            $border-width !default;

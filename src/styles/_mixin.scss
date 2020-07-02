@@ -14,3 +14,7 @@
     background: $backgroundColor;
     border-color: $border;
 }
+
+@mixin TouchFeedbackActive {
+    background-color: darken($color: $gray-100, $amount: 5%);
+}
