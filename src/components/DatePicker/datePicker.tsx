@@ -1,3 +1,3 @@
 import React from 'react'
-import Popup from '../Dialog/popup'
+import Popup from '../dialog/popup'
 

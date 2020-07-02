@@ -128,7 +128,6 @@ export const Button: FC<ButtonProps> = props => {
         [`ararin-button-${state}`] : state,
         'disabled': disabled
     })
-
     //检查屏幕帧率
     useEffect(() => {
         if(ripple) {
@@ -140,7 +139,6 @@ export const Button: FC<ButtonProps> = props => {
 
     //修复水波纹扩散速度
     const fixSpeed = (hz: number) => {
-        console.log(hz)
         if(hz > 300) {
             refreshRate((hz: number) => {fixSpeed(hz)}, 30)
             return

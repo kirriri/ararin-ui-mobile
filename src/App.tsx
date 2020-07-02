@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from './components/Button/button'
-import Dialog from './components/Dialog/dialog'
-import Popup from './components/Dialog/popup'
+import Dialog from './components/dialog/dialog'
+import Popup from './components/dialog/popup'
 import Picker from './components/Picker/picker'
 import { PickerTestData } from './util/dataTest'
 

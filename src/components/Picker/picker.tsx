@@ -1,10 +1,12 @@
 import React, {
     FC,
-    useRef
+    useRef,
+    useEffect
 } from 'react'
-import Popup from '../Dialog/popup'
+import Popup from '../dialog/popup'
 import classNames from 'classnames'
 import TouchFeedback from 'rmc-feedback';
+import BScroll from 'better-scroll'
 
 export interface BaseDataProps {
     text?: string,
@@ -28,6 +30,8 @@ export interface BasePickerProps {
 
 export const Picker: FC<BasePickerProps> = props => {
 
+    let index = 0
+
     const {
         data,
         className,
@@ -42,25 +46,69 @@ export const Picker: FC<BasePickerProps> = props => {
         ...restProps
     } = props
 
-    console.log(data)
+    useEffect(() => {
+        if(wrapper) {
+            console.log(wrapper.current)
+            if(PickerBaseData) {
+                if(data.length < PickerBaseData.current.ITEM_MIN_NUM) {
+                    PickerBaseData.current.CONTENT_HEIGHT = Math.max(PickerBaseData.current.CONTENT_HEIGHT, PickerBaseData.current.ITEM_MIN_NUM)
+                } else if(data.length > PickerBaseData.current.ITEM_MAX_NUM) {
+                    PickerBaseData.current.CONTENT_HEIGHT = Math.max(PickerBaseData.current.CONTENT_HEIGHT, PickerBaseData.current.ITEM_MIN_NUM)
+                }else {
+                    PickerBaseData.current.CONTENT_HEIGHT = data.length
+                }
+                if(wrapper.current) {
+                    wrapper.current.style.height = PickerBaseData.current.CONTENT_HEIGHT * PickerBaseData.current.ITEM_HEIGHT + 'vw'
+                }
+                const wheel = new BScroll(wrapper.current, {
+                    wheel: {
+                      selectedIndex: 0,
+                      wheelWrapperClass: 'wheel-scroll',
+                      wheelItemClass: 'wheel-item',
+                      wheelDisabledItemClass: 'wheel-disabled-item',
+                      rotate: 0,
+                      click: false,
+                      swipeTime: 1000,
+                      bindToWrapper: true
+                    },              
+                    observeDOM: true
+                })  
+                wheel.on('scrollEnd', () => {
+                    //滚动完成之后获取当前选取的索引值
+                    console.log(wheel.getSelectedIndex())
+                })  
+            }
+        }
+        return () => {
+            
+        }
+    }, [visible, data])
 
+    const wrapper = useRef(null)
+    const Scroll = useRef(null)
     const PickerBaseData = useRef({
-        
+        CONTENT_HEIGHT: 0,
+        ITEM_HEIGHT: 10,
+        ITEM_MIN_NUM: 5,
+        ITEM_MAX_NUM: 7
     })
 
-    const renderSelect = () => {
-        return data.map((item, index) => {
-            return (
-                <div className={`${prefixCls}-`}>
 
-                </div>
-            )
-        })
+    const renderSelect = () => {
+        return  <ul 
+                    className={`${prefixCls}-data-item wheel-scroll`}
+                    style={{marginTop: '20vw'}}
+                >
+                    {data.map((item, index) => 
+                        <li className="wheel-item">
+                            {item.text}
+                        </li>
+                    )}
+                </ul>
     }
     
     let reTit
     if(typeof title === 'string' || !title) {
-
         reTit = 
             <h3 className={`${prefixCls}-header`}>
                 <TouchFeedback activeClassName={`${prefixCls}-header-item-active`}>
@@ -82,10 +130,8 @@ export const Picker: FC<BasePickerProps> = props => {
                     title={reTit}
                     {...restProps}
                 >
-                    <div className={`${prefixCls}-content`}>
-                        <div>
-                            {renderSelect()}
-                        </div>
+                    <div className={`${prefixCls}-data-content wheel-scroll`} ref={wrapper}>
+                        {renderSelect()}
                     </div>
                 </Popup>
            </>
