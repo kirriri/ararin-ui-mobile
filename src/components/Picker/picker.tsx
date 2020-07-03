@@ -10,10 +10,12 @@ import BScroll from 'better-scroll'
 
 export interface BaseDataProps {
     text?: string,
-    value?: any
+    value?: any,
+    children?: BaseDataProps[]
 }
 
 export interface BasePickerProps {
+    relate?: boolean,
     cancelText?: string,
     okText?: string,
     cancelPress?: (val: any) => void,
@@ -30,10 +32,9 @@ export interface BasePickerProps {
 
 export const Picker: FC<BasePickerProps> = props => {
 
-    let index = 0
-
     const {
         data,
+        relate,
         className,
         style,
         visible,
@@ -58,7 +59,7 @@ export const Picker: FC<BasePickerProps> = props => {
                     PickerBaseData.current.CONTENT_HEIGHT = data.length
                 }
                 if(wrapper.current) {
-                    wrapper.current.style.height = PickerBaseData.current.CONTENT_HEIGHT * PickerBaseData.current.ITEM_HEIGHT + 'vw'
+                    wrapper.current.parentNode.style.height = PickerBaseData.current.CONTENT_HEIGHT * PickerBaseData.current.ITEM_HEIGHT + 'vw'
                 }
                 const wheel = new BScroll(wrapper.current, {
                     wheel: {
@@ -67,11 +68,10 @@ export const Picker: FC<BasePickerProps> = props => {
                       wheelItemClass: 'wheel-item',
                       wheelDisabledItemClass: 'wheel-disabled-item',
                       rotate: 0,
-                      click: false,
-                      swipeTime: 1000,
-                      bindToWrapper: true
+                      click: true,
+                    //   bindToWrapper: true
                     },              
-                    observeDOM: true
+                    // observeDOM: true
                 })  
                 wheel.on('scrollEnd', () => {
                     //滚动完成之后获取当前选取的索引值
@@ -89,22 +89,30 @@ export const Picker: FC<BasePickerProps> = props => {
     const PickerBaseData = useRef({
         CONTENT_HEIGHT: 0,
         ITEM_HEIGHT: 10,
-        ITEM_MIN_NUM: 5,
-        ITEM_MAX_NUM: 7
+        ITEM_MIN_NUM: 7,
+        ITEM_MAX_NUM: 9
     })
 
 
     const renderSelect = () => {
-        return  <ul 
-                    className={`${prefixCls}-data-item wheel-scroll`}
-                    style={{marginTop: '20vw'}}
-                >
-                    {data.map((item, index) => 
-                        <li className="wheel-item">
-                            {item.text}
-                        </li>
-                    )}
-                </ul>
+        return  <div className={`${prefixCls}-data-wrapper`}>
+                    <div 
+                        className={`${prefixCls}-data-content wheel-scroll`} 
+                        ref={wrapper}>
+                        <ul 
+                            className={`${prefixCls}-data-item wheel-scroll`}
+                            style={{marginTop: '30vw'}}
+                        >
+                            {data.map((item, index) => 
+                                <li className="wheel-item">
+                                    {item.text}
+                                </li>
+                            )}
+                        </ul>
+                        <div className={`${prefixCls}-item-mask`}></div>
+                        <div className={`${prefixCls}-item-focus`}></div>
+                    </div>
+                </div>
     }
     
     let reTit
@@ -130,7 +138,7 @@ export const Picker: FC<BasePickerProps> = props => {
                     title={reTit}
                     {...restProps}
                 >
-                    <div className={`${prefixCls}-data-content wheel-scroll`} ref={wrapper}>
+                    <div>
                         {renderSelect()}
                     </div>
                 </Popup>

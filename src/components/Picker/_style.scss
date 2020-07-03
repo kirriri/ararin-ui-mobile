@@ -26,9 +26,38 @@
          color: $primary;
      }
 }
+.apk-data-wrapper {
+    position: relative;
+}
+
+.apk-item-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    /* background-image: -webkit-linear-gradient(top,hsla(0,0%,100%,.95),hsla(0,0%,100%,.6)),-webkit-linear-gradient(bottom,hsla(0,0%,100%,.95),hsla(0,0%,100%,.6)); */
+    /* background-image: -webkit-gradient(linear,left top,left bottom,from(hsla(0,0%,100%,.95)),to(hsla(0,0%,100%,.6))),-webkit-gradient(linear,left bottom,left top,from(hsla(0,0%,100%,.95)),to(hsla(0,0%,100%,.6))); */
+    background-image: linear-gradient(180deg,hsla(0,0%,100%,.95),hsla(0,0%,100%,.6)),linear-gradient(0deg,hsla(0,0%,100%,.95),hsla(0,0%,100%,.6));
+    background-position: top,bottom;
+    background-size: 100% 30vw;
+    background-repeat: no-repeat;
+}
+
+.apk-item-focus {
+    top: 30vw;
+    width: 100%;
+    position: absolute;
+    height: 10vw;
+    box-sizing: border-box;
+    border-top: 0.3vw solid $border-color;
+    border-bottom: 0.3vw solid $border-color;
+}
 
 .apk-data-content {
     // display: flex;
+    z-index: 22;
     overflow: hidden;
     .apk-data-item {
         // flex: 1;
