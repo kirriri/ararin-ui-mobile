@@ -7,6 +7,7 @@ import Popup from '../dialog/popup'
 import classNames from 'classnames'
 import TouchFeedback from 'rmc-feedback';
 import BScroll from 'better-scroll'
+import { isObject } from '../../util/type'
 
 export interface BaseDataProps {
     text?: string,
@@ -48,7 +49,52 @@ export const Picker: FC<BasePickerProps> = props => {
     } = props
 
     useEffect(() => {
-        if(wrapper) {
+        if(!data) {
+            return
+        }
+        // if(relate) {
+        //     if(!data.every(item => isObject(item))) {
+        //         return
+        //     }
+        // }else {
+        //     if(!data.every(item => Array.isArray(item))) {
+        //         return
+        //     }
+        // }      
+        
+        if(wrapper && visible === true) {
+
+            const findDepth = (data, depth) => {
+                console.log(dataDepth.current)
+                data.forEach((item, index) => {
+                    if(!item.children) {
+                        return
+                    }
+                    depthCount(item, depth, 0)
+                })
+                console.log(dataDepth.current)
+            }
+        
+            const depthCount = (item, depth, originDepth) => {
+                depth++
+                if(originDepth < depth) {
+                    dataDepth.current = depth
+                }
+                if(!item.children) {
+                    return
+                }
+                item.children.forEach(sitem => {
+                    depthCount(sitem, depth, originDepth)
+                })
+            }
+            
+            if(relate) {
+                console.log('ready')
+                findDepth(data, dataDepth.current)
+            }else {
+        
+            }
+            
             console.log(wrapper.current)
             if(PickerBaseData) {
                 if(data.length < PickerBaseData.current.ITEM_MIN_NUM) {
@@ -69,7 +115,7 @@ export const Picker: FC<BasePickerProps> = props => {
                       wheelDisabledItemClass: 'wheel-disabled-item',
                       rotate: 0,
                       click: true,
-                    //   bindToWrapper: true
+                      bindToWrapper: true
                     },              
                     // observeDOM: true
                 })  
@@ -84,6 +130,7 @@ export const Picker: FC<BasePickerProps> = props => {
         }
     }, [visible, data])
 
+    const dataDepth = useRef(1)
     const wrapper = useRef(null)
     const Scroll = useRef(null)
     const PickerBaseData = useRef({
@@ -92,7 +139,6 @@ export const Picker: FC<BasePickerProps> = props => {
         ITEM_MIN_NUM: 7,
         ITEM_MAX_NUM: 9
     })
-
 
     const renderSelect = () => {
         return  <div className={`${prefixCls}-data-wrapper`}>
@@ -149,7 +195,8 @@ Picker.defaultProps = {
     prefixCls: 'apk',
     cancelText: '取消',
     okText: '确定',
-    maskClosable: true
+    maskClosable: true,
+    relate: true
 }
 
 export default Picker
