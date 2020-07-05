@@ -26,7 +26,16 @@
          color: $primary;
      }
 }
+
+.apk-data-content {
+    display: flex;
+    & > div {
+        flex: 1;
+    }
+}
+
 .apk-data-wrapper {
+    height: 100%;
     position: relative;
 }
 
@@ -56,11 +65,12 @@
 }
 
 .apk-data-content {
-    // display: flex;
     z-index: 22;
     overflow: hidden;
+    display: flex;
     .apk-data-item {
-        // flex: 1;
+        flex: 1;
+        overflow: hidden;
         text-align: center;
         list-style: none;
         padding: 0;

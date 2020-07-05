@@ -3,7 +3,7 @@ import Button from './components/Button/button'
 import Dialog from './components/dialog/dialog'
 import Popup from './components/dialog/popup'
 import Picker from './components/Picker/picker'
-import { PickerTestData } from './util/dataTest'
+import { PickerTestData, PickerTestData2 } from './util/dataTest'
 
 class App extends React.Component<any, any> {
 
@@ -18,9 +18,14 @@ class App extends React.Component<any, any> {
     }
     
     componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                data: PickerTestData
+            })
+        }, 1000)
         // setTimeout(() => {
         //     this.setState({
-        //         buttonState: 'failed'
+        //         data: PickerTestData2
         //     })
         // }, 2000)
     }
@@ -61,7 +66,7 @@ class App extends React.Component<any, any> {
                 </Popup> */}
                 <Picker
                     cancelPress={() => {this.setState({pickerState: !pickerState})}}
-                    data={PickerTestData}
+                    data={this.state.data}
                     visible={this.state.pickerState}
                 ></Picker>
             </div>
