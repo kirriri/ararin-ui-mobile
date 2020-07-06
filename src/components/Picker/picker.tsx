@@ -72,25 +72,28 @@ export const Picker: FC<BasePickerProps> = props => {
                 }else {
                     PickerBaseData.current.CONTENT_CHID = 7
                 }
-                console.log(wrapper.current.children)
                 wrapper.current.style.height = PickerBaseData.current.CONTENT_CHID * PickerBaseData.current.ITEM_HEIGHT + 'vw'
-            
                 Array.from( wrapper.current.children).forEach((item, index) => {
                         const wheel = new BScroll(item, {
                             wheel: {
                               selectedIndex: 0,
+                              adjustTime: 300,
                               wheelWrapperClass: 'wheel-scroll',
                               wheelItemClass: 'wheel-item',
                               wheelDisabledItemClass: 'wheel-disabled-item',
                               rotate: 0,
-                              click: true,
-                            //   bindToWrapper: true
+                              swipeTime: 600
                             },              
+                            scrollY: true,
+                            click: false,
+                            // momentum: false,
+                            useTransition: false,
+                            useTransform: false
                             // observeDOM: true
                         })  
                         wheel.on('scrollEnd', () => {
                             //滚动完成之后获取当前选取的索引值
-                            console.log(index, wheel.getSelectedIndex())
+                            console.log(wheel.getSelectedIndex())
                         })  
                 })
         }
@@ -156,17 +159,18 @@ export const Picker: FC<BasePickerProps> = props => {
             return  renderData.current.map(item => 
                         <div className={`${prefixCls}-data-wrapper`}>
                             <ul 
+                                onClick={() => console.log(222222222)}
                                 className={`${prefixCls}-data-item wheel-scroll`}
-                                style={{marginTop: '30vw'}}
+                                style={{marginTop: `${Math.floor(PickerBaseData.current.CONTENT_CHID / 2)}0vw`}}
                             >
                                 {item.map((item, index) => 
-                                    <li className="wheel-item">
+                                    <li  className="wheel-item">
                                         {item.text}
                                     </li>
                                 )}
                             </ul>
-                            <div className={`${prefixCls}-item-mask`}></div>
-                            <div className={`${prefixCls}-item-focus`}></div>
+                            <div  className={`${prefixCls}-item-mask`}></div>
+                            <div  className={`${prefixCls}-item-focus`}></div>
                         </div>
                     )
         }
