@@ -50,10 +50,27 @@ export const Picker: FC<BasePickerProps> = props => {
     } = props
 
     useEffect(() => {
+        console.log('测试')
+            if(relate && data && visible) {
+                if(!data.every(item => isObject(item))) {
+                    return
+                }
+                findDepthAndLength(data)
+                let tmpArr = new Array(dataDepth.current).fill(new Array(0))
+                tmpArr[0] = data
+                setRenderData(tmpArr)
+            }else {
+        
+            }
+        return () => {
+            
+        }
+    }, [data])   
+
+    useEffect(() => {
         if(!data) {
             return
         }
-
         // if(relate) {
         //     if(!data.every(item => isObject(item))) {
         //         return
@@ -62,7 +79,7 @@ export const Picker: FC<BasePickerProps> = props => {
         //     if(!data.every(item => Array.isArray(item))) {
         //         return
         //     }
-        // }      
+        // }   
         
         if(wrapper.current) {
                 if(maxLength.current < PickerBaseData.current.ITEM_MIN_NUM) {
@@ -91,8 +108,17 @@ export const Picker: FC<BasePickerProps> = props => {
                         //滚动完成之后获取当前选取的索引值
                         if(!Number.isNaN(wheel.y)) {
                             const currentIndex = getCurrentIndex(wheel)
-                            console.log(wheel.y)
-                            console.log(index, currentIndex)
+                            renderData.forEach((ele, eindex) => {
+                                if(eindex >  index) {
+                                    if(renderData[index][currentIndex].children) {
+                                        renderData[index+1] = renderData[index][currentIndex].children
+                                    }else {
+                                        renderData[index+1] = []
+                                    }
+                                }
+                            })
+                            console.log(renderData)
+                            setRenderData(renderData)
                         }
                     })  
                 })
@@ -100,9 +126,9 @@ export const Picker: FC<BasePickerProps> = props => {
         return () => {
         }
     }, [visible === true, data])
-
+    
     const dataDepth = useRef(0)
-    const renderData = useRef([])
+    const [renderData, setRenderData] = useState([])
     const maxLength = useRef(0)
     const wrapper = useRef(null)
     const PickerBaseData = useRef({
@@ -162,24 +188,25 @@ export const Picker: FC<BasePickerProps> = props => {
         maxLength.current = currentLength
         dataDepth.current = currentDepth
     }
+    
+    // if(relate && data && visible) {
+    //     if(!data.every(item => isObject(item))) {
+    //         return
+    //     }
+    //     findDepthAndLength(data)
+    //     renderData = new Array(dataDepth.current).fill(new Array(0))
+    //     renderData[0] = data
+    // }else {
 
-    if(relate && data && visible) {
-        if(!data.every(item => isObject(item))) {
-            return
-        }
-        findDepthAndLength(data)
-        renderData.current = new Array(dataDepth.current).fill(new Array(0))
-        renderData.current[0] = data
-    }else {
-
-    }
+    // }
 
     const renderSelect = () => {
-        if(!renderData.current) {
+        if(!renderData.length) {
             return
         }
+        console.log(renderData)
         if(relate) {
-            return  renderData.current.map(item => 
+            return  renderData.map(item => 
                         <div className={`${prefixCls}-data-wrapper`}>
                             <ul 
                                 onClick={() => console.log(222222222)}
@@ -226,6 +253,7 @@ export const Picker: FC<BasePickerProps> = props => {
                     <div style={{height: '100%', position: 'relative'}}>
                         <div className={`${prefixCls}-data-content`} ref={wrapper}>
                             {renderSelect()}
+
                         </div>
                     </div>
                 </Popup>
