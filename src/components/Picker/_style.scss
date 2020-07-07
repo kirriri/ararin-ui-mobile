@@ -13,7 +13,7 @@
          width: 16vw;
          letter-spacing: 0.2vw;
          text-align: center;
-         transition: background-color .18s ease;
+         transition: background-color .15s ease;
      }
      & > span:not(.apk-header-item) {
          flex: 1 1 0%;
@@ -41,6 +41,7 @@
 
 .apk-item-mask {
     position: absolute;
+    z-index: 11;
     top: 0;
     left: 0;
     width: 100%;
@@ -52,9 +53,11 @@
     background-position: top,bottom;
     background-size: 100% 30vw;
     background-repeat: no-repeat;
+    pointer-events: none;
 }
 
 .apk-item-focus {
+    z-index: 12;
     top: 30vw;
     width: 100%;
     position: absolute;
@@ -62,13 +65,18 @@
     box-sizing: border-box;
     border-top: 0.3vw solid $border-color;
     border-bottom: 0.3vw solid $border-color;
+    pointer-events: none;
 }
 
 .apk-data-content {
-    z-index: 22;
+    z-index: 10;
     overflow: hidden;
     display: flex;
+    position: relative;
     .apk-data-item {
+        li {
+            pointer-events: auto!important; 
+        }
         flex: 1;
         overflow: hidden;
         text-align: center;

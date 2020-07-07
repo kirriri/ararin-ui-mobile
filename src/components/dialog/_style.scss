@@ -8,6 +8,7 @@
     background-color: rgba(55, 55, 55, 0.35);
     filter: alpha(opacity=50);
     z-index: 999;
+    pointer-events: none;
 }
 
 .ad-wrap,
@@ -311,8 +312,17 @@
     }
 }
 
+.ap-fade-enter,
+.ap-fade-appear {
+    animation-duration: .45s;
+}
+.ad-fade-leave,
+.ap-fade-leave {
+    animation-duration: .45s;
+}
+
 @mixin apEffect() {
-    animation-duration: 0.3s;
+    animation-duration: 0.45s;
     animation-fill-mode: both;
     animation-timing-function: ease;
     animation-play-state: paused;

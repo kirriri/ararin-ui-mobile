@@ -76,22 +76,27 @@ export const Picker: FC<BasePickerProps> = props => {
                 wrapper.current.style.height = PickerBaseData.current.CONTENT_CHID * PickerBaseData.current.ITEM_HEIGHT + 'vw'
             
                 Array.from( wrapper.current.children).forEach((item, index) => {
-                        const wheel = new BScroll(item, {
-                            wheel: {
-                              selectedIndex: 0,
-                              wheelWrapperClass: 'wheel-scroll',
-                              wheelItemClass: 'wheel-item',
-                              wheelDisabledItemClass: 'wheel-disabled-item',
-                              rotate: 0,
-                              click: true,
-                            //   bindToWrapper: true
-                            },              
-                            // observeDOM: true
-                        })  
-                        wheel.on('scrollEnd', () => {
-                            //滚动完成之后获取当前选取的索引值
-                            console.log(index, wheel.getSelectedIndex())
-                        })  
+                    const wheel = new BScroll(item, {
+                        wheel: {
+                            selectedIndex: 0,
+                            wheelWrapperClass: 'wheel-scroll',
+                            wheelItemClass: 'wheel-item',
+                            wheelDisabledItemClass: 'wheel-disabled-item',
+                            rotate: 0,
+                        },       
+                        useTransition: false,   
+                        deceleration: 0.0042,
+                        swipeTime: 1100,
+                    })  
+                    
+                    wheel.on('scrollEnd', () => {
+                        //滚动完成之后获取当前选取的索引值
+                        if(!Number.isNaN(wheel.y)) {
+                            const currentIndex = getCurrentIndex(wheel)
+                            console.log(wheel.y)
+                            console.log(index, currentIndex)
+                        }
+                    })  
                 })
         }
         return () => {
@@ -108,6 +113,29 @@ export const Picker: FC<BasePickerProps> = props => {
         ITEM_MIN_NUM: 7,
         ITEM_MAX_NUM: 9
     })
+
+    const getCurrentIndex = wheel => {
+        let heightArr = Array.from(wheel.items).map((item, index) => index * wheel.itemHeight)
+        let stopY =  Math.floor(Math.abs(wheel.y))
+        if(heightArr.findIndex(item => item === stopY) === -1) {
+            heightArr.push(stopY)
+            heightArr.sort((a, b) => a - b)
+            let currentIndex = heightArr.findIndex(item => item === stopY)
+            if(currentIndex === 0) {
+               return 1
+            }else if(currentIndex === heightArr.length - 1) {
+               return heightArr.length - 2
+            }else {
+                if(Math.abs(heightArr[currentIndex] - heightArr[currentIndex - 1]) <= Math.abs(heightArr[currentIndex + 1] - heightArr[currentIndex])) {
+                   return currentIndex - 1
+                }else {
+                   return currentIndex
+                }
+            }
+        }else {
+            return heightArr.findIndex(item => item === stopY)
+        }
+    }
 
     const findDepthAndLength = data => {
         let currentDepth = 0
@@ -160,7 +188,7 @@ export const Picker: FC<BasePickerProps> = props => {
                                 style={{marginTop: '30vw'}}
                             >
                                 {item.map((item, index) => 
-                                    <li className="wheel-item">
+                                    <li onClick={() => console.log(index)} className="wheel-item">
                                         {item.text}
                                     </li>
                                 )}
@@ -196,8 +224,10 @@ export const Picker: FC<BasePickerProps> = props => {
                     title={reTit}
                     {...restProps}
                 >
-                    <div className={`${prefixCls}-data-content`} ref={wrapper}>
-                        {renderSelect()}
+                    <div style={{height: '100%', position: 'relative'}}>
+                        <div className={`${prefixCls}-data-content`} ref={wrapper}>
+                            {renderSelect()}
+                        </div>
                     </div>
                 </Popup>
            </>
