@@ -72,9 +72,7 @@ export const Picker: FC<BasePickerProps> = props => {
                 }else {
                     PickerBaseData.current.CONTENT_CHID = 7
                 }
-                console.log(wrapper.current.children)
                 wrapper.current.style.height = PickerBaseData.current.CONTENT_CHID * PickerBaseData.current.ITEM_HEIGHT + 'vw'
-            
                 Array.from( wrapper.current.children).forEach((item, index) => {
                     const wheel = new BScroll(item, {
                         wheel: {
@@ -184,8 +182,9 @@ export const Picker: FC<BasePickerProps> = props => {
             return  renderData.current.map(item => 
                         <div className={`${prefixCls}-data-wrapper`}>
                             <ul 
+                                onClick={() => console.log(222222222)}
                                 className={`${prefixCls}-data-item wheel-scroll`}
-                                style={{marginTop: '30vw'}}
+                                style={{marginTop: `${Math.floor(PickerBaseData.current.CONTENT_CHID / 2)}0vw`}}
                             >
                                 {item.map((item, index) => 
                                     <li onClick={() => console.log(index)} className="wheel-item">
@@ -193,8 +192,8 @@ export const Picker: FC<BasePickerProps> = props => {
                                     </li>
                                 )}
                             </ul>
-                            <div className={`${prefixCls}-item-mask`}></div>
-                            <div className={`${prefixCls}-item-focus`}></div>
+                            <div  className={`${prefixCls}-item-mask`}></div>
+                            <div  className={`${prefixCls}-item-focus`}></div>
                         </div>
                     )
         }
