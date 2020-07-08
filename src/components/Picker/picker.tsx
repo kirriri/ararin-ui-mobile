@@ -91,8 +91,14 @@ export const Picker: FC<BasePickerProps> = props => {
                         //滚动完成之后获取当前选取的索引值
                         if(!Number.isNaN(wheel.y)) {
                             const currentIndex = getCurrentIndex(wheel)
-                            console.log(wheel.y)
-                            console.log(index, currentIndex)
+                            // console.log(index, currentIndex)
+                            if(renderData.current[index][currentIndex].children) {
+                                renderData.current[index+1] = renderData.current[index][currentIndex].children    
+                            }else {
+                                renderData.current[index+1] = []
+                            }
+                            
+                            console.log(renderData)
                         }
                     })  
                 })
@@ -182,7 +188,6 @@ export const Picker: FC<BasePickerProps> = props => {
             return  renderData.current.map(item => 
                         <div className={`${prefixCls}-data-wrapper`}>
                             <ul 
-                                onClick={() => console.log(222222222)}
                                 className={`${prefixCls}-data-item wheel-scroll`}
                                 style={{marginTop: `${Math.floor(PickerBaseData.current.CONTENT_CHID / 2)}0vw`}}
                             >
@@ -215,7 +220,7 @@ export const Picker: FC<BasePickerProps> = props => {
     }else {
         reTit = title
     }
-
+    console.log(renderData.current)
     return <>
                 <Popup
                     onClose={cancelPress}
@@ -225,7 +230,24 @@ export const Picker: FC<BasePickerProps> = props => {
                 >
                     <div style={{height: '100%', position: 'relative'}}>
                         <div className={`${prefixCls}-data-content`} ref={wrapper}>
-                            {renderSelect()}
+                            {
+                                renderData.current.map(item => 
+                                    <div className={`${prefixCls}-data-wrapper`}>
+                                        <ul 
+                                            className={`${prefixCls}-data-item wheel-scroll`}
+                                            style={{marginTop: `${Math.floor(PickerBaseData.current.CONTENT_CHID / 2)}0vw`}}
+                                        >
+                                            {item.map((item, index) => 
+                                                <li onClick={() => console.log(index)} className="wheel-item">
+                                                    {item.text}
+                                                </li>
+                                            )}
+                                        </ul>
+                                        <div  className={`${prefixCls}-item-mask`}></div>
+                                        <div  className={`${prefixCls}-item-focus`}></div>
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
                 </Popup>
