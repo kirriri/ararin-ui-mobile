@@ -14,15 +14,17 @@ class App extends React.Component<any, any> {
             visible: false,
             popupVisible: false,
             pickerState: true,
+            data: PickerTestData
         }
     }
     
     componentDidMount() {
-        setTimeout(() => {
-            this.setState({
-                data: PickerTestData
-            })
-        }, 1000)
+        // setTimeout(() => {
+        //     this.setState({
+        //         data: PickerTestData
+        //     })
+        // }, 5000)
+
         // setTimeout(() => {
         //     this.setState({
         //         data: PickerTestData2
@@ -65,6 +67,7 @@ class App extends React.Component<any, any> {
                     11111
                 </Popup> */}
                 <Picker
+                    maskClosable={false}
                     cancelPress={() => {this.setState({pickerState: !pickerState})}}
                     data={this.state.data}
                     visible={this.state.pickerState}

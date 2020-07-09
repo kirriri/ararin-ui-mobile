@@ -49,22 +49,34 @@ export const Picker: FC<BasePickerProps> = props => {
         ...restProps
     } = props
 
+    const wheels = useRef([])
+    const dataDepth = useRef(0)
+    const [selectIndex, setSelectIndex] = useState([])
+    const [renderData, setRenderData] = useState([])
+    const maxLength = useRef(0)
+    const wrapper = useRef(null)
+    const PickerBaseData = useRef({
+        CONTENT_CHID: 3,
+        ITEM_HEIGHT: 10,
+        ITEM_MIN_NUM: 7,
+        ITEM_MAX_NUM: 9
+    })
+
     useEffect(() => {
-        if(!data) {
-            return
+        console.log(data)
+        if(relate && data && visible) {
+            if(!data.every(item => isObject(item))) {
+                return
+            }
+            findDepthAndLength(data)
+            let tmpData = new Array(dataDepth.current).fill(new Array(0))
+            tmpData[0] = data
+            setRenderData(() => tmpData)
         }
 
-        // if(relate) {
-        //     if(!data.every(item => isObject(item))) {
-        //         return
-        //     }
-        // }else {
-        //     if(!data.every(item => Array.isArray(item))) {
-        //         return
-        //     }
-        // }      
-        
-        if(wrapper.current) {
+        if(wrapper.current && visible) {
+            console.log(renderData, 11111111)
+            console.log(renderData.flat())
                 if(maxLength.current < PickerBaseData.current.ITEM_MIN_NUM) {
                     PickerBaseData.current.CONTENT_CHID = Math.max(PickerBaseData.current.CONTENT_CHID, PickerBaseData.current.ITEM_MIN_NUM)
                 } else if(maxLength.current > PickerBaseData.current.ITEM_MAX_NUM) {
@@ -73,7 +85,9 @@ export const Picker: FC<BasePickerProps> = props => {
                     PickerBaseData.current.CONTENT_CHID = 7
                 }
                 wrapper.current.style.height = PickerBaseData.current.CONTENT_CHID * PickerBaseData.current.ITEM_HEIGHT + 'vw'
-                Array.from( wrapper.current.children).forEach((item, index) => {
+
+                console.log(wrapper.current)
+                wheels.current = Array.from( wrapper.current.children).map((item, index) => {
                     const wheel = new BScroll(item, {
                         wheel: {
                             selectedIndex: 0,
@@ -83,40 +97,55 @@ export const Picker: FC<BasePickerProps> = props => {
                             rotate: 0,
                         },       
                         useTransition: false,   
-                        deceleration: 0.0042,
+                        deceleration: 0.0045,
                         swipeTime: 1100,
                     })  
-                    
                     wheel.on('scrollEnd', () => {
                         //滚动完成之后获取当前选取的索引值
                         if(!Number.isNaN(wheel.y)) {
                             const currentIndex = getCurrentIndex(wheel)
-                            // console.log(index, currentIndex)
-                            if(renderData.current[index][currentIndex].children) {
-                                renderData.current[index+1] = renderData.current[index][currentIndex].children    
-                            }else {
-                                renderData.current[index+1] = []
+                            console.log(index, currentIndex)
+                            setRenderData(rData => {
+                                let tmpRData = JSON.parse(JSON.stringify(rData))
+                                if(tmpRData[index][currentIndex].children) {
+                                    tmpRData[index+1] = tmpRData[index][currentIndex].children    
+                                }else {
+                                    if(tmpRData[index+1]) {
+                                        tmpRData[index+1] = []
+                                    }
+                                }
+                                return tmpRData
+                            })
+                            if(renderData[index+1]) {
+                                console.log(wheels.current)
+                                Array.from(wheels.current).forEach(element => {
+                                    element.refresh()
+                                });
                             }
-                            
-                            console.log(renderData)
                         }
-                    })  
+                    }) 
+                    return wheel 
                 })
         }
         return () => {
+            wheels.current.forEach(item => item.destroy())
         }
-    }, [visible === true, data])
+    }, [data, visible])
 
-    const dataDepth = useRef(0)
-    const renderData = useRef([])
-    const maxLength = useRef(0)
-    const wrapper = useRef(null)
-    const PickerBaseData = useRef({
-        CONTENT_CHID: 3,
-        ITEM_HEIGHT: 10,
-        ITEM_MIN_NUM: 7,
-        ITEM_MAX_NUM: 9
-    })
+    useEffect(() => {
+        // if(relate) {
+        //     if(!data.every(item => isObject(item))) {
+        //         return
+        //     }
+        // }else {
+        //     if(!data.every(item => Array.isArray(item))) {
+        //         return
+        //     }
+        // }      
+        Array.from(wheels.current).forEach(element => {
+            element.refresh()
+        });
+    }, [visible, renderData])
 
     const getCurrentIndex = wheel => {
         let heightArr = Array.from(wheel.items).map((item, index) => index * wheel.itemHeight)
@@ -169,40 +198,7 @@ export const Picker: FC<BasePickerProps> = props => {
         dataDepth.current = currentDepth
     }
 
-    if(relate && data && visible) {
-        if(!data.every(item => isObject(item))) {
-            return
-        }
-        findDepthAndLength(data)
-        renderData.current = new Array(dataDepth.current).fill(new Array(0))
-        renderData.current[0] = data
-    }else {
 
-    }
-
-    const renderSelect = () => {
-        if(!renderData.current) {
-            return
-        }
-        if(relate) {
-            return  renderData.current.map(item => 
-                        <div className={`${prefixCls}-data-wrapper`}>
-                            <ul 
-                                className={`${prefixCls}-data-item wheel-scroll`}
-                                style={{marginTop: `${Math.floor(PickerBaseData.current.CONTENT_CHID / 2)}0vw`}}
-                            >
-                                {item.map((item, index) => 
-                                    <li onClick={() => console.log(index)} className="wheel-item">
-                                        {item.text}
-                                    </li>
-                                )}
-                            </ul>
-                            <div  className={`${prefixCls}-item-mask`}></div>
-                            <div  className={`${prefixCls}-item-focus`}></div>
-                        </div>
-                    )
-        }
-    }
     
     //  渲染title
     let reTit
@@ -220,7 +216,7 @@ export const Picker: FC<BasePickerProps> = props => {
     }else {
         reTit = title
     }
-    console.log(renderData.current)
+    console.log(renderData)
     return <>
                 <Popup
                     onClose={cancelPress}
@@ -231,14 +227,14 @@ export const Picker: FC<BasePickerProps> = props => {
                     <div style={{height: '100%', position: 'relative'}}>
                         <div className={`${prefixCls}-data-content`} ref={wrapper}>
                             {
-                                renderData.current.map(item => 
+                                renderData.map(item => 
                                     <div className={`${prefixCls}-data-wrapper`}>
                                         <ul 
                                             className={`${prefixCls}-data-item wheel-scroll`}
                                             style={{marginTop: `${Math.floor(PickerBaseData.current.CONTENT_CHID / 2)}0vw`}}
                                         >
                                             {item.map((item, index) => 
-                                                <li onClick={() => console.log(index)} className="wheel-item">
+                                                <li className="wheel-item">
                                                     {item.text}
                                                 </li>
                                             )}
