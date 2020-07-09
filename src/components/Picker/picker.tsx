@@ -197,7 +197,15 @@ export const Picker: FC<BasePickerProps> = props => {
         maxLength.current = currentLength
         dataDepth.current = currentDepth
     }
-
+    
+    // if(relate && data && visible) {
+    //     if(!data.every(item => isObject(item))) {
+    //         return
+    //     }
+    //     findDepthAndLength(data)
+    //     renderData = new Array(dataDepth.current).fill(new Array(0))
+    //     renderData[0] = data
+    // }else {
 
     
     //  渲染title
