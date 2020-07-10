@@ -50,9 +50,8 @@ export const Picker: FC<BasePickerProps> = props => {
     } = props
 
     const wheels = useRef([])
-    const dataDepth = useRef(0)
-    const [selectIndex, setSelectIndex] = useState([])
-    const [renderData, setRenderData] = useState([])
+    const touchIndex = useRef(0)
+    const [sketchRenderData, setSketchRenderData] = useState([])
     const maxLength = useRef(0)
     const wrapper = useRef(null)
     const PickerBaseData = useRef({
@@ -62,90 +61,18 @@ export const Picker: FC<BasePickerProps> = props => {
         ITEM_MAX_NUM: 9
     })
 
+    //渲染数据骨架&初始化渲染数据
     useEffect(() => {
-        console.log(data)
-        if(relate && data && visible) {
-            if(!data.every(item => isObject(item))) {
-                return
-            }
-            findDepthAndLength(data)
-            let tmpData = new Array(dataDepth.current).fill(new Array(0))
-            tmpData[0] = data
-            setRenderData(() => tmpData)
+        console.log('effect render render')
+        if(!data.every(item => isObject(item))) {
+            return
         }
-
-        if(wrapper.current && visible) {
-            console.log(renderData, 11111111)
-            console.log(renderData.flat())
-                if(maxLength.current < PickerBaseData.current.ITEM_MIN_NUM) {
-                    PickerBaseData.current.CONTENT_CHID = Math.max(PickerBaseData.current.CONTENT_CHID, PickerBaseData.current.ITEM_MIN_NUM)
-                } else if(maxLength.current > PickerBaseData.current.ITEM_MAX_NUM) {
-                    PickerBaseData.current.CONTENT_CHID = Math.max(PickerBaseData.current.CONTENT_CHID, PickerBaseData.current.ITEM_MIN_NUM)
-                }else {
-                    PickerBaseData.current.CONTENT_CHID = 7
-                }
-                wrapper.current.style.height = PickerBaseData.current.CONTENT_CHID * PickerBaseData.current.ITEM_HEIGHT + 'vw'
-
-                console.log(wrapper.current)
-                wheels.current = Array.from( wrapper.current.children).map((item, index) => {
-                    const wheel = new BScroll(item, {
-                        wheel: {
-                            selectedIndex: 0,
-                            wheelWrapperClass: 'wheel-scroll',
-                            wheelItemClass: 'wheel-item',
-                            wheelDisabledItemClass: 'wheel-disabled-item',
-                            rotate: 0,
-                        },       
-                        useTransition: false,   
-                        deceleration: 0.0045,
-                        swipeTime: 1100,
-                    })  
-                    wheel.on('scrollEnd', () => {
-                        //滚动完成之后获取当前选取的索引值
-                        if(!Number.isNaN(wheel.y)) {
-                            const currentIndex = getCurrentIndex(wheel)
-                            console.log(index, currentIndex)
-                            setRenderData(rData => {
-                                let tmpRData = JSON.parse(JSON.stringify(rData))
-                                if(tmpRData[index][currentIndex].children) {
-                                    tmpRData[index+1] = tmpRData[index][currentIndex].children    
-                                }else {
-                                    if(tmpRData[index+1]) {
-                                        tmpRData[index+1] = []
-                                    }
-                                }
-                                return tmpRData
-                            })
-                            if(renderData[index+1]) {
-                                console.log(wheels.current)
-                                Array.from(wheels.current).forEach(element => {
-                                    element.refresh()
-                                });
-                            }
-                        }
-                    }) 
-                    return wheel 
-                })
-        }
-        return () => {
-            wheels.current.forEach(item => item.destroy())
-        }
-    }, [data, visible])
-
-    useEffect(() => {
-        // if(relate) {
-        //     if(!data.every(item => isObject(item))) {
-        //         return
-        //     }
-        // }else {
-        //     if(!data.every(item => Array.isArray(item))) {
-        //         return
-        //     }
-        // }      
-        Array.from(wheels.current).forEach(element => {
-            element.refresh()
-        });
-    }, [visible, renderData])
+        const dataProps = findDepthAndLength(data)
+        let tmpArr = new Array(dataProps.currentDepth).fill(new Array(0))
+        setSketchRenderData(tmpArr)
+        tmpArr[0] = data
+        setRenderData(tmpArr)
+    }, [data])
 
     const getCurrentIndex = wheel => {
         let heightArr = Array.from(wheel.items).map((item, index) => index * wheel.itemHeight)
@@ -194,20 +121,87 @@ export const Picker: FC<BasePickerProps> = props => {
             }
             depthAndLengthCount(item, 0, 0)
         })
-        maxLength.current = currentLength
-        dataDepth.current = currentDepth
+        return {currentLength, currentDepth}
     }
-    
-    // if(relate && data && visible) {
-    //     if(!data.every(item => isObject(item))) {
-    //         return
-    //     }
-    //     findDepthAndLength(data)
-    //     renderData = new Array(dataDepth.current).fill(new Array(0))
-    //     renderData[0] = data
-    // }else {
 
-    
+    const [renderData, setRenderData] = useState(() => {
+            console.log('effect render render')
+            if(!data.every(item => isObject(item))) {
+                return
+            }
+            const dataProps = findDepthAndLength(data)
+            return new Array(dataProps.currentDepth).fill(new Array(0))
+    })
+
+    useEffect(() => {
+        if(wrapper.current && visible) {
+            console.log(renderData)
+                if(maxLength.current < PickerBaseData.current.ITEM_MIN_NUM) {
+                    PickerBaseData.current.CONTENT_CHID = Math.max(PickerBaseData.current.CONTENT_CHID, PickerBaseData.current.ITEM_MIN_NUM)
+                } else if(maxLength.current > PickerBaseData.current.ITEM_MAX_NUM) {
+                    PickerBaseData.current.CONTENT_CHID = Math.max(PickerBaseData.current.CONTENT_CHID, PickerBaseData.current.ITEM_MIN_NUM)
+                }else {
+                    PickerBaseData.current.CONTENT_CHID = 7
+                }
+                wrapper.current.style.height = PickerBaseData.current.CONTENT_CHID * PickerBaseData.current.ITEM_HEIGHT + 'vw'
+
+                console.log(wrapper.current)
+                wheels.current = Array.from( wrapper.current.children).map((item, index) => {
+                    const wheel = new BScroll(item, {
+                        wheel: {
+                            selectedIndex: 0,
+                            wheelWrapperClass: 'wheel-scroll',
+                            wheelItemClass: 'wheel-item',
+                            wheelDisabledItemClass: 'wheel-disabled-item',
+                            rotate: 0,
+                        },       
+                        useTransition: false,   
+                        deceleration: 0.025,
+                        swipeTime: 800,
+                    })  
+                    wheel.on('scrollEnd', () => {
+                        //滚动完成之后获取当前选取的索引值,设置后续联动的数据
+                        if(!Number.isNaN(wheel.y) && touchIndex.current === index) {
+                            const currentIndex = getCurrentIndex(wheel)
+                            console.log(index, currentIndex)
+                            setRenderData(rData => {
+                                let tmpRData = JSON.parse(JSON.stringify(rData))
+                                
+                                tmpRData.forEach((ritem, rindex) => {
+                                    if(rindex >= index && tmpRData[rindex+1]) {
+                                       if(tmpRData[rindex][currentIndex] && tmpRData[rindex][currentIndex].children) {
+                                            tmpRData[rindex + 1] = tmpRData[rindex][currentIndex].children
+                                       } else {
+                                            tmpRData[rindex + 1] = []
+                                       }
+                                    }  
+                                })
+                                
+                                return tmpRData
+                            })
+                        }
+                    }) 
+                    wheel.on('scrollStart', () => {
+                        touchIndex.current = index
+                    })
+                    return wheel 
+                })
+        }
+        return () => {
+            wheels.current.forEach(item => item.destroy())
+        }
+    }, [sketchRenderData, visible])
+
+    useEffect(() => {
+        Array.from(wheels.current).forEach((element , eindex) => {
+            if(eindex > touchIndex.current) {
+                console.log(wheels.current)
+                console.log(element)
+                element.refresh()
+            }
+        });
+    }, [renderData])
+ 
     //  渲染title
     let reTit
     if(typeof title === 'string' || !title) {
@@ -224,7 +218,9 @@ export const Picker: FC<BasePickerProps> = props => {
     }else {
         reTit = title
     }
+
     console.log(renderData)
+
     return <>
                 <Popup
                     onClose={cancelPress}

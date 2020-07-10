@@ -14,16 +14,16 @@ class App extends React.Component<any, any> {
             visible: false,
             popupVisible: false,
             pickerState: true,
-            data: PickerTestData
+            data: []
         }
     }
     
     componentDidMount() {
-        // setTimeout(() => {
-        //     this.setState({
-        //         data: PickerTestData
-        //     })
-        // }, 5000)
+        setTimeout(() => {
+            this.setState({
+                data: PickerTestData
+            })
+        }, 5000)
 
         // setTimeout(() => {
         //     this.setState({
