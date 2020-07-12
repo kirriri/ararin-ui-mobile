@@ -20,10 +20,11 @@ export interface BasePickerProps {
     relate?: boolean,
     cancelText?: string,
     okText?: string,
-    cancelPress?: (val: any) => void,
+    cancelPress?: () => void,
     okPress?: (val: any) => void,
     data?: BaseDataProps[],
     visible?: boolean,
+    history?: boolean,
     style?: React.CSSProperties,
     className?: string,
     title?: React.ReactNode,
@@ -52,7 +53,7 @@ export const Picker: FC<BasePickerProps> = props => {
     const wheels = useRef([])
     const touchIndex = useRef(0)
     const [sketchRenderData, setSketchRenderData] = useState([])
-    const maxLength = useRef(0)
+    const [renderData, setRenderData] = useState([])
     const wrapper = useRef(null)
     const PickerBaseData = useRef({
         CONTENT_CHID: 3,
@@ -61,19 +62,30 @@ export const Picker: FC<BasePickerProps> = props => {
         ITEM_MAX_NUM: 9
     })
 
-    //渲染数据骨架&初始化渲染数据
+    // 更新renderData后刷新bscroll
     useEffect(() => {
-        console.log('effect render render')
+        for(let i = 0; i < wheels.current.length; i++ ) {
+            if(i > touchIndex.current) {
+                wheels.current[i].refresh()
+                wheels.current[i].wheelTo(0)
+            }
+        }
+    }, [renderData])
+
+    // 渲染数据骨架&初始化渲染数据
+    useEffect(() => {
         if(!data.every(item => isObject(item))) {
             return
         }
         const dataProps = findDepthAndLength(data)
-        let tmpArr = new Array(dataProps.currentDepth).fill(new Array(0))
-        setSketchRenderData(tmpArr)
-        tmpArr[0] = data
-        setRenderData(tmpArr)
-    }, [data])
+        let baseArr = new Array(dataProps.currentDepth).fill(new Array(0))
+        setSketchRenderData(baseArr)
+        baseArr[0] = data
+        baseArr = getCalRenderData(baseArr, 0, 0)
+        setRenderData(baseArr)
+    }, [data, visible])
 
+    // 查询选择的index
     const getCurrentIndex = wheel => {
         let heightArr = Array.from(wheel.items).map((item, index) => index * wheel.itemHeight)
         let stopY =  Math.floor(Math.abs(wheel.y))
@@ -97,6 +109,7 @@ export const Picker: FC<BasePickerProps> = props => {
         }
     }
 
+    // 查询数据深度
     const findDepthAndLength = data => {
         let currentDepth = 0
         let currentLength = data.length
@@ -124,28 +137,31 @@ export const Picker: FC<BasePickerProps> = props => {
         return {currentLength, currentDepth}
     }
 
-    const [renderData, setRenderData] = useState(() => {
-            console.log('effect render render')
-            if(!data.every(item => isObject(item))) {
-                return
-            }
-            const dataProps = findDepthAndLength(data)
-            return new Array(dataProps.currentDepth).fill(new Array(0))
-    })
+    // 计算renderData 滚动数据
+    const getCalRenderData = (tmpRData, index, currentIndex) => {
+        tmpRData.forEach((ritem, rindex) => {
+            if(rindex >= index && tmpRData[rindex+1]) {
+               if(tmpRData[rindex][currentIndex] && tmpRData[rindex][currentIndex].children) {
+                    tmpRData[rindex + 1] = tmpRData[rindex][currentIndex].children
+               } else {
+                    tmpRData[rindex + 1] = []
+               }
+            }  
+        })
+        return tmpRData
+    }
 
+    
     useEffect(() => {
         if(wrapper.current && visible) {
-            console.log(renderData)
-                if(maxLength.current < PickerBaseData.current.ITEM_MIN_NUM) {
+                if(0 < PickerBaseData.current.ITEM_MIN_NUM) {
                     PickerBaseData.current.CONTENT_CHID = Math.max(PickerBaseData.current.CONTENT_CHID, PickerBaseData.current.ITEM_MIN_NUM)
-                } else if(maxLength.current > PickerBaseData.current.ITEM_MAX_NUM) {
+                } else if(0 > PickerBaseData.current.ITEM_MAX_NUM) {
                     PickerBaseData.current.CONTENT_CHID = Math.max(PickerBaseData.current.CONTENT_CHID, PickerBaseData.current.ITEM_MIN_NUM)
                 }else {
                     PickerBaseData.current.CONTENT_CHID = 7
                 }
                 wrapper.current.style.height = PickerBaseData.current.CONTENT_CHID * PickerBaseData.current.ITEM_HEIGHT + 'vw'
-
-                console.log(wrapper.current)
                 wheels.current = Array.from( wrapper.current.children).map((item, index) => {
                     const wheel = new BScroll(item, {
                         wheel: {
@@ -155,29 +171,18 @@ export const Picker: FC<BasePickerProps> = props => {
                             wheelDisabledItemClass: 'wheel-disabled-item',
                             rotate: 0,
                         },       
-                        useTransition: false,   
+                        // useTransition: false,   
                         deceleration: 0.025,
                         swipeTime: 800,
                     })  
                     wheel.on('scrollEnd', () => {
-                        //滚动完成之后获取当前选取的索引值,设置后续联动的数据
+                        // 滚动完成之后获取当前选取的索引值,设置后续联动的数据
                         if(!Number.isNaN(wheel.y) && touchIndex.current === index) {
                             const currentIndex = getCurrentIndex(wheel)
-                            console.log(index, currentIndex)
+                            // const currentIndex = wheel.getSelectedIndex()
                             setRenderData(rData => {
                                 let tmpRData = JSON.parse(JSON.stringify(rData))
-                                
-                                tmpRData.forEach((ritem, rindex) => {
-                                    if(rindex >= index && tmpRData[rindex+1]) {
-                                       if(tmpRData[rindex][currentIndex] && tmpRData[rindex][currentIndex].children) {
-                                            tmpRData[rindex + 1] = tmpRData[rindex][currentIndex].children
-                                       } else {
-                                            tmpRData[rindex + 1] = []
-                                       }
-                                    }  
-                                })
-                                
-                                return tmpRData
+                                return getCalRenderData(tmpRData, index, currentIndex)
                             })
                         }
                     }) 
@@ -192,15 +197,26 @@ export const Picker: FC<BasePickerProps> = props => {
         }
     }, [sketchRenderData, visible])
 
-    useEffect(() => {
-        Array.from(wheels.current).forEach((element , eindex) => {
-            if(eindex > touchIndex.current) {
-                console.log(wheels.current)
-                console.log(element)
-                element.refresh()
+
+    const handleOkClick = () => {
+        if(!Array.from((wheels.current)).some((item, index) => {
+            if(renderData[index].length === 0 && item.isInTransition) {
+                return false
+            }else {
+                return item.isInTransition
             }
-        });
-    }, [renderData])
+        })) {
+            let returnData = []
+            renderData.forEach((item, index) => {
+                const rindex = wheels.current[index].getSelectedIndex()
+                if (item.length > 0) {
+                    returnData.push(item[rindex])
+                }
+            })
+            okPress(returnData)
+            cancelPress()
+        }
+    }
  
     //  渲染title
     let reTit
@@ -212,14 +228,17 @@ export const Picker: FC<BasePickerProps> = props => {
                 </TouchFeedback>
                 <span>{title}</span>
                 <TouchFeedback activeClassName={`${prefixCls}-header-item-active `}>
-                    <span className={`${prefixCls}-header-item ${prefixCls}-header-item-highlight`}>{okText}</span>
+                    <span 
+                        className={`${prefixCls}-header-item ${prefixCls}-header-item-highlight`}
+                        onClick={handleOkClick}
+                    >{okText}</span>
                 </TouchFeedback>
             </h3>
     }else {
         reTit = title
     }
 
-    console.log(renderData)
+
 
     return <>
                 <Popup

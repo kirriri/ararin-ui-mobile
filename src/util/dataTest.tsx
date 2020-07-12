@@ -19,6 +19,24 @@ export const PickerTestData = [
                             c: '1',
                             d: '2'
                         },  
+                        children: [
+                            {
+                                text: '测试2',
+                                value: {
+                                    c: '1',
+                                    d: '2'
+                                },
+                                children: [
+                                    {
+                                        text: '测试2',
+                                        value: {
+                                            c: '1',
+                                            d: '2'
+                                        },  
+                                    }
+                                ]  
+                            }
+                        ]
                     }
                 ]
                 

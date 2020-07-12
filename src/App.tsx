@@ -23,7 +23,7 @@ class App extends React.Component<any, any> {
             this.setState({
                 data: PickerTestData
             })
-        }, 5000)
+        }, 1000)
 
         // setTimeout(() => {
         //     this.setState({
@@ -69,6 +69,7 @@ class App extends React.Component<any, any> {
                 <Picker
                     maskClosable={false}
                     cancelPress={() => {this.setState({pickerState: !pickerState})}}
+                    okPress={(v) => {console.log(v)}}
                     data={this.state.data}
                     visible={this.state.pickerState}
                 ></Picker>
