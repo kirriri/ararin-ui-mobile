@@ -47,11 +47,13 @@ export const Picker: FC<BasePickerProps> = props => {
         okText,
         okPress,
         prefixCls,
+        history,
         ...restProps
     } = props
 
     const wheels = useRef([])
     const touchIndex = useRef(0)
+    const selectedIndex = useRef([])
     const [sketchRenderData, setSketchRenderData] = useState([])
     const [renderData, setRenderData] = useState([])
     const wrapper = useRef(null)
@@ -71,6 +73,14 @@ export const Picker: FC<BasePickerProps> = props => {
             }
         }
     }, [renderData])
+
+    useEffect(() => {
+        if(!data.every(item => isObject(item))) {
+            return
+        }
+        const dataProps = findDepthAndLength(data)
+        selectedIndex.current = new Array(dataProps.currentDepth).fill(new Array(0))
+    }, [data])
 
     // 渲染数据骨架&初始化渲染数据
     useEffect(() => {
@@ -165,7 +175,7 @@ export const Picker: FC<BasePickerProps> = props => {
                 wheels.current = Array.from( wrapper.current.children).map((item, index) => {
                     const wheel = new BScroll(item, {
                         wheel: {
-                            selectedIndex: 0,
+                            selectedIndex: history ? selectedIndex.current[index] : 0,
                             wheelWrapperClass: 'wheel-scroll',
                             wheelItemClass: 'wheel-item',
                             wheelDisabledItemClass: 'wheel-disabled-item',
@@ -182,6 +192,7 @@ export const Picker: FC<BasePickerProps> = props => {
                             // const currentIndex = wheel.getSelectedIndex()
                             setRenderData(rData => {
                                 let tmpRData = JSON.parse(JSON.stringify(rData))
+                                selectedIndex.current[index] = currentIndex
                                 return getCalRenderData(tmpRData, index, currentIndex)
                             })
                         }
@@ -196,7 +207,6 @@ export const Picker: FC<BasePickerProps> = props => {
             wheels.current.forEach(item => item.destroy())
         }
     }, [sketchRenderData, visible])
-
 
     const handleOkClick = () => {
         if(!Array.from((wheels.current)).some((item, index) => {
@@ -238,8 +248,6 @@ export const Picker: FC<BasePickerProps> = props => {
         reTit = title
     }
 
-
-
     return <>
                 <Popup
                     onClose={cancelPress}
@@ -279,7 +287,8 @@ Picker.defaultProps = {
     okText: '确定',
     maskClosable: true,
     relate: true,
-    data: []
+    data: [],
+    history: false
 }
 
 export default Picker

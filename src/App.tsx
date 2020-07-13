@@ -67,6 +67,7 @@ class App extends React.Component<any, any> {
                     11111
                 </Popup> */}
                 <Picker
+                    // history
                     maskClosable={false}
                     cancelPress={() => {this.setState({pickerState: !pickerState})}}
                     okPress={(v) => {console.log(v)}}
