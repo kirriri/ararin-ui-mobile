@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from './components/Button/button'
 import Dialog from './components/dialog/dialog'
-import Popup from './components/dialog/popup'
 import Picker from './components/Picker/picker'
 import { PickerTestData, PickerTestData2 } from './util/dataTest'
 
@@ -13,7 +12,7 @@ class App extends React.Component<any, any> {
             buttonState: 'loading',
             visible: false,
             popupVisible: false,
-            pickerState: true,
+            pickerState: false,
             data: []
         }
     }
@@ -37,20 +36,20 @@ class App extends React.Component<any, any> {
         const { visible, pickerState } = this.state
         
         return (
-            <div className="App" style={{ height: '130vh', padding: '4vw', paddingTop: '30vw' }}>
+            <div className="App" style={{ padding: '4vw', paddingTop: '30vw' }}>
                 <Button
-                    ripple
                     type="primary"
                     onClick={() => {this.setState({visible: !visible})}}
                 >弹窗</Button>
                 <Button
                     style={{marginTop: '5vw'}}
-                    ripple
                     type="primary"
                     onClick={() => {this.setState({pickerState: !pickerState})}}
                 >选择器</Button>
                 <Dialog 
+                    style={{position: 'relative'}}
                     maskClosable
+                    animation="scale"
                     onClose={() => this.setState({visible: false})}
                     title={<h3>标题测试</h3>} 
                     visible={visible}
@@ -58,6 +57,7 @@ class App extends React.Component<any, any> {
                         {text: '取消', onPress: () => {this.setState({visible: false})}}, 
                         {text: '确定', onPress: () => {this.setState({visible: false})}, higlight: true}]}
                 >
+                    测试测试测试
                 </Dialog>
                 {/* <Popup
                     maskClosable

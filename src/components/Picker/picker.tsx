@@ -85,6 +85,25 @@ export const Picker: FC<BasePickerProps> = props => {
         setRenderData(baseArr)
     }, [data, visible])
 
+    useEffect(() => {
+        if(visible) {
+            // document.body.style.position = 'fixed'
+            console.log(111111)
+            // document.body.style.width = '100%'
+            document.addEventListener('touchmove', touchFix);
+        }else {
+            console.log(222222)
+            document.removeEventListener('touchmove', touchFix)
+        }
+        return () => {
+            document.removeEventListener('touchmove', touchFix)
+        }
+    }, [visible])
+
+    const touchFix = e => {
+        e.preventDefault();
+    }
+
     // 查询选择的index
     const getCurrentIndex = wheel => {
         let heightArr = Array.from(wheel.items).map((item, index) => index * wheel.itemHeight)
@@ -151,7 +170,7 @@ export const Picker: FC<BasePickerProps> = props => {
         return tmpRData
     }
 
-    
+    // 渲染renderData，绑定better-scroll
     useEffect(() => {
         if(wrapper.current && visible) {
                 if(0 < PickerBaseData.current.ITEM_MIN_NUM) {
@@ -172,8 +191,8 @@ export const Picker: FC<BasePickerProps> = props => {
                             rotate: 0,
                         },       
                         // useTransition: false,   
-                        deceleration: 0.025,
-                        swipeTime: 800,
+                        deceleration: 0.01,
+                        swipeTime: 1000,
                     })  
                     wheel.on('scrollEnd', () => {
                         // 滚动完成之后获取当前选取的索引值,设置后续联动的数据
@@ -184,10 +203,24 @@ export const Picker: FC<BasePickerProps> = props => {
                                 let tmpRData = JSON.parse(JSON.stringify(rData))
                                 return getCalRenderData(tmpRData, index, currentIndex)
                             })
+                            Array.from(wheels.current).forEach(((sitem, sindex) => sitem.enable()))
                         }
                     }) 
                     wheel.on('scrollStart', () => {
                         touchIndex.current = index
+                    })
+                    wheel.on('beforeScrollStart', () => {
+                        setRenderData(rData => {
+                            if(rData[index].length === 0) {
+                                return rData
+                            }
+                            Array.from(wheels.current).forEach(((sitem, sindex) => {
+                                if(sindex !== index ) {
+                                    sitem.disable()
+                                }
+                            }))
+                            return rData
+                        })
                     })
                     return wheel 
                 })
