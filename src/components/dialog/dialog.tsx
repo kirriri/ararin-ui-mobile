@@ -23,6 +23,7 @@ export interface DialogBaseProps {
     prefixCls?: string,
     className?: string,
     visible?: boolean,
+    style?: React.CSSProperties,
     closeIcon?: boolean,
     title?: React.ReactNode,
     maskAnimation?: string
@@ -42,6 +43,7 @@ export const Dialog: React.FC<DialogBaseProps> = props => {
         onClose,
         animation,
         closeIcon,
+        style,
         children,
         footer,
         ...restProps
@@ -89,31 +91,31 @@ export const Dialog: React.FC<DialogBaseProps> = props => {
             </div> : ''
     
     const classes = classnames({
-        [`${prefixCls}`]: prefixCls && !className,
+        [`${prefixCls}`]: prefixCls,
         [`${className}`]: className
     })
     
     return (
-        <BaseDialog
-            closable={false}
-            onClose={onClose}
-            wrapClassName=""
-            maskClosable={maskClosable}
-            animation={animation}
-            maskAnimation="fade"
-            className={classes}
-            prefixCls={prefixCls}
-            footer={footerWrap}
-            {...restProps}
-        >
-            {closeIcon && <span className="ad-close"><Icon onClick={onHandleClose} type="close"/></span>}
-            {children}
-        </BaseDialog>
+        <div>
+            <BaseDialog
+                closable={false}
+                onClose={onClose} 
+                maskClosable={maskClosable}
+                animation={animation}
+                maskAnimation="fade"
+                className={classes}
+                prefixCls={prefixCls}
+                footer={footerWrap}
+                {...restProps}
+            >
+                {closeIcon && <span className="ad-close"><Icon onClick={onHandleClose} type="close"/></span>}
+                {children}
+            </BaseDialog>
+        </div>
     )
 }
 
 Dialog.defaultProps = {
-    className:' test',
     prefixCls: 'ad',
     maskAnimation: 'fade',
     maskClosable: false,
