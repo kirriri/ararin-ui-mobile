@@ -52,6 +52,7 @@ export const Picker: FC<BasePickerProps> = props => {
 
     const wheels = useRef([])
     const touchIndex = useRef(0)
+    const touchItemIndex = useRef(0)
     const [sketchRenderData, setSketchRenderData] = useState([])
     const [renderData, setRenderData] = useState([])
     const wrapper = useRef(null)
@@ -67,7 +68,7 @@ export const Picker: FC<BasePickerProps> = props => {
         for(let i = 0; i < wheels.current.length; i++ ) {
             if(i > touchIndex.current) {
                 wheels.current[i].refresh()
-                wheels.current[i].wheelTo(0)
+                // wheels.current[i].wheelTo(0)
             }
         }
     }, [renderData])
@@ -88,9 +89,8 @@ export const Picker: FC<BasePickerProps> = props => {
     useEffect(() => {
         if(visible) {
             // document.body.style.position = 'fixed'
-            console.log(111111)
             // document.body.style.width = '100%'
-            document.addEventListener('touchmove', touchFix);
+            document.addEventListener('touchmove', touchFix, { passive: false });
         }else {
             console.log(222222)
             document.removeEventListener('touchmove', touchFix)
@@ -191,23 +191,26 @@ export const Picker: FC<BasePickerProps> = props => {
                             rotate: 0,
                         },       
                         // useTransition: false,   
-                        deceleration: 0.01,
+                        deceleration: 1,
                         swipeTime: 1000,
                     })  
                     wheel.on('scrollEnd', () => {
                         // 滚动完成之后获取当前选取的索引值,设置后续联动的数据
                         if(!Number.isNaN(wheel.y) && touchIndex.current === index) {
                             const currentIndex = getCurrentIndex(wheel)
+                            if(touchItemIndex.current !== currentIndex) {
+                                setRenderData(rData => {
+                                    let tmpRData = JSON.parse(JSON.stringify(rData))
+                                    return getCalRenderData(tmpRData, index, currentIndex)
+                                })
+                            }
                             // const currentIndex = wheel.getSelectedIndex()
-                            setRenderData(rData => {
-                                let tmpRData = JSON.parse(JSON.stringify(rData))
-                                return getCalRenderData(tmpRData, index, currentIndex)
-                            })
                             Array.from(wheels.current).forEach(((sitem, sindex) => sitem.enable()))
                         }
                     }) 
                     wheel.on('scrollStart', () => {
                         touchIndex.current = index
+                        touchItemIndex.current = getCurrentIndex(wheel)
                     })
                     wheel.on('beforeScrollStart', () => {
                         setRenderData(rData => {
@@ -280,27 +283,25 @@ export const Picker: FC<BasePickerProps> = props => {
                     title={reTit}
                     {...restProps}
                 >
-                    <div style={{height: '100%', position: 'relative'}}>
-                        <div className={`${prefixCls}-data-content`} ref={wrapper}>
-                            {
-                                renderData.map(item => 
-                                    <div className={`${prefixCls}-data-wrapper`}>
-                                        <ul 
-                                            className={`${prefixCls}-data-item wheel-scroll`}
-                                            style={{marginTop: `${Math.floor(PickerBaseData.current.CONTENT_CHID / 2)}0vw`}}
-                                        >
-                                            {item.map((item, index) => 
-                                                <li className="wheel-item">
-                                                    {item.text}
-                                                </li>
-                                            )}
-                                        </ul>
-                                        <div  className={`${prefixCls}-item-mask`}></div>
-                                        <div  className={`${prefixCls}-item-focus`}></div>
-                                    </div>
-                                )
-                            }
-                        </div>
+                    <div className={`${prefixCls}-data-content`} ref={wrapper}>
+                        {
+                            renderData.map(item => 
+                                <div className={`${prefixCls}-data-wrapper`}>
+                                    <ul 
+                                        className={`${prefixCls}-data-item wheel-scroll`}
+                                        style={{marginTop: `${Math.floor(PickerBaseData.current.CONTENT_CHID / 2)}0vw`}}
+                                    >
+                                        {item.map((item, index) => 
+                                            <li className="wheel-item">
+                                                {item.text}
+                                            </li>
+                                        )}
+                                    </ul>
+                                    <div  className={`${prefixCls}-item-mask`}></div>
+                                    <div  className={`${prefixCls}-item-focus`}></div>
+                                </div>
+                            )
+                        }
                     </div>
                 </Popup>
            </>

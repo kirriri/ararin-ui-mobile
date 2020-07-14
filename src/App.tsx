@@ -36,7 +36,7 @@ class App extends React.Component<any, any> {
         const { visible, pickerState } = this.state
         
         return (
-            <div className="App" style={{ padding: '4vw', paddingTop: '30vw' }}>
+            <div className="App" style={{height: '130vh', padding: '4vw', paddingTop: '30vw' }}>
                 <Button
                     type="primary"
                     onClick={() => {this.setState({visible: !visible})}}
@@ -46,19 +46,6 @@ class App extends React.Component<any, any> {
                     type="primary"
                     onClick={() => {this.setState({pickerState: !pickerState})}}
                 >选择器</Button>
-                <Dialog 
-                    style={{position: 'relative'}}
-                    maskClosable
-                    animation="scale"
-                    onClose={() => this.setState({visible: false})}
-                    title={<h3>标题测试</h3>} 
-                    visible={visible}
-                    footer={[
-                        {text: '取消', onPress: () => {this.setState({visible: false})}}, 
-                        {text: '确定', onPress: () => {this.setState({visible: false})}, higlight: true}]}
-                >
-                    测试测试测试
-                </Dialog>
                 {/* <Popup
                     maskClosable
                     onClose={() => {this.setState({popupVisible: false})}}
@@ -73,6 +60,17 @@ class App extends React.Component<any, any> {
                     data={this.state.data}
                     visible={this.state.pickerState}
                 ></Picker>
+                <Dialog 
+                    maskClosable
+                    onClose={() => this.setState({visible: false})}
+                    title={<h3>标题测试</h3>} 
+                    visible={visible}
+                    footer={[
+                        {text: '取消', onPress: () => {this.setState({visible: false})}}, 
+                        {text: '确定', onPress: () => {this.setState({visible: false})}, higlight: true}]}
+                >
+                    测试测试测试
+                </Dialog>
             </div>
         );
     }
