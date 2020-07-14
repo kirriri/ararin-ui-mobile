@@ -219,10 +219,10 @@ $btn-border-radius:           $border-radius !default;
 $btn-border-radius-lg:        $border-radius-lg !default;
 $btn-border-radius-sm:        $border-radius-sm !default;
 
-$btn-transition:              color .15s ease-in-out, 
-                              background-color .15s ease-in-out, 
-                              border-color .15s ease-in-out, 
-                              box-shadow 1s ease-in-out !default;
+$btn-transition:              color .1s ease-in-out, 
+                              background-color .1s ease-in-out, 
+                              border-color .1s ease-in-out, 
+                              box-shadow .3s ease-in-out !default;
 // dialog
 $border-bottom-radius: 0 0 1.5vw 1.5vw;
 $border-top-radius: 1.5vw 1.5vw 0 0;

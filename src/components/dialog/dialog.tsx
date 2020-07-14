@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import TouchFeedback from 'rmc-feedback';
 import BaseDialog from 'rmc-dialog';
 import classnames from 'classnames'
@@ -46,6 +46,7 @@ export const Dialog: React.FC<DialogBaseProps> = props => {
         style,
         children,
         footer,
+        visible,
         ...restProps
     } = props
 
@@ -91,27 +92,25 @@ export const Dialog: React.FC<DialogBaseProps> = props => {
             </div> : ''
     
     const classes = classnames({
-        [`${prefixCls}`]: prefixCls,
         [`${className}`]: className
     })
     
     return (
-        <div>
-            <BaseDialog
-                closable={false}
-                onClose={onClose} 
-                maskClosable={maskClosable}
-                animation={animation}
-                maskAnimation="fade"
-                className={classes}
-                prefixCls={prefixCls}
-                footer={footerWrap}
-                {...restProps}
-            >
-                {closeIcon && <span className="ad-close"><Icon onClick={onHandleClose} type="close"/></span>}
-                {children}
-            </BaseDialog>
-        </div>
+        <BaseDialog
+            visible={visible}
+            closable={false}
+            onClose={onClose} 
+            maskClosable={maskClosable}
+            animation={animation}
+            maskAnimation="fade"
+            className={classes}
+            prefixCls={prefixCls}
+            footer={footerWrap}
+            {...restProps}
+        >
+            {closeIcon && <span className="ad-close"><Icon onClick={onHandleClose} type="close"/></span>}
+            {children}
+        </BaseDialog>
     )
 }
 
