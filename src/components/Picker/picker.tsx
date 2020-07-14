@@ -66,12 +66,7 @@ export const Picker: FC<BasePickerProps> = props => {
 
     // 更新renderData后刷新bscroll
     useEffect(() => {
-        for(let i = 0; i < wheels.current.length; i++ ) {
-            if(i > touchIndex.current) {
-                wheels.current[i].refresh()
-                wheels.current[i].wheelTo(0)
-            }
-        }
+        Array.from(wheels.current).forEach(item => item.refresh())
     }, [renderData])
 
     useEffect(() => {
@@ -97,12 +92,8 @@ export const Picker: FC<BasePickerProps> = props => {
 
     useEffect(() => {
         if(visible) {
-            // document.body.style.position = 'fixed'
-            console.log(111111)
-            // document.body.style.width = '100%'
             document.addEventListener('touchmove', touchFix);
         }else {
-            console.log(222222)
             document.removeEventListener('touchmove', touchFix)
         }
         return () => {
@@ -200,38 +191,33 @@ export const Picker: FC<BasePickerProps> = props => {
                             wheelDisabledItemClass: 'wheel-disabled-item',
                             rotate: 0,
                         },       
-                        // useTransition: false,   
-                        deceleration: 0.01,
-                        swipeTime: 1000,
+                        momentum: false,
+                        click: false,
                     })  
+                    wheel.touchProps = {
+                        one: -1,
+                        two: -1
+                    }
                     wheel.on('scrollEnd', () => {
                         // 滚动完成之后获取当前选取的索引值,设置后续联动的数据
-                        if(!Number.isNaN(wheel.y) && touchIndex.current === index) {
+                        if(!Number.isNaN(wheel.y)) {
                             const currentIndex = getCurrentIndex(wheel)
+                            if(index === wheel.touchProps.one && currentIndex === wheel.touchProps.two) {
+                                return
+                            }
                             // const currentIndex = wheel.getSelectedIndex()
                             setRenderData(rData => {
                                 let tmpRData = JSON.parse(JSON.stringify(rData))
                                 selectedIndex.current[index] = currentIndex
+                                console.log(getCalRenderData(tmpRData, index, currentIndex))
                                 return getCalRenderData(tmpRData, index, currentIndex)
                             })
-                            Array.from(wheels.current).forEach(((sitem, sindex) => sitem.enable()))
+                            wheel.touchProps.two = currentIndex
                         }
                     }) 
                     wheel.on('scrollStart', () => {
-                        touchIndex.current = index
-                    })
-                    wheel.on('beforeScrollStart', () => {
-                        setRenderData(rData => {
-                            if(rData[index].length === 0) {
-                                return rData
-                            }
-                            Array.from(wheels.current).forEach(((sitem, sindex) => {
-                                if(sindex !== index ) {
-                                    sitem.disable()
-                                }
-                            }))
-                            return rData
-                        })
+                        wheel.touchProps.one = index
+                        wheel.touchProps.two = getCurrentIndex(wheel)
                     })
                     return wheel 
                 })
@@ -240,6 +226,8 @@ export const Picker: FC<BasePickerProps> = props => {
             wheels.current.forEach(item => item.destroy())
         }
     }, [sketchRenderData, visible])
+
+    
 
     const handleOkClick = () => {
         if(!Array.from((wheels.current)).some((item, index) => {
