@@ -52,12 +52,12 @@ export const Picker: FC<BasePickerProps> = props => {
     } = props
 
     const wheels = useRef([])
-    const touchIndex = useRef(0)
-<<<<<<< HEAD
+    const touch = useRef({
+        disable: false,
+        touchCol: 0,
+        touchIndex: 0
+    })
     const selectedIndex = useRef([])
-=======
-    const touchItemIndex = useRef(0)
->>>>>>> e0aa5da47f431d8a7c3c60161f83b6def8e99836
     const [sketchRenderData, setSketchRenderData] = useState([])
     const [renderData, setRenderData] = useState([])
     const wrapper = useRef(null)
@@ -70,16 +70,13 @@ export const Picker: FC<BasePickerProps> = props => {
 
     // 更新renderData后刷新bscroll
     useEffect(() => {
-<<<<<<< HEAD
-        Array.from(wheels.current).forEach(item => item.refresh())
-=======
-        for(let i = 0; i < wheels.current.length; i++ ) {
-            if(i > touchIndex.current) {
-                wheels.current[i].refresh()
-                // wheels.current[i].wheelTo(0)
+        Array.from(wheels.current).forEach((item, index) => {
+            item.refresh()
+            if(index > touch.current.touchCol) {
+                item.wheelTo(0)
             }
-        }
->>>>>>> e0aa5da47f431d8a7c3c60161f83b6def8e99836
+        })
+        touch.current.disable = false
     }, [renderData])
 
     useEffect(() => {
@@ -103,15 +100,10 @@ export const Picker: FC<BasePickerProps> = props => {
         setRenderData(baseArr)
     }, [data, visible])
 
+    // 防止滑动穿透
     useEffect(() => {
         if(visible) {
-<<<<<<< HEAD
-            document.addEventListener('touchmove', touchFix);
-=======
-            // document.body.style.position = 'fixed'
-            // document.body.style.width = '100%'
             document.addEventListener('touchmove', touchFix, { passive: false });
->>>>>>> e0aa5da47f431d8a7c3c60161f83b6def8e99836
         }else {
             document.removeEventListener('touchmove', touchFix)
         }
@@ -210,14 +202,8 @@ export const Picker: FC<BasePickerProps> = props => {
                             wheelDisabledItemClass: 'wheel-disabled-item',
                             rotate: 0,
                         },       
-<<<<<<< HEAD
                         momentum: false,
                         click: false,
-=======
-                        // useTransition: false,   
-                        deceleration: 1,
-                        swipeTime: 1000,
->>>>>>> e0aa5da47f431d8a7c3c60161f83b6def8e99836
                     })  
                     wheel.touchProps = {
                         one: -1,
@@ -227,9 +213,10 @@ export const Picker: FC<BasePickerProps> = props => {
                         // 滚动完成之后获取当前选取的索引值,设置后续联动的数据
                         if(!Number.isNaN(wheel.y)) {
                             const currentIndex = getCurrentIndex(wheel)
-<<<<<<< HEAD
                             if(index === wheel.touchProps.one && currentIndex === wheel.touchProps.two) {
-                                return
+                                if(renderData[index+1] && renderData[index][currentIndex].children === renderData[index+1]) {
+                                    return
+                                }
                             }
                             // const currentIndex = wheel.getSelectedIndex()
                             setRenderData(rData => {
@@ -242,36 +229,13 @@ export const Picker: FC<BasePickerProps> = props => {
                         }
                     }) 
                     wheel.on('scrollStart', () => {
+                        const currentIndex = getCurrentIndex(wheel)
                         wheel.touchProps.one = index
-                        wheel.touchProps.two = getCurrentIndex(wheel)
-=======
-                            if(touchItemIndex.current !== currentIndex) {
-                                setRenderData(rData => {
-                                    let tmpRData = JSON.parse(JSON.stringify(rData))
-                                    return getCalRenderData(tmpRData, index, currentIndex)
-                                })
-                            }
-                            // const currentIndex = wheel.getSelectedIndex()
-                            Array.from(wheels.current).forEach(((sitem, sindex) => sitem.enable()))
+                        wheel.touchProps.two = currentIndex
+                        if(touch.current.touchCol > index || !touch.current.disable) {
+                            touch.current.touchCol = index
+                            touch.current.disable = true
                         }
-                    }) 
-                    wheel.on('scrollStart', () => {
-                        touchIndex.current = index
-                        touchItemIndex.current = getCurrentIndex(wheel)
-                    })
-                    wheel.on('beforeScrollStart', () => {
-                        setRenderData(rData => {
-                            if(rData[index].length === 0) {
-                                return rData
-                            }
-                            Array.from(wheels.current).forEach(((sitem, sindex) => {
-                                if(sindex !== index ) {
-                                    sitem.disable()
-                                }
-                            }))
-                            return rData
-                        })
->>>>>>> e0aa5da47f431d8a7c3c60161f83b6def8e99836
                     })
                     return wheel 
                 })
@@ -332,15 +296,15 @@ export const Picker: FC<BasePickerProps> = props => {
                 >
                     <div className={`${prefixCls}-data-content`} ref={wrapper}>
                         {
-                            renderData.map(item => 
-                                <div className={`${prefixCls}-data-wrapper`}>
+                            renderData.map((item, index) => 
+                                <div className={`${prefixCls}-data-wrapper`} key={index}>
                                     <ul 
                                         className={`${prefixCls}-data-item wheel-scroll`}
                                         style={{marginTop: `${Math.floor(PickerBaseData.current.CONTENT_CHID / 2)}0vw`}}
                                     >
-                                        {item.map((item, index) => 
-                                            <li className="wheel-item">
-                                                {item.text}
+                                        {item.map((sitem, sindex) => 
+                                            <li className="wheel-item" key={sindex}>
+                                                {sitem.text}
                                             </li>
                                         )}
                                     </ul>
