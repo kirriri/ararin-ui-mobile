@@ -213,11 +213,6 @@ export const Picker: FC<BasePickerProps> = props => {
                         // 滚动完成之后获取当前选取的索引值,设置后续联动的数据
                         if(!Number.isNaN(wheel.y)) {
                             const currentIndex = getCurrentIndex(wheel)
-                            if(index === wheel.touchProps.one && currentIndex === wheel.touchProps.two) {
-                                if(renderData[index+1] && renderData[index][currentIndex].children === renderData[index+1]) {
-                                    return
-                                }
-                            }
                             // const currentIndex = wheel.getSelectedIndex()
                             setRenderData(rData => {
                                 let tmpRData = JSON.parse(JSON.stringify(rData))
