@@ -9,6 +9,7 @@ import classNames from 'classnames'
 import TouchFeedback from 'rmc-feedback';
 import BScroll from 'better-scroll'
 import { isObject } from '../../util/type'
+import { render } from 'react-dom';
 
 export interface BaseDataProps {
     text?: string,
@@ -59,7 +60,7 @@ export const Picker: FC<BasePickerProps> = props => {
     })
     const selectedIndex = useRef([])
     const [sketchRenderData, setSketchRenderData] = useState([])
-    const [renderData, setRenderData] = useState([])
+    const [renderData, setRenderData] = useState<any>()
     const wrapper = useRef(null)
     const PickerBaseData = useRef({
         CONTENT_CHID: 3,
@@ -97,7 +98,7 @@ export const Picker: FC<BasePickerProps> = props => {
         setSketchRenderData(baseArr)
         baseArr[0] = data
         baseArr = getCalRenderData(baseArr, 0, 0)
-        setRenderData(baseArr)
+        setRenderData(() => baseArr)
     }, [data, visible])
 
     // 防止滑动穿透
@@ -206,24 +207,19 @@ export const Picker: FC<BasePickerProps> = props => {
                         click: false,
                     })  
                     wheel.touchProps = {
-                        one: -1,
+                        one: index,
                         two: -1
                     }
                     wheel.on('scrollEnd', () => {
                         // 滚动完成之后获取当前选取的索引值,设置后续联动的数据
                         if(!Number.isNaN(wheel.y)) {
                             const currentIndex = getCurrentIndex(wheel)
-                            if(index === wheel.touchProps.one && currentIndex === wheel.touchProps.two) {
-                                if(renderData[index+1] && renderData[index][currentIndex].children === renderData[index+1]) {
-                                    return
-                                }
-                            }
-                            // const currentIndex = wheel.getSelectedIndex()
                             setRenderData(rData => {
-                                let tmpRData = JSON.parse(JSON.stringify(rData))
+                                // let tmpRData = JSON.parse(JSON.stringify(rData))
                                 selectedIndex.current[index] = currentIndex
-                                console.log(getCalRenderData(tmpRData, index, currentIndex))
-                                return getCalRenderData(tmpRData, index, currentIndex)
+                                console.log(Array.from(wheels.current).map(item => item.touchProps.two))
+                                console.log(getCalRenderData(rData, index, currentIndex))
+                                    setRenderData(getCalRenderData(rData, index, currentIndex))
                             })
                             wheel.touchProps.two = currentIndex
                         }
@@ -232,6 +228,8 @@ export const Picker: FC<BasePickerProps> = props => {
                         const currentIndex = getCurrentIndex(wheel)
                         wheel.touchProps.one = index
                         wheel.touchProps.two = currentIndex
+                    })
+                    wheel.on('beforeScrollStart', () => {
                         if(touch.current.touchCol > index || !touch.current.disable) {
                             touch.current.touchCol = index
                             touch.current.disable = true
@@ -295,8 +293,9 @@ export const Picker: FC<BasePickerProps> = props => {
                     {...restProps}
                 >
                     <div className={`${prefixCls}-data-content`} ref={wrapper}>
+                        {console.log(renderData)}
                         {
-                            renderData.map((item, index) => 
+                            renderData && renderData.map((item, index) => 
                                 <div className={`${prefixCls}-data-wrapper`} key={index}>
                                     <ul 
                                         className={`${prefixCls}-data-item wheel-scroll`}
