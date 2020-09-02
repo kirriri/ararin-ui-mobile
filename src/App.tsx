@@ -48,17 +48,13 @@ class App extends React.Component<any, any> {
                     onClick={() => {console.log(22222)}}
                 >弹窗</Button>
                 <Button
+                    disabled
+                    // ripple
                     style={{marginTop: '5vw'}}
                     type="primary"
                     onClick={() => {this.setState({pickerState: !pickerState})}}
                 >选择器</Button>
-                {/* <Popup
-                    maskClosable
-                    onClose={() => {this.setState({popupVisible: false})}}
-                    visible={this.state.popupVisible}
-                >
-                    11111
-                </Popup> */}
+                
                 <Picker
                     // history
                     maskClosable={false}

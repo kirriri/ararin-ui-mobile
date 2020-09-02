@@ -3,7 +3,6 @@ import React, {
     ButtonHTMLAttributes,
     AnchorHTMLAttributes,
     useRef,
-    useEffect
 } from 'react'
 import classNames from 'classnames'
 import TouchFeedback from 'rmc-feedback';
@@ -119,7 +118,7 @@ export const Button: FC<ButtonProps> = props => {
         'ararin-button-ripple': ripple
     })
     var duration = 750;
-
+    const Radius = 12.5
     // 样式string拼凑
     var forStyle = function(position){
         var cssStr = '';
@@ -136,6 +135,7 @@ export const Button: FC<ButtonProps> = props => {
           left:0
         }, ele = document.documentElement;
         'undefined' != typeof target.getBoundingClientRect && (position = target.getBoundingClientRect());
+        console.log(position)
         return {
             top: position.top + window.pageYOffset - ele.clientTop,
             left: position.left + window.pageXOffset - ele.clientLeft
@@ -151,13 +151,15 @@ export const Button: FC<ButtonProps> = props => {
           _left = event.pageX - rectObj.left,
           _scale = 'scale(' + pDiv.clientWidth / 100 * 6 + ')';
         var position = {
-          top: _height+'px',
-          left: _left+'px',
+          top: _height - Radius+'px',
+          left: _left - Radius+'px',
+          width: '25px',
+          height: '25px',
           transform: '',
           opacity: '0'
 
         };
-        cDiv.className = cDiv.className + "ararin-button-ripple-animation "
+        cDiv.className = cDiv.className + "ararin-button-ripple-animation"
         cDiv.setAttribute("style", forStyle(position))
         position["-webkit-transform"] = _scale
         position["-moz-transform"] = _scale
@@ -184,19 +186,21 @@ export const Button: FC<ButtonProps> = props => {
           "-moz-transform" : _scale,
           "-ms-transform" : _scale,
           "-o-transform" : _scale,
-          top: _height + "px",
-          left: _left + "px",
+          top: _height - Radius + "px",
+          left: _left - Radius + "px",
         };
         setTimeout(function(){
           cDiv.setAttribute("style", forStyle(finishStyle));
           setTimeout(function(){
             pDiv.removeChild(cDiv);
           },duration);
-        },100)
+        }, 250)
       }
 
     const handleClick = e => {
-        show(e);
+        if(ripple) {
+          show(e);
+        }
         if(onClick) {
             onClick(e)
         }
