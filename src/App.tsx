@@ -2,6 +2,8 @@ import React from 'react';
 import Button from './components/Button/buttonRippleByCss'
 import Dialog from './components/dialog/dialog'
 import Picker from './components/Picker/picker'
+
+
 import { PickerTestData, PickerTestData2 } from './util/dataTest'
 
 class App extends React.Component<any, any> {
@@ -38,18 +40,18 @@ class App extends React.Component<any, any> {
         return (
             <div className="App" style={{height: '130vh', padding: '4vw', paddingTop: '30vw' }}>
                 <Button
-                    type="primary"
-                    ripple
-                    onClick={() => {console.log(11111)}}
+                    type="success"
+                    // ripple
+                    onClick={() => {this.setState({visible: true})}}
                 >弹窗</Button>
                 <Button
                     type="primary"
                     ripple
+                    style={{marginTop: '5vw'}}
                     onClick={() => {console.log(22222)}}
                 >弹窗</Button>
                 <Button
-                    disabled
-                    // ripple
+                    ripple
                     style={{marginTop: '5vw'}}
                     type="primary"
                     onClick={() => {this.setState({pickerState: !pickerState})}}

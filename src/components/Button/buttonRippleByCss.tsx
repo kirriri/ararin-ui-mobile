@@ -1,8 +1,8 @@
 import React, {
-    FC,
-    ButtonHTMLAttributes,
-    AnchorHTMLAttributes,
-    useRef,
+	FC,
+	ButtonHTMLAttributes,
+	AnchorHTMLAttributes,
+	useRef,
 } from 'react'
 import classNames from 'classnames'
 import TouchFeedback from 'rmc-feedback';
@@ -28,19 +28,19 @@ type ButtonSize = 'sm' | 'md' | 'lg'
 type ButtonType = 'primary' | 'default' | 'warning' | 'danger' | 'link' | 'success'
 
 interface BaseButtonProps {
-    icon?: React.ReactNode,
-    iconState?: IconType,
-    href?: string,
-    type?: ButtonType,
-    size?: ButtonSize,
-    className?: string,
-    disabled?: boolean,
-    state?: ButtonState,
-    children?: React.ReactNode,
-    ripple?: boolean;
-    style?: React.CSSProperties,
-    activeClassName?: string,
-    activeStyle?: React.CSSProperties,
+	icon?: React.ReactNode,
+	iconState?: IconType,
+	href?: string,
+	type?: ButtonType,
+	size?: ButtonSize,
+	className?: string,
+	disabled?: boolean,
+	state?: ButtonState,
+	children?: React.ReactNode,
+	ripple?: boolean;
+	style?: React.CSSProperties,
+	activeClassName?: string,
+	activeStyle?: React.CSSProperties,
 }
 
 type NativeButtonProps = BaseButtonProps & Omit<ButtonHTMLAttributes<HTMLElement>, 'type'>
@@ -48,204 +48,191 @@ type AnchorButtonProps = BaseButtonProps & Omit<AnchorHTMLAttributes<HTMLElement
 export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>
 
 const PrefixBrowser = [
-  "-webkit-transform",
-  "-moz-transform",
-  "-ms-transform",
-  "-o-transform",
+	"-webkit-",
+	"-moz-",
+	"-ms-",
+	"-o-",
+	""
 ]
 
 export const Button: FC<ButtonProps> = props => {
-    const {
-        icon,
-        iconState,
-        className,
-        state,
-        children,
-        type,
-        size,
-        ripple,
-        onClick,
-        href,
-        activeStyle,
-        activeClassName,
-        style,
-        ...restProps
-    } = props
+	const {
+		icon,
+		iconState,
+		className,
+		state,
+		children,
+		type,
+		size,
+		ripple,
+		onClick,
+		href,
+		activeStyle,
+		activeClassName,
+		style,
+		...restProps
+	} = props
 
-    const btn = useRef<HTMLAnchorElement>(null)
-    
-    let {
-        disabled
-    } = props
+	const btn = useRef<HTMLAnchorElement>(null)
+
+	let {
+		disabled
+	} = props
 
 
-    //处理图标
-    let iconEle
-    if(state === 'loading') {
-        disabled = true
-        iconEle =   <Icon
-                        iconState="spin"
-                        type="loading"
-                    ></Icon>
-        // iconEle =  <CSSTransition
-        //                 in={state === 'loading'} // 如果this.state.show从false变为true，则动画入场，反之out出场
-        //                 timeout={500} //动画执行1秒
-        //                 classNames='test' //自定义的class名
-        //                 unMountOnExit
-        //                 appear={true}
-        //             >
-        //                 <Icon
-        //                     iconState="spin"
-        //                     type="loading"
-        //                 ></Icon>
-        //             </CSSTransition>
-    }else if (state === 'disabled') {
-        disabled = true
-    }else if (state === 'failed') {
-        disabled = true
-        iconEle =   <Icon
-                        type="failed"
-                    >
-                    </Icon>
-    }else if(typeof icon === 'string') {
-        iconEle =   <Icon
-                        iconState={iconState}
-                        type={icon}
-                    ></Icon>
-    }else if(icon) {
-        iconEle = icon
-    }
+	//处理图标
+	let iconEle
+	if (state === 'loading') {
+		disabled = true
+		iconEle = <Icon
+			iconState="spin"
+			type="loading"
+		></Icon>
+		// iconEle =  <CSSTransition
+		//                 in={state === 'loading'} // 如果this.state.show从false变为true，则动画入场，反之out出场
+		//                 timeout={500} //动画执行1秒
+		//                 classNames='test' //自定义的class名
+		//                 unMountOnExit
+		//                 appear={true}
+		//             >
+		//                 <Icon
+		//                     iconState="spin"
+		//                     type="loading"
+		//                 ></Icon>
+		//             </CSSTransition>
+	} else if (state === 'disabled') {
+		disabled = true
+	} else if (state === 'failed') {
+		disabled = true
+		iconEle = <Icon
+			type="failed"
+		>
+		</Icon>
+	} else if (typeof icon === 'string') {
+		iconEle = <Icon
+			iconState={iconState}
+			type={icon}
+		></Icon>
+	} else if (icon) {
+		iconEle = icon
+	}
 
-    const classes = classNames('ararin-button',className , {
-        [`ararin-button-${type}`] : type,
-        [`ararin-button-${size}`] : size,
-        // loading样式，临时放在这，等后期再次开发
-        [`ararin-button-${state}`] : state,
-        'disabled': disabled,
-        'ararin-button-ripple': ripple
-    })
-    var duration = 750;
-    const Radius = 12.5
-    // 样式string拼凑
-    var forStyle = function(position){
-        var cssStr = '';
-        for( var key in position){
-          if(position.hasOwnProperty(key)) cssStr += key+':'+position[key]+';';
-        };
-        return cssStr;
-      }
+	const classes = classNames('ararin-button', className, {
+		[`ararin-button-${type}`]: type,
+		[`ararin-button-${size}`]: size,
+		// loading样式，临时放在这，等后期再次开发
+		[`ararin-button-${state}`]: state,
+		'disabled': disabled,
+		'ararin-button-ripple': ripple
+	})
+	var duration = 750;
+	const Radius = 12.5
 
-      // 获取鼠标点击位置
-      var forRect = function(target){
-        var position = {
-          top:0,
-          left:0,
-          width: 0,
-          height: 0,
-        }, ele = document.documentElement;
-        'undefined' != typeof target.getBoundingClientRect && (position = target.getBoundingClientRect());
-        console.log(position)
-        return {
-            top: position.top + window.pageYOffset - ele.clientTop,
-            left: position.left + window.pageXOffset - ele.clientLeft
-        }
-      }
+	// 样式string拼凑
+	var forStyle = function (position) {
+		var cssStr = '';
+		for (var key in position) {
+			if (position.hasOwnProperty(key)) cssStr += key + ':' + position[key] + ';';
+		};
+		return cssStr;
+	}
 
-    var show = function(event){
-        var pDiv = event.target,
-          cDiv = document.createElement('div');
-        pDiv.appendChild(cDiv);
-        var rectObj = forRect(pDiv),
-          _height = event.pageY - rectObj.top,
-          _left = event.pageX - rectObj.left,
-          _scale = 'scale(' + pDiv.clientWidth / 100 * 6 + ')';
-        var position = {
-          top: _height - Radius+'px',
-          left: _left - Radius+'px',
-          width: '25px',
-          height: '25px',
-          transform: '',
-          opacity: '0'
+	// 获取鼠标点击位置
+	var forRect = function (target) {
+		var position = {
+			top: 0,
+			left: 0,
+			width: 0,
+			height: 0,
+		}, ele = document.documentElement;
+		'undefined' != typeof target.getBoundingClientRect && (position = target.getBoundingClientRect());
+		console.log(position)
+		return {
+			top: position.top + window.pageYOffset - ele.clientTop,
+			left: position.left + window.pageXOffset - ele.clientLeft
+		}
+	}
 
-        };
-        cDiv.className = cDiv.className + "ararin-button-ripple-animation"
-        cDiv.setAttribute("style", forStyle(position))
-        position["-webkit-transform"] = _scale
-        position["-moz-transform"] = _scale
-        position["-ms-transform"] = _scale
-        position["-o-transform"] = _scale
-        position.transform = _scale
-        position.opacity = "1"
-        position["-webkit-transition-duration"] = duration + "ms"
-        position["-moz-transition-duration"] = duration + "ms"
-        position["-o-transition-duration"] = duration + "ms"
-        position["transition-duration"] = duration + "ms"
-        position["-webkit-transition-timing-function"] = "cubic-bezier(0.250, 0.460, 0.450, 0.940)"
-        position["-moz-transition-timing-function"] = "cubic-bezier(0.250, 0.460, 0.450, 0.940)"
-        position["-o-transition-timing-function"] = "cubic-bezier(0.250, 0.460, 0.450, 0.940)"
-        position["transition-timing-function"] = "cubic-bezier(0.250, 0.460, 0.450, 0.940)"
-        cDiv.setAttribute("style", forStyle(position));
-        var finishStyle = {
-          opacity: 0,
-          width: '25px',
-          height: '25px',
-          "-webkit-transition-duration": duration + "ms",
-          "-moz-transition-duration": duration + "ms",
-          "-o-transition-duration": duration + "ms",
-          "transition-duration": duration + "ms",
-          "-webkit-transform" : _scale,
-          "-moz-transform" : _scale,
-          "-ms-transform" : _scale,
-          "-o-transform" : _scale,
-          top: _height - Radius + "px",
-          left: _left - Radius + "px",
-        };
-        setTimeout(function(){
-          cDiv.setAttribute("style", forStyle(finishStyle));
-          setTimeout(function(){
-            pDiv.removeChild(cDiv);
-          },duration);
-        }, 250)
-      }
+	const show = event => {
+		let pDiv = event.target,
+			cDiv = document.createElement('div');
+		pDiv.appendChild(cDiv);
+		let rectObj = forRect(pDiv),
+			_height = event.pageY - rectObj.top,
+			_left = event.pageX - rectObj.left,
+			_scale = 'scale(' + pDiv.clientWidth / 100 * 6 + ')';
+		let position = {
+			top: _height - Radius + 'px',
+			left: _left - Radius + 'px',
+			width: '25px',
+			height: '25px',
+			transform: '',
+			opacity: '0'
+		};
+		let finishStyle = {
+			opacity: 0,
+			width: '25px',
+			height: '25px',
+			top: _height - Radius + "px",
+			left: _left - Radius + "px",
+		};
+		cDiv.className = cDiv.className + "ararin-button-ripple-animation"
+		cDiv.setAttribute("style", forStyle(position))
+		setCssStyle(position, 'transform', _scale)
+		setCssStyle(position, 'opacity', 1)
+		setCssStyle(position, 'transition-duration', duration + "ms")
+		setCssStyle(position, 'transition-timing-function', "cubic-bezier(0.250, 0.460, 0.450, 0.940)")
+		cDiv.setAttribute("style", forStyle(position));
+		setCssStyle(finishStyle, 'transition-duration', duration + "ms")
+		setCssStyle(finishStyle, 'transform', _scale)
+		setTimeout(function () {
+			cDiv.setAttribute("style", forStyle(finishStyle));
+			setTimeout(function () {
+				pDiv.removeChild(cDiv);
+			}, duration);
+		}, 250)
+	}
 
-    const handleClick = e => {
-        if(ripple) {
-          show(e);
-        }
-        if(onClick) {
-            onClick(e)
-        }
-    }
-        
-    return  <>
-                <TouchFeedback
-                    activeClassName={
-                        activeClassName || (ripple ? undefined : `ararin-button-${type}-active`)
-                    }
-                    disabled={disabled}
-                    activeStyle={activeStyle}
-                >
-                    <a 
-                        ref={btn}
-                        style={style}
-                        href={disabled ? undefined : href}
-                        className={classes}
-                        {...restProps}
-                        onClick={handleClick}
-                    >
-                        
-                        {iconEle}
-                        {children}
-                    </a>
-                </TouchFeedback>
-            </>
+	const setCssStyle = (obj, name, val) => {
+		PrefixBrowser.forEach(item => {
+			obj[item+name] = val
+		})
+	}
+
+	const handleClick = e => {
+		ripple && show(e);
+		onClick && onClick(e)
+	}
+
+	return <>
+		<TouchFeedback
+			activeClassName={
+				activeClassName || (ripple ? undefined : `ararin-button-${type}-active`)
+			}
+			disabled={disabled}
+			activeStyle={activeStyle}
+		>
+			<a
+				ref={btn}
+				style={style}
+				href={disabled ? undefined : href}
+				className={classes}
+				{...restProps}
+				onClick={handleClick}
+			>
+
+				{iconEle}
+				{children}
+			</a>
+		</TouchFeedback>
+	</>
 }
 
 Button.defaultProps = {
-    size: "md",
-    disabled: false,
-    type: 'default',
-    iconState: 'static'
-} 
+	size: "md",
+	disabled: false,
+	type: 'default',
+	iconState: 'static'
+}
 
 export default Button;
