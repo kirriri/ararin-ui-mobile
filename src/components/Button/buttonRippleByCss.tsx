@@ -47,6 +47,13 @@ type NativeButtonProps = BaseButtonProps & Omit<ButtonHTMLAttributes<HTMLElement
 type AnchorButtonProps = BaseButtonProps & Omit<AnchorHTMLAttributes<HTMLElement>, 'type'>
 export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>
 
+const PrefixBrowser = [
+  "-webkit-transform",
+  "-moz-transform",
+  "-ms-transform",
+  "-o-transform",
+]
+
 export const Button: FC<ButtonProps> = props => {
     const {
         icon,
@@ -132,7 +139,9 @@ export const Button: FC<ButtonProps> = props => {
       var forRect = function(target){
         var position = {
           top:0,
-          left:0
+          left:0,
+          width: 0,
+          height: 0,
         }, ele = document.documentElement;
         'undefined' != typeof target.getBoundingClientRect && (position = target.getBoundingClientRect());
         console.log(position)
@@ -178,6 +187,8 @@ export const Button: FC<ButtonProps> = props => {
         cDiv.setAttribute("style", forStyle(position));
         var finishStyle = {
           opacity: 0,
+          width: '25px',
+          height: '25px',
           "-webkit-transition-duration": duration + "ms",
           "-moz-transition-duration": duration + "ms",
           "-o-transition-duration": duration + "ms",
