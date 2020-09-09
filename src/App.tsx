@@ -25,7 +25,7 @@ class App extends React.Component<any, any> {
             this.setState({
                 data: PickerTestData
             })
-        }, 1000)
+        }, 3000)
 
         // setTimeout(() => {
         //     this.setState({

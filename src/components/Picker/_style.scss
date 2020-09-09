@@ -6,7 +6,7 @@
     line-height: 11vw;
     height: 11vw;
     font-size: 4.3vw;
-    border-bottom: 0.2vw solid $border-color;
+    border-bottom: 0.2vw solid darken($color: $border-color, $amount: 5%);
     display: flex;
     margin-bottom: 0;
      & > span {
@@ -53,20 +53,18 @@
     /* background-image: -webkit-gradient(linear,left top,left bottom,from(hsla(0,0%,100%,.95)),to(hsla(0,0%,100%,.6))),-webkit-gradient(linear,left bottom,left top,from(hsla(0,0%,100%,.95)),to(hsla(0,0%,100%,.6))); */
     background-image: linear-gradient(180deg,hsla(0,0%,100%,.95),hsla(0,0%,100%,.6)),linear-gradient(0deg,hsla(0,0%,100%,.95),hsla(0,0%,100%,.6));
     background-position: top,bottom;
-    background-size: 100% 30vw;
     background-repeat: no-repeat;
     pointer-events: none;
 }
 
 .apk-item-focus {
     z-index: 12;
-    top: 30vw;
     width: 100%;
     position: absolute;
     height: 10vw;
     box-sizing: border-box;
-    border-top: 0.3vw solid $border-color;
-    border-bottom: 0.3vw solid $border-color;
+    border-top: 0.3vw solid darken($color: $border-color, $amount: 5%);
+    border-bottom: 0.3vw solid darken($color: $border-color, $amount: 5%);
     pointer-events: none;
 }
 

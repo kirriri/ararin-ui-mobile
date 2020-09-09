@@ -6,6 +6,7 @@ import React, {
 } from 'react'
 import Popup from '../dialog/popup'
 import classNames from 'classnames'
+import PickerCol from './pickerCol'
 import TouchFeedback from 'rmc-feedback';
 
 export interface BaseDataProps {
@@ -49,15 +50,48 @@ export const Picker: FC<BasePickerProps> = props => {
         ...restProps
     } = props
 
-    let renderData = []
-    const wrapper = useRef(null)
+    const [top, setTop] = useState(0)
+    const [renderData, setRenderData] = useState([])
     const PickerBaseData = useRef({
-        HEIGHT: '50VW',
+        HEIGHT: 50, //vw计算单位
+        BASE_ITEM_HEIGHT: 10, //vw计算单位
         CONTENT_CHID: 3,
         ITEM_HEIGHT: 10,
-        ITEM_MIN_NUM: 7,
-        ITEM_MAX_NUM: 9
+        ITEM_MIN_NUM: 5,
+        ITEM_MAX_NUM: 7
     })
+    const dataProps = useRef({
+        currentLength: 0,
+        currentDepth: 0,
+    })
+
+    useEffect(
+        () => {
+            const tmpDataProps = findDepthAndLength(data)
+            let baseArr = new Array(tmpDataProps.currentDepth).fill(new Array(0))
+            baseArr[0] = data
+            baseArr = getCalRenderData(baseArr, 0, 0)
+            setRenderData(baseArr)
+            dataProps.current = tmpDataProps
+            
+            if(dataProps.current.currentLength < PickerBaseData.current.ITEM_MIN_NUM) {
+                PickerBaseData.current.CONTENT_CHID = PickerBaseData.current.ITEM_MIN_NUM
+                PickerBaseData.current.HEIGHT = PickerBaseData.current.CONTENT_CHID * 10
+            } else if(dataProps.current.currentLength > PickerBaseData.current.ITEM_MAX_NUM) {
+                PickerBaseData.current.CONTENT_CHID = PickerBaseData.current.ITEM_MAX_NUM
+                PickerBaseData.current.HEIGHT = PickerBaseData.current.CONTENT_CHID * 10
+            }else {
+                
+                dataProps.current.currentLength % 2 === 0 ?
+                    PickerBaseData.current.CONTENT_CHID = dataProps.current.currentLength - 1 :
+                    PickerBaseData.current.CONTENT_CHID = dataProps.current.currentLength
+                    PickerBaseData.current.HEIGHT = PickerBaseData.current.CONTENT_CHID * 10
+            }
+            console.log(PickerBaseData.current.CONTENT_CHID)
+            setTop(Math.floor((PickerBaseData.current.CONTENT_CHID / 2)) * 10)
+        },
+        [data]
+    )
 
     // 查询数据深度
     const findDepthAndLength = data => {
@@ -100,24 +134,6 @@ export const Picker: FC<BasePickerProps> = props => {
         })
         return tmpRData
     }
-
-    const dataProps = findDepthAndLength(data)
-    let baseArr = new Array(dataProps.currentDepth).fill(new Array(0))
-    baseArr[0] = data
-    baseArr = getCalRenderData(baseArr, 0, 0)
-    renderData = baseArr
-    
-
-
-    // 渲染renderData
-    if(0 < PickerBaseData.current.ITEM_MIN_NUM) {
-        PickerBaseData.current.CONTENT_CHID = Math.max(PickerBaseData.current.CONTENT_CHID, PickerBaseData.current.ITEM_MIN_NUM)
-    } else if(0 > PickerBaseData.current.ITEM_MAX_NUM) {
-        PickerBaseData.current.CONTENT_CHID = Math.max(PickerBaseData.current.CONTENT_CHID, PickerBaseData.current.ITEM_MIN_NUM)
-    }else {
-        PickerBaseData.current.CONTENT_CHID = 7
-    }
-    PickerBaseData.current.HEIGHT = PickerBaseData.current.CONTENT_CHID * PickerBaseData.current.ITEM_HEIGHT + 'vw'
         
  
     //  渲染title
@@ -146,25 +162,30 @@ export const Picker: FC<BasePickerProps> = props => {
                     title={reTit}
                     {...restProps}
                 >
-                    <div className={`${prefixCls}-data-content`} style={{height: PickerBaseData.current.HEIGHT}}>
+                    <div className={`${prefixCls}-data-content`} style={{height: PickerBaseData.current.HEIGHT + 'vw'}}>
                         {
                             renderData && renderData.map((item, index) => 
                                 <div className={`${prefixCls}-data-wrapper`} key={index}>
-                                    <ul 
-                                        className={`${prefixCls}-data-item wheel-scroll`}
-                                        style={{marginTop: `${Math.floor(PickerBaseData.current.CONTENT_CHID / 2)}0vw`}}
-                                    >
-                                        {item.map((sitem, sindex) => 
-                                            <li className="wheel-item" key={sindex}>
-                                                {sitem.text}
-                                            </li>
-                                        )}
-                                    </ul>
-                                    <div  className={`${prefixCls}-item-mask`}></div>
-                                    <div  className={`${prefixCls}-item-focus`}></div>
+                                    <PickerCol
+                                        colHeight={PickerBaseData.current.HEIGHT}
+                                        itemHeight={PickerBaseData.current.BASE_ITEM_HEIGHT}
+                                        prefixCls={prefixCls}
+                                        colData={item}
+                                    />
                                 </div>
                             )
                         }
+                        <div 
+                            style={{
+                                backgroundSize : `100% ${top}vw`
+                            }}
+                            
+                            className={`${prefixCls}-item-mask`}></div>
+                        <div
+                            style={{
+                                top : `${top}vw`
+                            }}
+                            className={`${prefixCls}-item-focus`}></div>
                     </div>
                 </Popup>
            </>
