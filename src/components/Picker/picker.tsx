@@ -214,6 +214,7 @@ export const Picker: FC<BasePickerProps> = props => {
                         // 滚动完成之后获取当前选取的索引值,设置后续联动的数据
                         if(!Number.isNaN(wheel.y)) {
                             const currentIndex = getCurrentIndex(wheel)
+                            // const currentIndex = wheel.getSelectedIndex()
                             setRenderData(rData => {
                                 // let tmpRData = JSON.parse(JSON.stringify(rData))
                                 selectedIndex.current[index] = currentIndex

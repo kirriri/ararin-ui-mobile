@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './components/Button/button'
+import Button from './components/Button/buttonRippleByCss'
 import Dialog from './components/dialog/dialog'
 import Picker from './components/Picker/picker'
 import { PickerTestData, PickerTestData2 } from './util/dataTest'
@@ -38,8 +38,16 @@ class App extends React.Component<any, any> {
         return (
             <div className="App" style={{height: '130vh', padding: '4vw', paddingTop: '30vw' }}>
                 <Button
-                    type="primary"
-                    onClick={() => {this.setState({visible: !visible})}}
+                    type="warning"
+                    ripple
+                    style={{marginTop: '3vw'}}
+                    onClick={() => {console.log(11111)}}
+                >弹窗</Button>
+                <Button
+                    type="danger"
+                    ripple
+                    style={{marginTop: '3vw'}}
+                    onClick={() => {console.log(22222)}}
                 >弹窗</Button>
                 <Button
                     style={{marginTop: '5vw'}}
