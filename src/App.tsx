@@ -8,6 +8,7 @@ class App extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props)
+        
         this.state = {
             buttonState: 'loading',
             visible: false,
