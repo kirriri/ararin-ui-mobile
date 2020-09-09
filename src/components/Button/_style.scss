@@ -27,6 +27,7 @@
         cursor: not-allowed;
         opacity: $btn-disabled-opacity;
         box-shadow: none;
+        pointer-events: none;
         > * {
             pointer-events: none;
         }
@@ -132,12 +133,13 @@
     text-align: center;
     -webkit-tap-highlight-color:transparent;
     z-index:1;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 .ararin-button-ripple .ararin-button-ripple-animation {
     position:absolute;
     border-radius:50%;
-    width:25px;
-    height:25px;
     opacity:0;
     background:rgba(255,255,255,0.3);
     transition:all 0.7s ease-out;

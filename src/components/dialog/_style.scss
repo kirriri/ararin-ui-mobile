@@ -1,5 +1,5 @@
-.ad-mask,
-.ap-mask {
+.aad-mask,
+.aap-mask {
     position: fixed;
     top: 0;
     left: 0;
@@ -10,8 +10,8 @@
     pointer-events: none;
 }
 
-.ad-wrap,
-.ap-wrap {
+.aad-wrap,
+.aap-wrap {
     z-index: 999;
     position: fixed;
     left: 0;
@@ -23,17 +23,17 @@
     align-items: center;
 }
 
-.ad {
+.aad {
     width: 80vw;
     background-color: #fff;
     border-radius: 1.5vw;
     box-shadow: 0 0.5vw 1.8vw rgba(55, 55, 55, 0.35);
     position: relative;
     margin-top: -10vw;
-    .ad-close {
+    .aad-close {
         position: absolute;
         right: 3vw;
-        top: 3vw;
+        top: 1vw;
     }
 }
 // mask动画效果
@@ -43,31 +43,31 @@
     animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
 }
 
-.ad-fade-enter,
-.ad-fade-appear,
-.ap-fade-enter,
-.ap-fade-appear {
+.aad-fade-enter,
+.aad-fade-appear,
+.aap-fade-enter,
+.aap-fade-appear {
     opacity: 0;
     @include fade-effect();
     animation-play-state: paused;
 }
 
-.ad-fade-leave,
-.ap-fade-leave {
+.aad-fade-leave,
+.aap-fade-leave {
     @include fade-effect();
     animation-play-state: paused;
 }
 
-.ad-fade-enter.ad-fade-enter-active,
-.ad-fade-appear.ad-fade-appear-active,
-.ap-fade-enter.ap-fade-enter-active,
-.ap-fade-appear.ap-fade-appear-active {
+.aad-fade-enter.aad-fade-enter-active,
+.aad-fade-appear.aad-fade-appear-active,
+.aap-fade-enter.aap-fade-enter-active,
+.aap-fade-appear.aap-fade-appear-active {
     animation-name: rcDialogFadeIn;
     animation-play-state: running;
 }
 
-.ad-fade-leave.ad-fade-leave-active,
-.ap-fade-leave.ap-fade-leave-active {
+.aad-fade-leave.aad-fade-leave-active,
+.aap-fade-leave.aap-fade-leave-active {
     animation-name: rcDialogFadeOut;
     animation-play-state: running;
 }
@@ -101,27 +101,14 @@
     position: relative;
 }
 
-.ad-fall-enter,
-.ad-fall-appear {
+.aad-fall-enter,
+.aad-fall-appear {
     opacity: 0;
     @include effect();
 }
 
-.ad-fall-leave {
+.aad-fall-leave {
     @include effect();
-}
-
-.ad-fall-enter.ad-fall-enter-active,
-.ad-fall-appear.ad-fall-appear-active {
-    animation-name: adfallIn;
-    animation-play-state: running;
-    position: relative;
-}
-
-.ad-fall-leave.ad-fall-leave-active {
-    animation-name: adfallOut;
-    animation-play-state: running;
-    position: relative;
 }
 
 @keyframes adfallIn {
@@ -129,7 +116,6 @@
         opacity: 0.5;
         transform: translate3d(0, -20vw, 0)scale(0.8, 0.8);
     }
-
     100% {
         opacity: 1;
         transform: translate3d(0, 0, 0)scale(1, 1);
@@ -146,30 +132,44 @@
     }
 
     100% {
-        opacity: 0.2;
+        opacity: 0.05;
         transform: fall(0.7, 0.7);
     }
 }
 
+.aad-fall-enter.aad-fall-enter-active,
+.aad-fall-appear.aad-fall-appear-active {
+    animation-name: adfallIn;
+    animation-play-state: running;
+    position: relative;
+}
+
+.aad-fall-leave.aad-fall-leave-active {
+    animation-name: adfallOut;
+    animation-play-state: running;
+    position: relative;
+}
+
+
 // 放大动画
-.ad-scale-enter,
-.ad-scale-appear {
+.aad-scale-enter,
+.aad-scale-appear {
     opacity: 0;
     @include effect();
 }
 
-.ad-scale-leave {
+.aad-scale-leave {
     @include effect();
 }
 
-.ad-scale-enter.ad-scale-enter-active,
-.ad-scale-appear.ad-scale-appear-active {
+.aad-scale-enter.aad-scale-enter-active,
+.aad-scale-appear.aad-scale-appear-active {
     animation-name: adscaleIn;
     animation-play-state: running;
     position: relative;
 }
 
-.ad-scale-leave.ad-scale-leave-active {
+.aad-scale-leave.aad-scale-leave-active {
     animation-name: adscaleOut;
     animation-play-state: running;
     position: relative;
@@ -206,24 +206,24 @@
     }
 }
 // 弹出动画
-.ad-bounce-enter,
-.ad-bounce-appear {
+.aad-bounce-enter,
+.aad-bounce-appear {
     opacity: 0;
     @include effect();
 }
 
-.ad-bounce-leave {
+.aad-bounce-leave {
     @include effect();
 }
 
-.ad-bounce-enter.ad-bounce-enter-active,
-.ad-bounce-appear.ad-bounce-appear-active {
+.aad-bounce-enter.aad-bounce-enter-active,
+.aad-bounce-appear.aad-bounce-appear-active {
     animation-name: adBounceIn;
     animation-play-state: running;
     position: relative;
 }
 
-.ad-bounce-leave.ad-bounce-leave-active {
+.aad-bounce-leave.aad-bounce-leave-active {
     animation-name: adBounceOut;
     animation-play-state: running;
     position: relative;
@@ -231,12 +231,12 @@
 
 @keyframes adBounceIn {
     0% {
-        opacity: 0.2;
-        transform: translate3d(0, 3vw, 0);
+        opacity: 0.15;
+        transform: translate3d(0, 4vw, 0);
     }
 
-    55% {
-        transform: translate3d(0, -1.6vw, 0);
+    45% {
+        transform: translate3d(0, -1.5vw, 0);
     }
 
     100% {
@@ -253,23 +253,23 @@
     }
 
     100% {
-        opacity: 0.2;
-        transform: translate3d(0, 3vw, 0);
+        opacity: 0.1;
+        transform: translate3d(0, 4vw, 0);
     }
 }
 
 //modal 样式
-.ad-title {
+.aad-title {
     text-align: center;
     font-size: 4.2vw;
 }
 
-.ad-footer-btn-group {
+.aad-footer-btn-group {
     border-radius: $border-bottom-radius;
     overflow: hidden;
     border-top: 0.2vw solid rgba(55, 55, 55, 0.15);
     display: flex;
-    & >.ad-footer-item {
+    & >.aad-footer-item {
         flex: 1;
         display: flex;
         justify-content: center;
@@ -282,21 +282,21 @@
             border-right: none;
         }
     }
-    .ad-footer-item-active {
+    .aad-footer-item-active {
         @include TouchFeedbackActive();
     }
 
-    & >.ad-footer-item-highlight {
+    & >.aad-footer-item-highlight {
         background-color: $primary;
         color: #fff;
     }
-    .ad-footer-item-active-highlight {
+    .aad-footer-item-active-highlight {
         background-color: darken($color: $primary, $amount: 10%);
     }
 }
 
 // popup
-.ap {
+.aap {
     position: fixed;
     left: 0;
     width: 100%;
@@ -311,12 +311,12 @@
     }
 }
 
-.ap-fade-enter,
-.ap-fade-appear {
+.aap-fade-enter,
+.aap-fade-appear {
     animation-duration: .45s;
 }
-.ad-fade-leave,
-.ap-fade-leave {
+.aad-fade-leave,
+.aap-fade-leave {
     animation-duration: .45s;
 }
 
@@ -327,24 +327,24 @@
     animation-play-state: paused;
 }
 
-.ap-slide-up-enter,
-.ap-slide-up-appear {
+.aap-slide-up-enter,
+.aap-slide-up-appear {
     transform: translate3d(0, 100%, 0);
     @include apEffect();
 }
 
-.ap-slide-up-leave {
+.aap-slide-up-leave {
     transform: translate3d(0, 0, 0);
     @include apEffect();
 }
 
-.ap-slide-up-enter.ap-slide-up-enter-active,
-.ap-slide-up-appear.ap-slide-up-appear-active {
+.aap-slide-up-enter.aap-slide-up-enter-active,
+.aap-slide-up-appear.aap-slide-up-appear-active {
     animation-name: apSlideUpIn;
     animation-play-state: running;
 }
 
-.ap-slide-up-leave.ap-slide-up-leave-active {
+.aap-slide-up-leave.aap-slide-up-leave-active {
     animation-name: apSlideUpOut;
     animation-play-state: running;
 }

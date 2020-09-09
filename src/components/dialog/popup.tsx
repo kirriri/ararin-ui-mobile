@@ -78,7 +78,7 @@ export const Poup: React.FC<DialogBaseProps> = props => {
 }
 
 Poup.defaultProps = {
-    prefixCls: 'ap',
+    prefixCls: 'aap',
     maskAnimation: 'fade',
     maskClosable: false,
     animation: 'slide-up',

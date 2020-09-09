@@ -108,14 +108,14 @@ export const Dialog: React.FC<DialogBaseProps> = props => {
             footer={footerWrap}
             {...restProps}
         >
-            {closeIcon && <span className="ad-close"><Icon onClick={onHandleClose} type="close"/></span>}
+            {closeIcon && <span className={`${prefixCls}-close`}><Icon onClick={onHandleClose} type="close"/></span>}
             {children}
         </BaseDialog>
     )
 }
 
 Dialog.defaultProps = {
-    prefixCls: 'ad',
+    prefixCls: 'aad',
     maskAnimation: 'fade',
     maskClosable: false,
     animation: 'bounce',
