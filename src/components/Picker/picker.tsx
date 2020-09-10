@@ -52,6 +52,7 @@ export const Picker: FC<BasePickerProps> = props => {
 
     const [top, setTop] = useState(0)
     const [renderData, setRenderData] = useState([])
+    const [selectedIndex, setSelectedIndex] = useState([])
     const PickerBaseData = useRef({
         HEIGHT: 50, //vw计算单位
         BASE_ITEM_HEIGHT: 10, //vw计算单位
@@ -69,6 +70,7 @@ export const Picker: FC<BasePickerProps> = props => {
         () => {
             const tmpDataProps = findDepthAndLength(data)
             let baseArr = new Array(tmpDataProps.currentDepth).fill(new Array(0))
+            console.log(baseArr)
             baseArr[0] = data
             baseArr = getCalRenderData(baseArr, 0, 0)
             setRenderData(baseArr)
@@ -87,7 +89,6 @@ export const Picker: FC<BasePickerProps> = props => {
                     PickerBaseData.current.CONTENT_CHID = dataProps.current.currentLength
                     PickerBaseData.current.HEIGHT = PickerBaseData.current.CONTENT_CHID * 10
             }
-            console.log(PickerBaseData.current.CONTENT_CHID)
             setTop(Math.floor((PickerBaseData.current.CONTENT_CHID / 2)) * 10)
         },
         [data]
@@ -132,6 +133,7 @@ export const Picker: FC<BasePickerProps> = props => {
                 }
             }  
         })
+        console.log(tmpRData)
         return tmpRData
     }
         
@@ -167,6 +169,7 @@ export const Picker: FC<BasePickerProps> = props => {
                             renderData && renderData.map((item, index) => 
                                 <div className={`${prefixCls}-data-wrapper`} key={index}>
                                     <PickerCol
+                                        index={index}
                                         colHeight={PickerBaseData.current.HEIGHT}
                                         itemHeight={PickerBaseData.current.BASE_ITEM_HEIGHT}
                                         prefixCls={prefixCls}
@@ -175,17 +178,8 @@ export const Picker: FC<BasePickerProps> = props => {
                                 </div>
                             )
                         }
-                        <div 
-                            style={{
-                                backgroundSize : `100% ${top}vw`
-                            }}
-                            
-                            className={`${prefixCls}-item-mask`}></div>
-                        <div
-                            style={{
-                                top : `${top}vw`
-                            }}
-                            className={`${prefixCls}-item-focus`}></div>
+                        <div style={{backgroundSize : `100% ${top}vw`}} className={`${prefixCls}-item-mask`}></div>
+                        <div style={{top : `${top}vw`}} className={`${prefixCls}-item-focus`}></div>
                     </div>
                 </Popup>
            </>

@@ -8,10 +8,9 @@ export interface BasePickerColumnProps {
     colData: any[],
     colHeight: number,
     itemHeight: number,
+    index: number
     // name: string,
     // value: any,
-    // itemHeight: number,
-    // columnHeight: number,
     // onchange: (val: any) => void,
     // onClick: (val: any) => void
 }
@@ -19,62 +18,36 @@ export interface BasePickerColumnProps {
 export const BasePickerColumn:FC<BasePickerColumnProps> = props => {
 
     const {
+        index,
         prefixCls,
         colData,
         colHeight,
         itemHeight
     } = props
 
-    console.log(colHeight, itemHeight)
+    const computeTranslate = (props: any) => {
+        const { colHeight, currentIndex, itemHeight, colData } = props
+        return {
+            scrollerTranslate: colHeight / 2 - itemHeight / 2 - currentIndex * itemHeight,
+            minTranslate: colHeight / 2 - itemHeight * colData.length + itemHeight / 2,
+            maxTranslate: colHeight / 2 - itemHeight / 2
+        };
+    }
 
-    const [isMoving, setIsMoving] = useState(false)
-    const [startTouchY, setStartTouchY] = useState(0)
-    const [startScrollerTranslate, setStartScrollerTranslate] = useState(0)
-    const [scrollerTranslate, setScrollerTranslate] = useState(() => {
-        return colHeight / 2 - itemHeight / 2 - colHeight * itemHeight
+    const [state, setState] = useState({
+        isMoving: false,
+        startTouchY: 0,
+        startScrollerTranslate: 0,
+        ...computeTranslate(props)
     })
-    const [minTranslate, setMinTranslate] = useState(() => {
-        return colHeight / 2 - itemHeight * colData.length + itemHeight / 2
-    })
-    const [maxTranslate, setMaxTranslate] = useState(() => {
-        return colHeight / 2 - itemHeight / 2
-    })
 
-
-    const handleTouchStart = event => {
-        const startTouchY = event.targetTouches[0].pageY;
-        setStartTouchY(startTouchY)
-        setStartScrollerTranslate(scrollerTranslate)
-    };
-
-    const handleTouchMove = (event) => {
-        event.preventDefault();
-        const touchY = event.targetTouches[0].pageY;
-        this.setState(({isMoving, startTouchY, startScrollerTranslate, minTranslate, maxTranslate}) => {
-          if (!isMoving) {
-            return {
-              isMoving: true
-            }
-          }
     
-          let nextScrollerTranslate = startScrollerTranslate + touchY - startTouchY;
-          if (nextScrollerTranslate < minTranslate) {
-            nextScrollerTranslate = minTranslate - Math.pow(minTranslate - nextScrollerTranslate, 0.8);
-          } else if (nextScrollerTranslate > maxTranslate) {
-            nextScrollerTranslate = maxTranslate + Math.pow(nextScrollerTranslate - maxTranslate, 0.8);
-          }
-          return {
-            scrollerTranslate: nextScrollerTranslate
-          };
-        });
-    };
-
-
+    console.log(state)
 
     return (
         <ul 
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
+            // onTouchStart={handleTouchStart}
+            // onTouchMove={handleTouchMove}
             className={`${prefixCls}-data-item`}
         >
             {
