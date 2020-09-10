@@ -74,6 +74,8 @@
     display: flex;
     position: relative;
     .apk-data-item {
+        transition: 300ms;
+        transition-timing-function: ease-out;
         li {
             white-space: nowrap;
             text-overflow: ellipsis;

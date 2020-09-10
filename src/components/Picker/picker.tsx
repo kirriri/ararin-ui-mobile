@@ -54,12 +54,11 @@ export const Picker: FC<BasePickerProps> = props => {
     const [renderData, setRenderData] = useState([])
     const [selectedIndex, setSelectedIndex] = useState([])
     const PickerBaseData = useRef({
-        HEIGHT: 50, //vw计算单位
-        BASE_ITEM_HEIGHT: 10, //vw计算单位
-        CONTENT_CHID: 3,
-        ITEM_HEIGHT: 10,
-        ITEM_MIN_NUM: 5,
-        ITEM_MAX_NUM: 7
+        HEIGHT: 252, // px计算单位
+        BASE_ITEM_HEIGHT: 36, //px计算单位
+        CONTENT_CHID: 3, // 一列最大高度
+        ITEM_MIN_NUM: 5, // 一列最小个数
+        ITEM_MAX_NUM: 9  // 一列最大个数
     })
     const dataProps = useRef({
         currentLength: 0,
@@ -68,6 +67,7 @@ export const Picker: FC<BasePickerProps> = props => {
 
     useEffect(
         () => {
+            let { ITEM_MIN_NUM, ITEM_MAX_NUM, BASE_ITEM_HEIGHT } = PickerBaseData.current
             const tmpDataProps = findDepthAndLength(data)
             let baseArr = new Array(tmpDataProps.currentDepth).fill(new Array(0))
             baseArr[0] = data
@@ -80,20 +80,19 @@ export const Picker: FC<BasePickerProps> = props => {
             
             dataProps.current = tmpDataProps
             
-            if(dataProps.current.currentLength < PickerBaseData.current.ITEM_MIN_NUM) {
-                PickerBaseData.current.CONTENT_CHID = PickerBaseData.current.ITEM_MIN_NUM
-                PickerBaseData.current.HEIGHT = PickerBaseData.current.CONTENT_CHID * 10
-            } else if(dataProps.current.currentLength > PickerBaseData.current.ITEM_MAX_NUM) {
-                PickerBaseData.current.CONTENT_CHID = PickerBaseData.current.ITEM_MAX_NUM
-                PickerBaseData.current.HEIGHT = PickerBaseData.current.CONTENT_CHID * 10
+            if(dataProps.current.currentLength < ITEM_MIN_NUM) {
+                PickerBaseData.current.CONTENT_CHID = ITEM_MIN_NUM
+                PickerBaseData.current.HEIGHT = PickerBaseData.current.CONTENT_CHID * BASE_ITEM_HEIGHT
+            } else if(dataProps.current.currentLength > ITEM_MAX_NUM) {
+                PickerBaseData.current.CONTENT_CHID = ITEM_MAX_NUM
+                PickerBaseData.current.HEIGHT = PickerBaseData.current.CONTENT_CHID * BASE_ITEM_HEIGHT
             }else {
-                
                 dataProps.current.currentLength % 2 === 0 ?
                     PickerBaseData.current.CONTENT_CHID = dataProps.current.currentLength - 1 :
                     PickerBaseData.current.CONTENT_CHID = dataProps.current.currentLength
-                    PickerBaseData.current.HEIGHT = PickerBaseData.current.CONTENT_CHID * 10
+                PickerBaseData.current.HEIGHT = PickerBaseData.current.CONTENT_CHID * BASE_ITEM_HEIGHT
             }
-            setTop(prev => Math.floor((PickerBaseData.current.CONTENT_CHID / 2)) * 10)
+            setTop(prev => PickerBaseData.current.HEIGHT / 2 - BASE_ITEM_HEIGHT / 2)
         },
         [data]
     )
@@ -162,6 +161,15 @@ export const Picker: FC<BasePickerProps> = props => {
         reTit = title
     }
 
+    // 选择事件
+    const onSelected = (colIndex, index) => {
+        setSelectedIndex(selectedIndex => {
+                selectedIndex[colIndex] = index
+                console.log(selectedIndex)
+            return [...selectedIndex]
+        })
+    }
+    
     return <>
                 <Popup
                     onClose={cancelPress}
@@ -169,11 +177,12 @@ export const Picker: FC<BasePickerProps> = props => {
                     title={reTit}
                     {...restProps}
                 >
-                    <div className={`${prefixCls}-data-content`} style={{height: PickerBaseData.current.HEIGHT + 'vw'}}>
+                    <div className={`${prefixCls}-data-content`} style={{height: PickerBaseData.current.HEIGHT + 'px'}}>
                         {
                             renderData && renderData.map((item, index) => 
                                 <div className={`${prefixCls}-data-wrapper`} key={index}>
                                     <PickerCol
+                                        onSelected={onSelected}
                                         selectIndex={selectedIndex[index]}
                                         index={index}
                                         colHeight={PickerBaseData.current.HEIGHT}
@@ -184,8 +193,8 @@ export const Picker: FC<BasePickerProps> = props => {
                                 </div>
                             )
                         }
-                        <div style={{backgroundSize : `100% ${top}vw`}} className={`${prefixCls}-item-mask`}></div>
-                        <div style={{top : `${top}vw`}} className={`${prefixCls}-item-focus`}></div>
+                        <div style={{backgroundSize : `100% ${top}px`}} className={`${prefixCls}-item-mask`}></div>
+                        <div style={{top : `${top}px`}} className={`${prefixCls}-item-focus`}></div>
                     </div>
                 </Popup>
            </>
