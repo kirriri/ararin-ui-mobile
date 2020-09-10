@@ -165,7 +165,6 @@ export const Picker: FC<BasePickerProps> = props => {
     const onSelected = (colIndex, index) => {
         setSelectedIndex(selectedIndex => {
                 selectedIndex[colIndex] = index
-                console.log(selectedIndex)
             return [...selectedIndex]
         })
     }
