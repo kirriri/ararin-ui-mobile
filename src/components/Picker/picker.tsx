@@ -16,7 +16,7 @@ export interface BaseDataProps {
 }
 
 export interface BasePickerProps {
-    relate?: boolean,
+    linkage?: boolean,
     cancelText?: string,
     okText?: string,
     cancelPress?: () => void,
@@ -36,7 +36,7 @@ export const Picker: FC<BasePickerProps> = props => {
 
     const {
         data,
-        relate,
+        linkage,
         className,
         style,
         visible,
@@ -70,10 +70,14 @@ export const Picker: FC<BasePickerProps> = props => {
         () => {
             const tmpDataProps = findDepthAndLength(data)
             let baseArr = new Array(tmpDataProps.currentDepth).fill(new Array(0))
-            console.log(baseArr)
             baseArr[0] = data
-            baseArr = getCalRenderData(baseArr, 0, 0)
-            setRenderData(baseArr)
+            let tmpData = getCalRenderData(baseArr, 0, 0)
+            setRenderData(prev => tmpData.tmpRData)
+            if(baseArr[0]) {
+                tmpData.selectIndex[0] = 0
+            }
+            setSelectedIndex(prev => tmpData.selectIndex)
+            
             dataProps.current = tmpDataProps
             
             if(dataProps.current.currentLength < PickerBaseData.current.ITEM_MIN_NUM) {
@@ -89,7 +93,7 @@ export const Picker: FC<BasePickerProps> = props => {
                     PickerBaseData.current.CONTENT_CHID = dataProps.current.currentLength
                     PickerBaseData.current.HEIGHT = PickerBaseData.current.CONTENT_CHID * 10
             }
-            setTop(Math.floor((PickerBaseData.current.CONTENT_CHID / 2)) * 10)
+            setTop(prev => Math.floor((PickerBaseData.current.CONTENT_CHID / 2)) * 10)
         },
         [data]
     )
@@ -124,19 +128,20 @@ export const Picker: FC<BasePickerProps> = props => {
     
     // 计算renderData 数据
     const getCalRenderData = (tmpRData, index, currentIndex) => {
+        let selectIndex = new Array(tmpRData.length).fill(-1)
         tmpRData.forEach((ritem, rindex) => {
             if(rindex >= index && tmpRData[rindex+1]) {
                 if(tmpRData[rindex][currentIndex] && tmpRData[rindex][currentIndex].children) {
                     tmpRData[rindex + 1] = tmpRData[rindex][currentIndex].children
+                    selectIndex[rindex + 1] = tmpRData[rindex][currentIndex].children ? 0 : -1
                 } else {
                     tmpRData[rindex + 1] = []
+                    selectIndex[rindex + 1] = -1
                 }
             }  
         })
-        console.log(tmpRData)
-        return tmpRData
+        return {tmpRData, selectIndex}
     }
-        
  
     //  渲染title
     let reTit
@@ -169,6 +174,7 @@ export const Picker: FC<BasePickerProps> = props => {
                             renderData && renderData.map((item, index) => 
                                 <div className={`${prefixCls}-data-wrapper`} key={index}>
                                     <PickerCol
+                                        selectIndex={selectedIndex[index]}
                                         index={index}
                                         colHeight={PickerBaseData.current.HEIGHT}
                                         itemHeight={PickerBaseData.current.BASE_ITEM_HEIGHT}
@@ -190,7 +196,7 @@ Picker.defaultProps = {
     cancelText: '取消',
     okText: '确定',
     maskClosable: true,
-    relate: true,
+    linkage: true,
     data: [],
     history: false
 }

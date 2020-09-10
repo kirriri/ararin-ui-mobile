@@ -1,5 +1,31 @@
 export const PickerTestData = [
     {
+        text: '测试3',
+        value: {
+            b: 1,
+            d: 2
+        }
+    },{
+        text: '测试3',
+        value: {
+            b: 1,
+            d: 2
+        }
+    },{
+        text: '测试3',
+        value: {
+            b: 1,
+            d: 2
+        }
+    },
+    {
+        text: '测试3',
+        value: {
+            b: 1,
+            d: 2
+        }
+    },
+    {
         text: 'data1测试',
         value: {
             a: 1,

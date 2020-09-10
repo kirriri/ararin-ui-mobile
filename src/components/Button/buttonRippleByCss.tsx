@@ -7,6 +7,7 @@ import React, {
 import classNames from 'classnames'
 import TouchFeedback from 'rmc-feedback';
 import Icon, { IconType } from '../Icon'
+import { setCssStyle } from '../../util/util'
 
 /**
  * 这个Button考虑到Canvas可使用的上限个数，故改为Css实现水波纹
@@ -146,7 +147,6 @@ export const Button: FC<ButtonProps> = props => {
 			height: 0,
 		}, ele = document.documentElement;
 		'undefined' != typeof target.getBoundingClientRect && (position = target.getBoundingClientRect());
-		console.log(position)
 		return {
 			top: position.top + window.pageYOffset - ele.clientTop,
 			left: position.left + window.pageXOffset - ele.clientLeft
@@ -191,12 +191,6 @@ export const Button: FC<ButtonProps> = props => {
 				pDiv.removeChild(cDiv);
 			}, duration);
 		}, 250)
-	}
-
-	const setCssStyle = (obj, name, val) => {
-		PrefixBrowser.forEach(item => {
-			obj[item+name] = val
-		})
 	}
 
 	const handleClick = e => {
