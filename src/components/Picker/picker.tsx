@@ -51,8 +51,11 @@ export const Picker: FC<BasePickerProps> = props => {
     } = props
 
     const [top, setTop] = useState(0)
-    const [renderData, setRenderData] = useState([])
-    const [selectedIndex, setSelectedIndex] = useState([])
+    const [renderData, setRenderData] = useState({
+        colDatas: [],
+        selectedIndex: []
+    })
+    // const [selectedIndex, setSelectedIndex] = useState([])
     const PickerBaseData = useRef({
         HEIGHT: 252, // px计算单位
         BASE_ITEM_HEIGHT: 36, //px计算单位
@@ -69,14 +72,21 @@ export const Picker: FC<BasePickerProps> = props => {
         () => {
             let { ITEM_MIN_NUM, ITEM_MAX_NUM, BASE_ITEM_HEIGHT } = PickerBaseData.current
             const tmpDataProps = findDepthAndLength(data)
-            let baseArr = new Array(tmpDataProps.currentDepth).fill(new Array(0))
-            baseArr[0] = data
-            let tmpData = getCalRenderData(baseArr, 0, 0)
-            setRenderData(prev => tmpData.tmpRData)
-            if(baseArr[0]) {
-                tmpData.selectIndex[0] = 0
+            console.log(tmpDataProps)
+            let baseDataArr = new Array(tmpDataProps.currentDepth).fill(new Array(0))
+            let baseSelectArr = new Array(tmpDataProps.currentDepth).fill(-1)
+            if(tmpDataProps.currentDepth) {
+                baseDataArr[0] = data
+                baseSelectArr[0] = 0
             }
-            setSelectedIndex(prev => tmpData.selectIndex)
+            let tmpData = getCalRenderData(baseDataArr, baseSelectArr, 0, 0)
+            // if(baseArr[0]) {
+            //     tmpData.selectedIndex[0] = 0
+            // }
+            setRenderData(() => ({
+                colDatas: tmpData.colDatas,
+                selectedIndex: tmpData.tmpRSelect
+            }))
             
             dataProps.current = tmpDataProps
             
@@ -126,20 +136,23 @@ export const Picker: FC<BasePickerProps> = props => {
     }
     
     // 计算renderData 数据
-    const getCalRenderData = (tmpRData, index, currentIndex) => {
-        let selectIndex = new Array(tmpRData.length).fill(-1)
+    const getCalRenderData = (tmpRData: any[], tmpRSelect: number[], index: number, currentIndex: number) => {
         tmpRData.forEach((ritem, rindex) => {
             if(rindex >= index && tmpRData[rindex+1]) {
                 if(tmpRData[rindex][currentIndex] && tmpRData[rindex][currentIndex].children) {
                     tmpRData[rindex + 1] = tmpRData[rindex][currentIndex].children
-                    selectIndex[rindex + 1] = tmpRData[rindex][currentIndex].children ? 0 : -1
                 } else {
                     tmpRData[rindex + 1] = []
-                    selectIndex[rindex + 1] = -1
                 }
             }  
         })
-        return {tmpRData, selectIndex}
+        tmpRSelect[index] = currentIndex
+        tmpRSelect.forEach((sitem, sindex) => {
+            if(sindex > index && tmpRData[sindex].length) {
+                tmpRSelect[sindex] = 0
+            }
+        })
+        return {colDatas: tmpRData, tmpRSelect}
     }
  
     //  渲染title
@@ -163,9 +176,16 @@ export const Picker: FC<BasePickerProps> = props => {
 
     // 选择事件
     const onSelected = (colIndex, index) => {
-        setSelectedIndex(selectedIndex => {
-                selectedIndex[colIndex] = index
-            return [...selectedIndex]
+        setRenderData((prev) => {
+            if(renderData.selectedIndex[colIndex] === index) {
+                return prev
+            }
+            const nextData = getCalRenderData(renderData.colDatas, renderData.selectedIndex, colIndex, index)
+            console.log(nextData)
+            return {
+                colDatas: nextData.colDatas,
+                selectedIndex: nextData.tmpRSelect
+            }
         })
     }
     
@@ -178,11 +198,11 @@ export const Picker: FC<BasePickerProps> = props => {
                 >
                     <div className={`${prefixCls}-data-content`} style={{height: PickerBaseData.current.HEIGHT + 'px'}}>
                         {
-                            renderData && renderData.map((item, index) => 
+                            renderData && renderData.colDatas.map((item, index) => 
                                 <div className={`${prefixCls}-data-wrapper`} key={index}>
                                     <PickerCol
                                         onSelected={onSelected}
-                                        selectIndex={selectedIndex[index]}
+                                        selectIndex={renderData.selectedIndex[index]}
                                         index={index}
                                         colHeight={PickerBaseData.current.HEIGHT}
                                         itemHeight={PickerBaseData.current.BASE_ITEM_HEIGHT}

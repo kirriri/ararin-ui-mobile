@@ -43,12 +43,19 @@ export const BasePickerColumn: FC<BasePickerColumnProps> = props => {
         setState(prev => {
             const { colHeight, selectIndex, itemHeight, colData } = JSON.parse(JSON.stringify(props))
             return {
-                ...prev,
+                init: true,
+                isMoving: false,
+                startTouchY: 0,
+                startScrollerTranslate: 0,
                 scrollerTranslate: colHeight / 2 - itemHeight / 2 - selectIndex * itemHeight,
                 minTranslate: colHeight / 2 - itemHeight * colData.length + itemHeight / 2,
                 maxTranslate: colHeight / 2 - itemHeight / 2
             }
         })
+        if(index === 0) {
+            console.log(colData)
+            console.log(colHeight, itemHeight, selectIndex, itemHeight)
+        }
         return () => { }
     }, [colData])
 
@@ -167,6 +174,7 @@ export const BasePickerColumn: FC<BasePickerColumnProps> = props => {
     if (state.isMoving || state.init) {
         style.transitionDuration = '0ms'
     }
+
     return (
         <ul
             onTouchStart={handleTouchStart}
