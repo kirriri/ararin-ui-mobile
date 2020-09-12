@@ -25,13 +25,7 @@ class App extends React.Component<any, any> {
             this.setState({
                 data: PickerTestData
             })
-        }, 3000)
-
-        // setTimeout(() => {
-        //     this.setState({
-        //         data: PickerTestData2
-        //     })
-        // }, 2000)
+        }, 1000)
     }
     
     render() {
@@ -60,15 +54,14 @@ class App extends React.Component<any, any> {
                 
                 <Picker
                     // history
-                    maskClosable={false}
+                    maskClosable={true}
                     cancelPress={() => {this.setState({pickerState: !pickerState})}}
-                    okPress={(v) => {console.log(v)}}
+                    okPress={(val) => {console.log(val); this.setState({pickerState: !pickerState})}}
                     data={this.state.data}
                     visible={this.state.pickerState}
                 ></Picker>
                 <Dialog 
                     maskClosable
-                    onClose={() => this.setState({visible: false})}
                     title={<h3>标题测试</h3>} 
                     visible={visible}
                     footer={[

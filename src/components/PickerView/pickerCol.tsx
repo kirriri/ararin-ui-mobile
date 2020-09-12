@@ -52,10 +52,6 @@ export const BasePickerColumn: FC<BasePickerColumnProps> = props => {
                 maxTranslate: colHeight / 2 - itemHeight / 2
             }
         })
-        if(index === 0) {
-            console.log(colData)
-            console.log(colHeight, itemHeight, selectIndex, itemHeight)
-        }
         return () => { }
     }, [colData])
 
