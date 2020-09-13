@@ -23,7 +23,6 @@ export interface BasePickerViewProps {
     linkage?: boolean,
     data: BaseDataProps[],
     visible?: boolean,
-    history?: boolean,
     style?: React.CSSProperties,
     className?: string,
     prefixCls?: string,
@@ -37,7 +36,6 @@ export const PickerView: FC<BasePickerViewProps> = props => {
         dataOnChange,
         className,
         prefixCls,
-        history,
     } = props
 
     const [top, setTop] = useState(0)
@@ -92,10 +90,6 @@ export const PickerView: FC<BasePickerViewProps> = props => {
         },
         [data]
     )
-
-    useEffect(() => {
-        dataOnChange(renderData)
-    }, [renderData])
  
     // 查询数据深度
     const findDepthAndLength = data => {
@@ -127,7 +121,6 @@ export const PickerView: FC<BasePickerViewProps> = props => {
     
     // 计算renderData 数据
     const getCalRenderData = (tmpRData: any[], tmpRSelect: number[], index: number, currentIndex: number) => {
-        console.log(tmpRData, tmpRSelect)
         tmpRData.forEach((ritem, rindex) => {
             if(rindex === index) {
                 if(ritem[currentIndex].children) {
@@ -165,15 +158,14 @@ export const PickerView: FC<BasePickerViewProps> = props => {
         }
         const nextData = getCalRenderData(renderData.colDatas, renderData.selectedIndex, colIndex, index)
         setRenderData((prev) => {
+            dataOnChange(renderData)
             return {
                 colDatas: nextData.colDatas,
                 selectedIndex: nextData.tmpRSelect
             }
         })
-    }
+    }  
 
-    console.log(renderData)
-   
     return <>
                 <div className={`${prefixCls}-data-content`} style={{height: PickerBaseData.current.HEIGHT + 'px'}}>
                     {
@@ -201,19 +193,7 @@ PickerView.defaultProps = {
     prefixCls: 'apk',
     linkage: true,
     data: [],
-    history: false
 }
 
-const dataCompare = (prevProps, nextProps) => {
-    if(nextProps.data.length) {
-        if(JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data)) {
-            return false
-        }else {
-            return true
-        }
-    }else {
-        return true
-    }
-}
 
-export default React.memo(PickerView, dataCompare)
+export default PickerView

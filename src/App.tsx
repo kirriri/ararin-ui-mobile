@@ -4,7 +4,7 @@ import Dialog from './components/dialog/dialog'
 import Picker from './components/Picker/picker'
 
 
-import { PickerTestData, PickerTestData2 } from './util/dataTest'
+import { PickerTestData, PickerTestData2, PickerTestData3 } from './util/dataTest'
 
 class App extends React.Component<any, any> {
 
@@ -23,7 +23,7 @@ class App extends React.Component<any, any> {
     componentDidMount() {
         setTimeout(() => {
             this.setState({
-                data: PickerTestData
+                data: PickerTestData2
             })
         }, 1000)
     }
