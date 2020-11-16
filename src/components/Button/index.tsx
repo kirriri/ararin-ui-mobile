@@ -1,3 +1,3 @@
-import Button from './buttonRippleByCss'
+import Button from './button'
 
 export default Button

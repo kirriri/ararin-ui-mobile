@@ -7,15 +7,13 @@
     cursor: pointer;
     border: $btn-border-width solid transparent;
     outline: none;
-    width: 100%;
-    padding: 1vw 2vw;
-    letter-spacing: 0.2vw;
+    padding: .05rem .08rem;
     transition: $btn-transition;
     overflow: hidden;
     box-sizing: border-box;
     box-shadow: $box-shadow-default;
-    border-radius: 1vw;
-    letter-spacing: 0.5vw;
+    border-radius: .05rem;
+    letter-spacing: .01rem;
     .ararin-button-box {
         display: flex;
         justify-content: center;
@@ -53,7 +51,7 @@
             @include button-style($gray-600, lighten($val, 10%), $btn-border-color);
         }
         .ararin-button-#{$key}.ararin-button-loading {
-            box-shadow: 0 0vw 1.4vw darken($color: $val, $amount: 10%);
+            box-shadow: 0 0vw .04rem darken($color: $val, $amount: 10%);
         }
         .ararin-button-#{$key}-active {
             background-color: darken($color: $val, $amount: 10%);
@@ -67,7 +65,7 @@
             @include button-style($white, darken($color: $val, $amount: 10%));
         }
         .ararin-button-#{$key}.ararin-button-loading {
-            box-shadow: 0 0vw 1.4vw darken($color: $val, $amount: 10%);
+            box-shadow: 0 0vw .04rem darken($color: $val, $amount: 10%);
         }
     }
 }
@@ -83,7 +81,9 @@
 }
 
 .ararin-button-loading {
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .ararin-ripple-bg {

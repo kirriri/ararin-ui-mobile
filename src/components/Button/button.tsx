@@ -86,21 +86,11 @@ export const Button: FC<ButtonProps> = props => {
 	if (state === 'loading') {
 		disabled = true
 		iconEle = <Icon
+			
 			iconState="spin"
 			type="loading"
 		></Icon>
-		// iconEle =  <CSSTransition
-		//                 in={state === 'loading'} // 如果this.state.show从false变为true，则动画入场，反之out出场
-		//                 timeout={500} //动画执行1秒
-		//                 classNames='test' //自定义的class名
-		//                 unMountOnExit
-		//                 appear={true}
-		//             >
-		//                 <Icon
-		//                     iconState="spin"
-		//                     type="loading"
-		//                 ></Icon>
-		//             </CSSTransition>
+
 	} else if (state === 'disabled') {
 		disabled = true
 	} else if (state === 'failed') {

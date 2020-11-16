@@ -4,7 +4,7 @@ import React, {
     useEffect,
     useState,
 } from 'react'
-import Popup from '../dialog/popup'
+import Popup from '../Dialog/popup'
 import PickerCol from '../PickerView/pickerCol'
 import classNames from 'classnames'
 import TouchFeedback from 'rmc-feedback';
