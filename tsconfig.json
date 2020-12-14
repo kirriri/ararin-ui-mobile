@@ -19,7 +19,11 @@
     "noEmit": true,
     "jsx": "react"
   },
+  "exclude": [
+    "node_modules"
+  ],
   "include": [
     "src"
-  ]
+  ],
+  "extends": "./paths.json"
 }

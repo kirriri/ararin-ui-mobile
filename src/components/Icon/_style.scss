@@ -1,4 +1,4 @@
-.ararin-icon {
+.ecsc-icon {
     width: .2rem;
     height: .2rem;
     display: inline-flex;
@@ -13,18 +13,18 @@
     }
 }
 
-.ararin-icon-spin {
+.ecsc-icon-spin {
     position: relative;
-    animation: ararinSping 1s linear infinite ;
+    animation: ecscSping 1s linear infinite ;
 }
 
-.ararin-icon-close {
+.ecsc-icon-close {
     width: 4.6vw;
     height: 4.6vw;
     margin-right: 0;
 }
 
-@keyframes ararinSping {
+@keyframes ecscSping {
     0% {
         transform: rotate(0);
     }

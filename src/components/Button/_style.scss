@@ -1,4 +1,4 @@
-.ararin-button {
+.ecsc-button {
     position: relative;
     display: block;
     font-weight: $btn-font-weight;
@@ -14,7 +14,7 @@
     box-shadow: $box-shadow-default;
     border-radius: .05rem;
     letter-spacing: .01rem;
-    .ararin-button-box {
+    .ecsc-button-box {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -32,46 +32,46 @@
     }
 }
 
-.ararin-button-lg {
+.ecsc-button-lg {
     @include button-size($font-size-lg, $line-height-lg);
 }
 
-.ararin-button-md {
+.ecsc-button-md {
     @include button-size($font-size-base, $line-height-base);
 }
 
-.ararin-button-sm {
+.ecsc-button-sm {
     @include button-size($font-size-sm, $line-height-sm);
 }
 
 
 @each $key, $val in $theme-colors {
     @if $key == 'default' {
-        .ararin-button-#{$key} {
+        .ecsc-button-#{$key} {
             @include button-style($gray-600, lighten($val, 10%), $btn-border-color);
         }
-        .ararin-button-#{$key}.ararin-button-loading {
+        .ecsc-button-#{$key}.ecsc-button-loading {
             box-shadow: 0 0vw .04rem darken($color: $val, $amount: 10%);
         }
-        .ararin-button-#{$key}-active {
+        .ecsc-button-#{$key}-active {
             background-color: darken($color: $val, $amount: 10%);
         }
     }
     @else if $key != 'default' {
-        .ararin-button-#{$key} {
+        .ecsc-button-#{$key} {
             @include button-style($white, $val);
         }
-        .ararin-button-#{$key}-active {
+        .ecsc-button-#{$key}-active {
             @include button-style($white, darken($color: $val, $amount: 10%));
         }
-        .ararin-button-#{$key}.ararin-button-loading {
+        .ecsc-button-#{$key}.ecsc-button-loading {
             box-shadow: 0 0vw .04rem darken($color: $val, $amount: 10%);
         }
     }
 }
 
 
-.ararin-btn-ripple {
+.ecsc-btn-ripple {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -80,17 +80,15 @@
     opacity: 0;
 }
 
-.ararin-button-loading {
+.ecsc-button-loading {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.ararin-ripple-bg {
+.ecsc-ripple-bg {
     position: relative;
 }
-
-
 
 .test-enter, .test-appear {
     opacity: 0;
@@ -125,7 +123,7 @@
 }
 
 
-.ararin-button-ripple{
+.ecsc-button-ripple{
     position:relative;
     cursor:pointer;
     display:inline-block;
@@ -137,7 +135,7 @@
     align-items: center;
     display: flex;
 }
-.ararin-button-ripple .ararin-button-ripple-animation {
+.ecsc-button-ripple .ecsc-button-ripple-animation {
     position:absolute;
     border-radius:50%;
     opacity:0;

@@ -121,11 +121,11 @@ export const Button: FC<ButtonProps> = props => {
         iconEle = icon
     }
 
-    const classes = classNames('ararin-button',className , {
-        [`ararin-button-${type}`] : type,
-        [`ararin-button-${size}`] : size,
+    const classes = classNames('ecsc-button',className , {
+        [`ecsc-button-${type}`] : type,
+        [`ecsc-button-${size}`] : size,
         // loading样式，临时放在这，等后期再次开发
-        [`ararin-button-${state}`] : state,
+        [`ecsc-button-${state}`] : state,
         'disabled': disabled
     })
     //检查屏幕帧率
@@ -218,7 +218,7 @@ export const Button: FC<ButtonProps> = props => {
     return  <>
                 <TouchFeedback
                     activeClassName={
-                        activeClassName || (ripple ? undefined : `ararin-button-${type}-active`)
+                        activeClassName || (ripple ? undefined : `ecsc-button-${type}-active`)
                     }
                     disabled={disabled}
                     activeStyle={activeStyle}
@@ -232,12 +232,12 @@ export const Button: FC<ButtonProps> = props => {
                     >
                         {ripple && <canvas 
                                         style={{opacity: rippleData.current.opacity}}
-                                        className="ararin-btn-ripple"  
+                                        className="ecsc-btn-ripple"  
                                         ref={rippleComponent} 
                                     />
                         }
                         <div
-                            className="ararin-button-box"
+                            className="ecsc-button-box"
                         >
                             {iconEle}
                             {children}
