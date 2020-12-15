@@ -18,6 +18,7 @@ const metaType = type => {
 			document.querySelector('meta[charset="utf-8"]').insertAdjacentHTML('beforebegin', meta)
 		}
 		document.querySelector('html').style.fontSize = '26.666666vw'
+		document.querySelector('html').querySelector('body').style.background = 'rgba(0,0,0, .05)'
 	}else {
 		if(qMeta) {
 			qMeta['content'] = 'width=device-width, initial-scale=1'
@@ -26,10 +27,11 @@ const metaType = type => {
 			document.querySelector('meta[charset="utf-8"]').insertAdjacentHTML('beforebegin', meta)
 		}
 		document.querySelector('html').style.fontSize = '14px'
+		document.querySelector('html').querySelector('body').style.background = 'rgba(255,255,255, 1)'
 	}
 }
 
-const Content = () => (
+export const Content = () => (
 	<Router>
 		<Route path="/ecsc-components-mobile/detail" render={() => 
 			<>

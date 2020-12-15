@@ -5,10 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import './styles/index.scss';
 import Content from './router';
 
-// ReactDOM.render(
-//     <App />,
-//   document.getElementById('root')
-// );
+
 
 ReactDOM.render(
   <Content/>,

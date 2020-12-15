@@ -1,7 +1,8 @@
 import React from 'react';
 import './button.scss'
+import { postParentIframeMsg } from '@/util/util'
 
-class ButtonPage extends React.Component<any, any> {
+class ButtonPage extends React.PureComponent<any, any> {
 
     constructor(props: any) {
         super(props)
@@ -16,7 +17,10 @@ class ButtonPage extends React.Component<any, any> {
     }
     
     componentDidMount() {
-        // this.props.onlo
+        postParentIframeMsg({
+            load: true,
+            cmp: 'Button'
+        })
     }
  
     render() {

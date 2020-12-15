@@ -41,7 +41,7 @@ $font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberati
 $font-family-base:            $font-family-sans-serif !default;
 
 // 字体大小
-$font-size-base:              .14rem !default; // Assumes the browser default, typically `16px`
+$font-size-base:              3.9vw !default; // Assumes the browser default, typically `16px`
 $font-size-lg:                $font-size-base * 1.2 !default;
 $font-size-sm:                $font-size-base * .8 !default;
 $font-size-root:              null !default;
@@ -63,13 +63,13 @@ $font-weight-bolder:          bolder !default;
 $font-weight-base:            $font-weight-normal !default;
 
 // 行高
-$line-height-base:            .25rem !default;
-$line-height-lg:              .33rem !default;
-$line-height-sm:              .2rem !default;
+$line-height-base:            8vw !default;
+$line-height-lg:              10vw !default;
+$line-height-sm:              6vw !default;
 
-$btn-height-base:             10vw !default;
-$btn-height-sm:               8vw !default;
-$btn-height-lg:               12vw !default;
+$btn-height-base:             8vw !default;
+$btn-height-lg:               10vw !default;
+$btn-height-sm:               6vw !default;
 
 
 // 标题大小

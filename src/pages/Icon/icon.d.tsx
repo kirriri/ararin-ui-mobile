@@ -1,13 +1,14 @@
 import React from 'react';
 import './icon.scss'
+import { postParentIframeMsg } from '@/util/util'
 
-class ButtonPage extends React.Component<any, any> {
+class IconPage extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props)
         console.log(props)
         this.state = {
-            buttonState: 'loading',
+            IconState: 'loading',
             visible: false,
             popupVisible: false,
             pickerState: false,
@@ -16,8 +17,10 @@ class ButtonPage extends React.Component<any, any> {
     }
     
     componentDidMount() {
-        // this.props.onlo
-        // window.parent.reload()
+        postParentIframeMsg({
+            load: true,
+            cmp: 'Icon'
+        })
     }
  
     render() {
@@ -25,7 +28,7 @@ class ButtonPage extends React.Component<any, any> {
         const { visible, pickerState } = this.state
         
         return (
-            <div className="page_button">
+            <div className="page_Icon">
                  icon
                  icon
                  icon
@@ -40,4 +43,4 @@ class ButtonPage extends React.Component<any, any> {
     }
 }
 
-export default ButtonPage;
+export default IconPage;
