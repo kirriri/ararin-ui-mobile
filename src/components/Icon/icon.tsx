@@ -32,16 +32,16 @@ export const Icon: FC<BaseIconProps> = props => {
         ...restProps
     } = props
 
-    const classes = classNames('ararin-icon', className, {
-        [`ararin-icon-${type}`]: type && IconRes[type],
-        'ararin-icon-spin': iconState
+    const classes = classNames('ecsc-icon', className, {
+        [`ecsc-icon-${type}`]: type && IconRes[type],
+        'ecsc-icon-spin': iconState
     })
 
     const svgSprite = (contents: string) => `
         <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
-            id="__ARARIN_MOBILE_SVG_ICON"
+            id="__ecsc_MOBILE_SVG_ICON"
             style="display:none;overflow:hidden;width:0;height:0"
         >
             <defs>
@@ -55,7 +55,7 @@ export const Icon: FC<BaseIconProps> = props => {
             if (!document) {
                 return;
             }
-            const existing = document.getElementById('__ARARIN_MOBILE_SVG_ICON');
+            const existing = document.getElementById('__ecsc_MOBILE_SVG_ICON');
             const mountNode = document.body;
 
             const symbols = Object.keys(IconRes).map(iconName => {

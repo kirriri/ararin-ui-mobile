@@ -1,5 +1,5 @@
 {
-  "name": "ararin-ui-mobile",
+  "name": "ecsc-ui-mobile",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -22,10 +22,10 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,7 +44,11 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.10",
+    "babel-plugin-import": "^1.13.3",
+    "customize-cra": "^1.0.0",
     "node-sass": "^4.14.1",
-    "postcss-px-to-viewport": "^1.1.1"
+    "postcss-px-to-viewport": "^1.1.1",
+    "react-app-rewired": "^2.1.7",
+    "react-router-dom": "^5.2.0"
   }
 }

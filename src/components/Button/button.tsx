@@ -86,21 +86,11 @@ export const Button: FC<ButtonProps> = props => {
 	if (state === 'loading') {
 		disabled = true
 		iconEle = <Icon
+			
 			iconState="spin"
 			type="loading"
 		></Icon>
-		// iconEle =  <CSSTransition
-		//                 in={state === 'loading'} // 如果this.state.show从false变为true，则动画入场，反之out出场
-		//                 timeout={500} //动画执行1秒
-		//                 classNames='test' //自定义的class名
-		//                 unMountOnExit
-		//                 appear={true}
-		//             >
-		//                 <Icon
-		//                     iconState="spin"
-		//                     type="loading"
-		//                 ></Icon>
-		//             </CSSTransition>
+
 	} else if (state === 'disabled') {
 		disabled = true
 	} else if (state === 'failed') {
@@ -118,13 +108,13 @@ export const Button: FC<ButtonProps> = props => {
 		iconEle = icon
 	}
 
-	const classes = classNames('ararin-button', className, {
-		[`ararin-button-${type}`]: type,
-		[`ararin-button-${size}`]: size,
+	const classes = classNames('ecsc-button', className, {
+		[`ecsc-button-${type}`]: type,
+		[`ecsc-button-${size}`]: size,
 		// loading样式，临时放在这，等后期再次开发
-		[`ararin-button-${state}`]: state,
+		[`ecsc-button-${state}`]: state,
 		'disabled': disabled,
-		'ararin-button-ripple': ripple
+		'ecsc-button-ripple': ripple
 	})
 	var duration = 750;
 	const Radius = 12.5
@@ -176,7 +166,7 @@ export const Button: FC<ButtonProps> = props => {
 			top: _height - Radius + "px",
 			left: _left - Radius + "px",
 		};
-		cDiv.className = cDiv.className + "ararin-button-ripple-animation"
+		cDiv.className = cDiv.className + "ecsc-button-ripple-animation"
 		cDiv.setAttribute("style", forStyle(position))
 		setCssStyle(position, 'transform', _scale)
 		setCssStyle(position, 'opacity', 1)
@@ -201,7 +191,7 @@ export const Button: FC<ButtonProps> = props => {
 	return <>
 		<TouchFeedback
 			activeClassName={
-				activeClassName || (ripple ? undefined : `ararin-button-${type}-active`)
+				activeClassName || (ripple ? undefined : `ecsc-button-${type}-active`)
 			}
 			disabled={disabled}
 			activeStyle={activeStyle}

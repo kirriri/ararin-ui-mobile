@@ -4,7 +4,7 @@ import React, {
     useEffect,
     useState,
 } from 'react'
-import Popup from '../dialog/popup'
+import Popup from '../Dialog/popup'
 import PickerCol from '../PickerView/pickerCol'
 import classNames from 'classnames'
 import TouchFeedback from 'rmc-feedback';
@@ -176,7 +176,7 @@ export const Picker: FC<BasePickerProps> = props => {
     useEffect(
         () => {
             if(linkage && !data.every(item => Object.prototype.toString.call(item) === '[object Object]')) {
-                console.error('Ararin Picker error: linkage type must need all type of Object item')
+                console.error('ecsc Picker error: linkage type must need all type of Object item')
                 return
             }
             resetBseData(linkage)

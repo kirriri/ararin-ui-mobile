@@ -1,10 +1,10 @@
 import React from 'react';
-import Button from './components/Button/button'
-import Dialog from './components/Dialog/dialog'
-import Picker from './components/Picker/picker'
-import './app.scss'
+import Button from '@/components/Button/button'
+import Dialog from '@/components/Dialog/dialog'
+import Picker from '@/components/Picker/picker'
+import './button.scss'
 
-import { PickerTestData, PickerTestData2, PickerTestData3 } from './util/dataTest'
+import { PickerTestData, PickerTestData2, PickerTestData3 } from '@/util/dataTest'
 
 class App extends React.Component<any, any> {
 
