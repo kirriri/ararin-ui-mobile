@@ -5,21 +5,49 @@ import ButtonPhone from '@/pages/Button/button';
 import IconDetail from '@/pages/Icon/icon.d';
 import IconPhone from '@/pages/Icon/icon';
 
+
+const metaType = type => {
+	const qMeta = document.querySelector('meta[name="viewport"]')
+	let meta = ''
+	if(type === 'wap') {
+		if(qMeta) {
+			qMeta['content'] = 'maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0'
+			document.querySelector('meta[charset="utf-8"]').insertAdjacentHTML('beforebegin', meta)
+		}else {
+			let meta = '<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>'
+			document.querySelector('meta[charset="utf-8"]').insertAdjacentHTML('beforebegin', meta)
+		}
+		document.querySelector('html').style.fontSize = '26.666666vw'
+	}else {
+		if(qMeta) {
+			qMeta['content'] = 'width=device-width, initial-scale=1'
+		}else {
+			let meta = '<meta name="viewport" content="width=device-width, initial-scale=1"/>'
+			document.querySelector('meta[charset="utf-8"]').insertAdjacentHTML('beforebegin', meta)
+		}
+		document.querySelector('html').style.fontSize = '14px'
+	}
+}
+
 const Content = () => (
 	<Router>
-		{/* <Route exact path="/ecsc-components-mobile/detail/button" component={ButtonDetail} /> */}
-
 		<Route path="/ecsc-components-mobile/detail" render={() => 
-			<Switch>
-				<Route exact path="/ecsc-components-mobile/detail/button" component={ButtonDetail} />
-				<Route exact path="/ecsc-components-mobile/detail/icon" component={IconDetail} />
-			</Switch>
+			<>
+				{metaType('web')}
+				<Switch>
+					<Route exact path="/ecsc-components-mobile/detail/button" component={ButtonDetail} />
+					<Route exact path="/ecsc-components-mobile/detail/icon" component={IconDetail} />
+				</Switch>
+			</>
 		}/>
 		<Route path="/ecsc-components-mobile/phone" render={() => 
-			<Switch>
-				<Route exact path="/ecsc-components-mobile/phone/button" component={ButtonPhone} />
-				<Route exact path="/ecsc-components-mobile/phone/icon" component={IconPhone} />
-			</Switch>
+			<>
+				{metaType('wap')}
+				<Switch>
+					<Route exact path="/ecsc-components-mobile/phone/button" component={ButtonPhone} />
+					<Route exact path="/ecsc-components-mobile/phone/icon" component={IconPhone} />
+				</Switch>
+			</>
 		}/>
 	</Router>
 )

@@ -17,7 +17,7 @@ class ButtonPage extends React.Component<any, any> {
     
     componentDidMount() {
         // this.props.onlo
-        window.parent.reload()
+        // window.parent.reload()
     }
  
     render() {
