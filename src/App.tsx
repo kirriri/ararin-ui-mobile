@@ -49,6 +49,7 @@ class App extends React.Component<any, any> {
                     ripple
                     style={{marginTop: '5vw'}}
                     type="primary"
+                    // state="loading"
                     onClick={() => {this.setState({pickerState: !pickerState})}}
                 >选择器</Button>
                 
