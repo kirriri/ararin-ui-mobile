@@ -1,11 +1,11 @@
 import React from 'react';
-import './button.scss'
+import './icon.scss'
 
 class ButtonPage extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props)
-        
+        console.log(props)
         this.state = {
             buttonState: 'loading',
             visible: false,
@@ -17,6 +17,7 @@ class ButtonPage extends React.Component<any, any> {
     
     componentDidMount() {
         // this.props.onlo
+        window.parent.reload()
     }
  
     render() {
@@ -25,14 +26,15 @@ class ButtonPage extends React.Component<any, any> {
         
         return (
             <div className="page_button">
-                 button
-                 button
-                 button
-                 button
-                 button
-                 buttonbutton
-                 button
-                 button
+                 icon
+                 icon
+                 icon
+                 icon
+                 iconicon
+                 icon
+                 icon
+                 icon
+                 icon
             </div>
         );
     }
