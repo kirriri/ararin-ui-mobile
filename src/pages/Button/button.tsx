@@ -33,49 +33,27 @@ class App extends React.Component<any, any> {
         const { visible, pickerState } = this.state
         
         return (
-            <div className="App" style={{padding: '15vw 5vw 0'}}>
-
-                
-                        <Button
-                            type="success"
-                            // ripple
-                            // state="loading"
-                            size="sm"
-                            onClick={() => {this.setState({visible: true})}}
-                        >弹窗</Button>
-                        <Button
-                            type="danger"
-                            ripple
-                            style={{marginTop: '.15rem'}}
-                            onClick={() => {console.log(22222)}}
-                        >弹窗</Button>
-                        <Button
-                            ripple
-                            size="lg"
-                            style={{marginTop: '.15rem'}}
-                            type="primary"
-                            onClick={() => {this.setState({pickerState: !pickerState})}}
-                        >选择器</Button>
-                        
-                        <Picker
-                            // history
-                            maskClosable={true}
-                            cancelPress={() => {this.setState({pickerState: !pickerState})}}
-                            okPress={(val) => {console.log(val); this.setState({pickerState: !pickerState})}}
-                            data={this.state.data}
-                            visible={this.state.pickerState}
-                        ></Picker>
-                        <Dialog 
-                            maskClosable
-                            title={<h3>标题测试</h3>} 
-                            visible={visible}
-                            footer={[
-                                {text: '取消', onPress: () => {this.setState({visible: false})}}, 
-                                {text: '确定', onPress: () => {this.setState({visible: false})}, higlight: true}]}
-                        >
-                            测试测试测试
-                        </Dialog>
-                 
+            <div className="phone_button" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
+                <Button
+                    type="success"
+                    // ripple
+                    state="loading"
+                    size="sm"
+                    onClick={() => {this.setState({visible: true})}}
+                >弹窗</Button>
+                <Button
+                    type="danger"
+                    ripple
+                    style={{marginTop: '.15rem'}}
+                    onClick={() => {console.log(22222)}}
+                >弹窗</Button>
+                <Button
+                    ripple
+                    size="lg"
+                    style={{marginTop: '.15rem'}}
+                    type="primary"
+                    onClick={() => {this.setState({pickerState: !pickerState})}}
+                >选择器</Button>
             </div>
         );
     }

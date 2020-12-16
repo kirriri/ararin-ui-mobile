@@ -26,7 +26,7 @@ const metaType = type => {
 			let meta = '<meta name="viewport" content="width=device-width, initial-scale=1"/>'
 			document.querySelector('meta[charset="utf-8"]').insertAdjacentHTML('beforebegin', meta)
 		}
-		document.querySelector('html').style.fontSize = '14px'
+		document.querySelector('html').style.fontSize = '18px'
 		document.querySelector('html').querySelector('body').style.background = 'rgba(255,255,255, 1)'
 	}
 }
