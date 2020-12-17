@@ -34,20 +34,18 @@ class App extends React.Component<any, any> {
         
         return (
             <div className="App" style={{padding: '15vw 5vw 0'}}>
-
-                
+                        <Button
+                            type="danger"
+                            ripple
+                            style={{marginTop: '.15rem'}}
+                            onClick={() => {console.log(22222)}}
+                        >弹窗</Button>
                         <Button
                             type="success"
                             // ripple
                             // state="loading"
                             size="sm"
                             onClick={() => {this.setState({visible: true})}}
-                        >弹窗</Button>
-                        <Button
-                            type="danger"
-                            ripple
-                            style={{marginTop: '.15rem'}}
-                            onClick={() => {console.log(22222)}}
                         >弹窗</Button>
                         <Button
                             ripple

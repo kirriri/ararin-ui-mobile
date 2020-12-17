@@ -1,7 +1,6 @@
 import React from 'react';
 import './button.scss'
 import { postParentIframeMsg } from '@/util/util'
-import ReactMarkdown from 'react-markdown'
 
 class ButtonPage extends React.PureComponent<any, any> {
 
@@ -34,10 +33,6 @@ class ButtonPage extends React.PureComponent<any, any> {
         
         return (
             <div className="page_button">
-                 <ReactMarkdown 
-                    source={this.state.markText} 
-                    escapeHtml={false}  //不进行HTML标签的转化
-                />
             </div>
         );
     }
