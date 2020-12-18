@@ -1,62 +1,51 @@
 import React from 'react';
 import Button from '@/components/Button/button'
-import Dialog from '@/components/Dialog/dialog'
-import Picker from '@/components/Picker/picker'
 import './button.scss'
 
-import { PickerTestData, PickerTestData2, PickerTestData3 } from '@/util/dataTest'
+class ButtonPage extends React.Component<any, any> {
 
-class App extends React.Component<any, any> {
-
-    constructor(props: any) {
-        super(props)
-        
-        this.state = {
-            buttonState: 'loading',
-            visible: false,
-            popupVisible: false,
-            pickerState: false,
-            data: []
-        }
-    }
-    
     componentDidMount() {
-        setTimeout(() => {
-            this.setState({
-                data: PickerTestData2
-            })
-        }, 1000)
+        
     }
+
+    const getResetStyle = (props: any) => 
     
     render() {
-
-        const { visible, pickerState } = this.state
-        
         return (
-            <div className="phone_button" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
-                <Button
-                    type="success"
-                    // ripple
-                    state="loading"
-                    size="sm"
-                    onClick={() => {this.setState({visible: true})}}
-                >弹窗</Button>
-                <Button
-                    type="danger"
-                    ripple
-                    style={{marginTop: '.15rem'}}
-                    onClick={() => {console.log(22222)}}
-                >弹窗</Button>
-                <Button
-                    ripple
-                    size="lg"
-                    style={{marginTop: '.15rem'}}
-                    type="primary"
-                    onClick={() => {this.setState({pickerState: !pickerState})}}
-                >选择器</Button>
-            </div>
+            <>
+                <style dangerouslySetInnerHTML={{__html: this.getResetStyle}}/>
+                <div className="phone_button" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
+                    <Button
+                        type="default"
+                        size="sm"
+                        onClick={() => {this.setState({visible: true})}}
+                    >sm 按钮</Button>
+                    <Button
+                        style={{marginTop: '3vw'}}
+                        state="loading"
+                        size="sm"
+                        onClick={() => {this.setState({visible: true})}}
+                    >暂停 按钮</Button>
+                    <Button
+                        type="danger"
+                        style={{marginTop: '3vw'}}
+                        onClick={() => {console.log(22222)}}
+                    >md 按钮</Button>
+                    <Button
+                        size="lg"
+                        style={{marginTop: '3vw'}}
+                        type="primary"
+                    >lg 按钮</Button>
+                    <Button
+                        className="ripple_feedback"
+                        size="lg"
+                        ripple
+                        style={{marginTop: '3vw'}}
+                    >水波纹</Button>
+                </div>
+            </>
         );
     }
 }
 
-export default App;
+export default ButtonPage;

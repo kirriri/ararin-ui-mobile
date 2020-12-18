@@ -36,8 +36,6 @@ class App extends React.Component<any, any> {
             <div className="App" style={{padding: '15vw 5vw 0'}}>
                 <Button
                     type="success"
-                    // ripple
-                    // state="loading"
                     size="sm"
                     onClick={() => {this.setState({visible: true})}}
                 >弹窗</Button>
@@ -48,6 +46,7 @@ class App extends React.Component<any, any> {
                     onClick={() => {console.log(22222)}}
                 >弹窗</Button>
                 <Button
+                    state="loading"
                     ripple
                     size="lg"
                     style={{marginTop: '.15rem'}}

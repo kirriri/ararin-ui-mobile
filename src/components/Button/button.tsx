@@ -150,7 +150,7 @@ export const Button: FC<ButtonProps> = props => {
 		let rectObj = forRect(pDiv),
 			_height = event.pageY - rectObj.top,
 			_left = event.pageX - rectObj.left,
-			_scale = 'scale(' + pDiv.clientWidth / 100 * 6 + ')';
+			_scale = 'scale(' + pDiv.clientWidth / 100 * 4.5 + ')';
 		let position = {
 			top: _height - Radius + 'px',
 			left: _left - Radius + 'px',

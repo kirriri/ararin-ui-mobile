@@ -1,0 +1,24 @@
+.url_wrapper {
+
+    height: 35px;
+    background: rgba(241,243,244, 1);
+    .url_content {
+        width: 100%;
+        margin: 0 auto;
+        height: 35px;
+        font-size: 16px;
+        padding: 0 5px;
+        padding-right: 45px;
+        border-radius: 4px;
+        overflow: hidden;
+        background: rgb(218, 218, 218);
+        .url {
+            line-height: 35px;
+            font-size: 16px;
+            overflow-x: scroll;
+            word-break: break-all;
+            white-space: nowrap;
+            color: rgb(105,106,108);
+        }
+    }
+}

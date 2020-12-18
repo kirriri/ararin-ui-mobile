@@ -4,7 +4,7 @@ import ButtonDetail from '@/pages/Button/button.d';
 import ButtonPhone from '@/pages/Button/button';
 import IconDetail from '@/pages/Icon/icon.d';
 import IconPhone from '@/pages/Icon/icon';
-
+import { Url } from '@/components/Url/url';
 
 const metaType = type => {
 	const qMeta = document.querySelector('meta[name="viewport"]')
@@ -45,6 +45,7 @@ export const Content = () => (
 		<Route path="/ecsc-components-mobile/phone" render={() => 
 			<>
 				{metaType('wap')}
+				<Url url={window.location.href}/>
 				<Switch>
 					<Route exact path="/ecsc-components-mobile/phone/button" component={ButtonPhone} />
 					<Route exact path="/ecsc-components-mobile/phone/icon" component={IconPhone} />
