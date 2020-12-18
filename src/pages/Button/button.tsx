@@ -1,20 +1,17 @@
 import React from 'react';
 import Button from '@/components/Button/button'
 import './button.scss'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 class ButtonPage extends React.Component<any, any> {
 
-    componentDidMount() {
+    constructor(props) {
+        super(props)
         
-    }
-
-    const getResetStyle = (props: any) => 
-    
-    render() {
-        return (
-            <>
-                <style dangerouslySetInnerHTML={{__html: this.getResetStyle}}/>
-                <div className="phone_button" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
+        this.state = {
+            active: -1,
+            data: [
+                <>
                     <Button
                         type="default"
                         size="sm"
@@ -31,17 +28,64 @@ class ButtonPage extends React.Component<any, any> {
                         style={{marginTop: '3vw'}}
                         onClick={() => {console.log(22222)}}
                     >md 按钮</Button>
+                    
+                </>,
+                <>
                     <Button
                         size="lg"
                         style={{marginTop: '3vw'}}
                         type="primary"
                     >lg 按钮</Button>
-                    <Button
-                        className="ripple_feedback"
-                        size="lg"
-                        ripple
-                        style={{marginTop: '3vw'}}
-                    >水波纹</Button>
+                </>
+            ]
+        }
+    }
+
+    componentDidMount() {
+        window.addEventListener('message', this.getMsg)
+    }
+    
+
+    componentWillUnmount() {
+        window.removeEventListener('message', this.getMsg)
+    }
+
+    getMsg =  (e: MessageEvent) => {
+        const { index } = e.data
+        this.setState({active: index})
+    }
+    
+    getResetStyle = () => ``
+    
+    render() {
+
+        console.log(this.state.active)
+        
+        return (
+            <>
+                <style dangerouslySetInnerHTML={{__html: this.getResetStyle()}}/>
+                <div className="phone_button" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
+                    <TransitionGroup
+                        className="test"
+                    >
+                        {
+                            this.state.data.map((item, index) => 
+                                <div 
+                                    key={`ele${index}`} 
+                                    style={{position: 'relative'}}>
+                                    <CSSTransition 
+                                        onEntered={() => this.setState({active: -1})}
+                                        in={index===this.state.active}
+                                        classNames="eleFocus"
+                                        timeout={1200}
+                                    >
+                                        <div>{item}</div>
+                                    </CSSTransition>
+                                </div>
+                            )
+                        }
+                    </TransitionGroup>
+
                 </div>
             </>
         );
