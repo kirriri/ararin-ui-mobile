@@ -32,10 +32,11 @@ class ButtonPage extends React.Component<any, any> {
                 </>,
                 <>
                     <Button
+                        ripple
                         size="lg"
                         style={{marginTop: '3vw'}}
                         type="primary"
-                    >lg 按钮</Button>
+                    >lg 水波纹按钮</Button>
                 </>
             ]
         }
