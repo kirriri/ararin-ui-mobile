@@ -11,7 +11,7 @@ class ButtonPage extends React.Component<any, any> {
         this.state = {
             active: -1,
             data: [
-                <>
+                <div>
                     <Button
                         type="default"
                         size="sm"
@@ -29,21 +29,24 @@ class ButtonPage extends React.Component<any, any> {
                         onClick={() => {console.log(22222)}}
                     >md 按钮</Button>
                     
-                </>,
-                <>
+                </div>,
+                <div>
                     <Button
                         ripple
                         size="lg"
                         style={{marginTop: '3vw'}}
                         type="primary"
                     >lg 水波纹按钮</Button>
-                </>
+                </div>
             ]
         }
     }
 
     componentDidMount() {
         window.addEventListener('message', this.getMsg)
+        if(window.parent) {
+            window.parent.postMessage({load: true}, "*")
+        }
     }
     
 
@@ -60,33 +63,24 @@ class ButtonPage extends React.Component<any, any> {
     
     render() {
 
-        console.log(this.state.active)
-        
         return (
             <>
                 <style dangerouslySetInnerHTML={{__html: this.getResetStyle()}}/>
                 <div className="phone_button" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
-                    <TransitionGroup
-                        className="test"
-                    >
-                        {
-                            this.state.data.map((item, index) => 
-                                <div 
-                                    key={`ele${index}`} 
-                                    style={{position: 'relative'}}>
-                                    <CSSTransition 
-                                        onEntered={() => this.setState({active: -1})}
-                                        in={index===this.state.active}
-                                        classNames="eleFocus"
-                                        timeout={1200}
-                                    >
-                                        <div>{item}</div>
-                                    </CSSTransition>
-                                </div>
-                            )
-                        }
-                    </TransitionGroup>
-
+                    {
+                        this.state.data.map((item, index) => 
+                            <CSSTransition 
+                                key={`ele_1${index}`} 
+                                style={{position: 'relative'}}
+                                in={index === this.state.active ? true : false}
+                                classNames="eleFocus"
+                                timeout={1200}
+                                onEntered={() => this.setState({active: -1})}
+                            >
+                                <div>{item}</div>
+                            </CSSTransition>
+                        )
+                    }
                 </div>
             </>
         );
