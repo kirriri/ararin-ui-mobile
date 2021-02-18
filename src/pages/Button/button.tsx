@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@/components/Button/button'
+import Button from '../../components/Button/button'
 import './button.scss'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
@@ -62,7 +62,6 @@ class ButtonPage extends React.Component<any, any> {
     getResetStyle = () => ``
     
     render() {
-
         return (
             <>
                 <style dangerouslySetInnerHTML={{__html: this.getResetStyle()}}/>

@@ -1,0 +1,44 @@
+.phone_prizeWheel {
+    img {
+        width: 100%;
+    }
+}
+
+.ararin_prizeWheel_box {
+    margin: 0 auto;
+    position: relative;
+    flex-shrink: 0;
+    // @media (max-width: 420px) {
+    //     width: 310px;
+    // }
+
+    // @media (max-width: 375px) {
+    //     width: 280px;
+    // }
+
+    // @media (max-width: 350px) {
+    //     width: 250px;
+    // }
+    border-radius: 50%;
+}
+
+.ararin-prize-wheel {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.wheel_zone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+}
+.ararin-pw-arrow-bg {
+    position: absolute;
+    z-index: 12;
+    top: 50%;
+    left: 50%;
+}

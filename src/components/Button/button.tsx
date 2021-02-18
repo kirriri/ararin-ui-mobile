@@ -86,7 +86,6 @@ export const Button: FC<ButtonProps> = props => {
 	if (state === 'loading') {
 		disabled = true
 		iconEle = <Icon
-			
 			iconState="spin"
 			type="loading"
 		></Icon>
@@ -95,10 +94,7 @@ export const Button: FC<ButtonProps> = props => {
 		disabled = true
 	} else if (state === 'failed') {
 		disabled = true
-		iconEle = <Icon
-			type="failed"
-		>
-		</Icon>
+		iconEle = <Icon type="failed" />
 	} else if (typeof icon === 'string') {
 		iconEle = <Icon
 			iconState={iconState}
@@ -108,13 +104,13 @@ export const Button: FC<ButtonProps> = props => {
 		iconEle = icon
 	}
 
-	const classes = classNames('ecsc-button', className, {
-		[`ecsc-button-${type}`]: type,
-		[`ecsc-button-${size}`]: size,
+	const classes = classNames('ararin-button', className, {
+		[`ararin-button-${type}`]: type,
+		[`ararin-button-${size}`]: size,
 		// loading样式，临时放在这，等后期再次开发
-		[`ecsc-button-${state}`]: state,
+		[`ararin-button-${state}`]: state,
 		'disabled': disabled,
-		'ecsc-button-ripple': ripple
+		'ararin-button-ripple': ripple
 	})
 	var duration = 750;
 	const Radius = 12.5
@@ -166,7 +162,7 @@ export const Button: FC<ButtonProps> = props => {
 			top: _height - Radius + "px",
 			left: _left - Radius + "px",
 		};
-		cDiv.className = cDiv.className + "ecsc-button-ripple-animation"
+		cDiv.className = cDiv.className + "ararin-button-ripple-animation"
 		cDiv.setAttribute("style", forStyle(position))
 		setCssStyle(position, 'transform', _scale)
 		setCssStyle(position, 'opacity', 1)
@@ -191,7 +187,7 @@ export const Button: FC<ButtonProps> = props => {
 	return <>
 		<TouchFeedback
 			activeClassName={
-				activeClassName || (ripple ? undefined : `ecsc-button-${type}-active`)
+				activeClassName || `ararin-button-${type}-active`
 			}
 			disabled={disabled}
 			activeStyle={activeStyle}

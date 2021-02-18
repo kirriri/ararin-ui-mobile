@@ -1,10 +1,10 @@
 import React from 'react'
 import { HashRouter as Router, Route, Switch, Redirect, withRouter } from "react-router-dom";
-import ButtonDetail from '@/pages/Button/button.d';
-import ButtonPhone from '@/pages/Button/button';
-import IconDetail from '@/pages/Icon/icon.d';
-import IconPhone from '@/pages/Icon/icon';
-import { Url } from '@/components/Url/url';
+import { Url } from './components/Url/url';
+import ButtonDetail from './pages/Button/button.d';
+import ButtonPhone from './pages/Button/button';
+import IconPhone from './pages/Icon/icon';
+import PrizeWheelPhone from './pages/PrizeWheel/prizeWheel';
 
 const metaType = type => {
 	const qMeta = document.querySelector('meta[name="viewport"]')
@@ -33,22 +33,22 @@ const metaType = type => {
 
 export const Content = () => (
 	<Router>
-		<Route path="/ecsc-components-mobile/detail" render={() => 
+		<Route path="/ararin-components-mobile/detail" render={() => 
 			<>
 				{metaType('web')}
 				<Switch>
-					<Route exact path="/ecsc-components-mobile/detail/button" component={ButtonDetail} />
-					<Route exact path="/ecsc-components-mobile/detail/icon" component={IconDetail} />
+					<Route exact path="/ararin-components-mobile/detail/button" component={ButtonDetail} />
 				</Switch>
 			</>
 		}/>
-		<Route path="/ecsc-components-mobile/phone" render={() => 
+		<Route path="/ararin-components-mobile/phone" render={() => 
 			<>
 				{metaType('wap')}
 				<Url url={window.location.href}/>
 				<Switch>
-					<Route exact path="/ecsc-components-mobile/phone/button" component={ButtonPhone} />
-					<Route exact path="/ecsc-components-mobile/phone/icon" component={IconPhone} />
+					<Route exact path="/ararin-components-mobile/phone/button" component={ButtonPhone} />
+					<Route exact path="/ararin-components-mobile/phone/prizewheel" component={PrizeWheelPhone} />
+					<Route exact path="/ararin-components-mobile/phone/icon" component={IconPhone} />
 				</Switch>
 			</>
 		}/>

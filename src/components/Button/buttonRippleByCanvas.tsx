@@ -6,7 +6,7 @@ import React, {
     useEffect
 } from 'react'
 import classNames from 'classnames'
-import { requestAnimFrame, canCelRequestAnimFrame } from '../../util/animateJs'
+import { requestAnimationFrame, canCelRequestAnimFrame } from '../../util/animateJs'
 import TouchFeedback from 'rmc-feedback';
 import Icon, { IconType } from '../Icon'
 import { refreshRate }  from '../../util/refreshRate';
@@ -92,18 +92,7 @@ export const Button: FC<ButtonProps> = props => {
                         iconState="spin"
                         type="loading"
                     ></Icon>
-        // iconEle =  <CSSTransition
-        //                 in={state === 'loading'} // 如果this.state.show从false变为true，则动画入场，反之out出场
-        //                 timeout={500} //动画执行1秒
-        //                 classNames='test' //自定义的class名
-        //                 unMountOnExit
-        //                 appear={true}
-        //             >
-        //                 <Icon
-        //                     iconState="spin"
-        //                     type="loading"
-        //                 ></Icon>
-        //             </CSSTransition>
+        
     }else if (state === 'disabled') {
         disabled = true
     }else if (state === 'failed') {
@@ -121,11 +110,11 @@ export const Button: FC<ButtonProps> = props => {
         iconEle = icon
     }
 
-    const classes = classNames('ecsc-button',className , {
-        [`ecsc-button-${type}`] : type,
-        [`ecsc-button-${size}`] : size,
+    const classes = classNames('ararin-button',className , {
+        [`ararin-button-${type}`] : type,
+        [`ararin-button-${size}`] : size,
         // loading样式，临时放在这，等后期再次开发
-        [`ecsc-button-${state}`] : state,
+        [`ararin-button-${state}`] : state,
         'disabled': disabled
     })
     //检查屏幕帧率
@@ -197,9 +186,9 @@ export const Button: FC<ButtonProps> = props => {
         context.fill();
         rippleData.current.radius = radius += rippleData.current.radiusSpeed
         if (rippleComponent.current && radius < rippleComponent.current.width) {
-            animateId.current = requestAnimFrame(() => rippleDrawRadius(context));
+            animateId.current = requestAnimationFrame(() => rippleDrawRadius(context));
         }else if(rippleComponent.current && opacity > 0.001){
-            animateId.current = requestAnimFrame(() => rippleDrawOpacity());
+            animateId.current = requestAnimationFrame(() => rippleDrawOpacity());
         }
     };
 
@@ -210,7 +199,7 @@ export const Button: FC<ButtonProps> = props => {
             rippleComponent.current.style.opacity = opacity + ''
             if (rippleComponent.current &&  rippleData.current.opacity > 0) {
                 rippleData.current.opacity = Math.max((opacity -= opacitySpeed), 0) 
-                animateId.current = requestAnimFrame(() => rippleDrawOpacity())
+                animateId.current = requestAnimationFrame(() => rippleDrawOpacity())
             }
         }
     }
@@ -218,7 +207,7 @@ export const Button: FC<ButtonProps> = props => {
     return  <>
                 <TouchFeedback
                     activeClassName={
-                        activeClassName || (ripple ? undefined : `ecsc-button-${type}-active`)
+                        activeClassName || (ripple ? undefined : `ararin-button-${type}-active`)
                     }
                     disabled={disabled}
                     activeStyle={activeStyle}
@@ -232,12 +221,12 @@ export const Button: FC<ButtonProps> = props => {
                     >
                         {ripple && <canvas 
                                         style={{opacity: rippleData.current.opacity}}
-                                        className="ecsc-btn-ripple"  
+                                        className="ararin-btn-ripple"  
                                         ref={rippleComponent} 
                                     />
                         }
                         <div
-                            className="ecsc-button-box"
+                            className="ararin-button-box"
                         >
                             {iconEle}
                             {children}

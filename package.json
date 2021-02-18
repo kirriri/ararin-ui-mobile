@@ -1,7 +1,10 @@
 {
-  "name": "ecsc-ui-mobile",
+  "name": "ararin-cmp-mobile",
   "version": "0.1.0",
   "private": true,
+  "main": "build/index.js",
+  "module": "build/index.js",
+  "types": "build/index.d.ts",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -23,9 +26,12 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "clean": "rimraf ./build",
+    "build": "npm run build-ts && npm run build-css",
     "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "build-ts": "tsc -p tsconfig.build.json",
+    "build-css": "node-sass ./src/styles/index.scss ./build/index.css"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -49,6 +55,7 @@
     "node-sass": "^4.14.1",
     "postcss-px-to-viewport": "^1.1.1",
     "react-app-rewired": "^2.1.7",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "rimraf": "^3.0.2"
   }
 }
