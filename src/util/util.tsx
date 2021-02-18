@@ -21,4 +21,4 @@ export const setCssStyle = (obj, name, val, reactObj = false) => {
 	})
 }
 
-export const postParentIframeMsg = data => window.parent.postMessage(data, 'http://localhost:7777/ecsc/ui/components#/ecsc-ui/view/*')
+export const postParentIframeMsg = data => window.parent.postMessage(data, 'http://localhost:7777/ararin/ui/components#/ararin-cmp/view/*')

@@ -1,21 +1,15 @@
 import React from 'react';
-import Icon from '@/components/Icon'
+import Icon from '../../components/Icon'
+import { IconRes } from '../../components/Icon/IconRes'
 import './icon.scss'
 
-import { PickerTestData, PickerTestData2, PickerTestData3 } from '@/util/dataTest'
-
-class App extends React.Component<any, any> {
+class IconPage extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props)
         
         this.state = {
-            IconData: [
-                <Icon type="loading"/>,
-                <Icon type="close" />,
-                <Icon type="failed" />,
-                <Icon type="search" />
-            ]
+            IconData: Object.keys(IconRes).map((item) => <Icon type={item}/>)
         }
     }
 
@@ -46,7 +40,7 @@ class App extends React.Component<any, any> {
             <>
                 <style dangerouslySetInnerHTML={{__html: this.getStyle()}}/>
                 <div className="pageIcon" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
-                    <ul>
+                    <ul className="wrapper">
                         {
                             this.state.IconData.map((item, index) =>
                                 <li>
@@ -62,4 +56,4 @@ class App extends React.Component<any, any> {
     }
 }
 
-export default App;
+export default IconPage;

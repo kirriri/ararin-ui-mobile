@@ -1,6 +1,6 @@
 import React from 'react';
 import './button.scss'
-import { postParentIframeMsg } from '@/util/util'
+import { postParentIframeMsg } from '../../util/util'
 
 class ButtonPage extends React.PureComponent<any, any> {
 

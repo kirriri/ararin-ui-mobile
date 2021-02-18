@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      "outDir": "build",
+      "target": "es5",
+      "module": "esnext",
+      "declaration": true,
+      "jsx": "react",
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports": true
+    },
+    "exclude": [
+      "node_modules",
+      "src/pages"
+    ],
+    "include": [
+        "src/components",
+        "src/index.tsx",
+        "src/images"
+    ],
+  }
+  

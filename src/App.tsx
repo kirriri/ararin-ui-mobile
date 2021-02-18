@@ -1,7 +1,7 @@
 import React from 'react';
-import Button from '@/components/Button/button'
-import Dialog from '@/components/Dialog/dialog'
-import Picker from '@/components/Picker/picker'
+import Button from './components/Button/button'
+import Dialog from './components/Dialog/dialog'
+import Picker from './components/Picker/picker'
 import './app.scss'
 
 import { PickerTestData, PickerTestData2, PickerTestData3 } from './util/dataTest'

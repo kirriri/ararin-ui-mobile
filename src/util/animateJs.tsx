@@ -1,4 +1,4 @@
-export const requestAnimFrame = (function() {
+export const requestAnimationFrame = (function() {
     return  window.requestAnimationFrame || 
             window.webkitRequestAnimationFrame || 
             // @ts-ignore
