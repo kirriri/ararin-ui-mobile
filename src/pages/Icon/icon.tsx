@@ -38,7 +38,6 @@ class App extends React.Component<any, any> {
     
     getStyle = () => `
     
-    
     `
     
     render() {
@@ -49,7 +48,7 @@ class App extends React.Component<any, any> {
                 <div className="pageIcon" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
                     <ul>
                         {
-                            this.state.map((item, index) =>
+                            this.state.IconData.map((item, index) =>
                                 <li>
                                     {item}
                                 </li>
