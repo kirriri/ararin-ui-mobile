@@ -1,37 +1,50 @@
 {
   "name": "ararin-cmp-mobile",
-  "version": "0.1.0",
-  "private": true,
-  "main": "build/index.js",
-  "module": "build/index.js",
-  "types": "build/index.d.ts",
+  "version": "0.1.6",
+  "private": false,
+  "description": "一个react组件库。测试阶段中。",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "author": "ararin",
+  "license": "MIT",
+  "keywords": [
+    "Components",
+    "React",
+    "Mobile"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kirriri/ararin-ui-mobile.git"
+  },
+  "files": [
+    "lib",
+    "README.md"
+  ],
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^24.9.1",
-    "@types/node": "^12.12.47",
-    "@types/react": "^16.9.36",
-    "@types/react-dom": "^16.9.8",
-    "better-scroll": "^1.15.2",
     "classnames": "^2.2.6",
     "omit.js": "^1.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
     "react-transition-group": "^4.4.1",
     "rmc-dialog": "^1.1.1",
     "rmc-feedback": "^2.0.0",
     "typescript": "^3.7.5"
   },
+  "peerDependencies": {
+    "react": ">= 16.8.0",
+    "react-dom": "^16.8.0"
+  },
   "scripts": {
     "start": "react-app-rewired start",
-    "clean": "rimraf ./build",
-    "build": "npm run build-ts && npm run build-css",
+    "clean": "rimraf ./lib",
+    "build-detail": "react-app-rewired build",
+    "build": "npm run clean && npm run build-ts && npm run build-css",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "build-ts": "tsc -p tsconfig.build.json",
-    "build-css": "node-sass ./src/styles/index.scss ./build/index.css"
+    "build-css": "node-sass ./src/styles/index.scss ./lib/index.css",
+    "prepublish": "npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -56,6 +69,15 @@
     "postcss-px-to-viewport": "^1.1.1",
     "react-app-rewired": "^2.1.7",
     "react-router-dom": "^5.2.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.47",
+    "@types/react": "^16.9.36",
+    "@types/react-dom": "^16.9.8",
+    "react-scripts": "3.4.1"
   }
 }

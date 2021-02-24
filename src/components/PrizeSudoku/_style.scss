@@ -1,0 +1,99 @@
+.ararin-prizeSudoku-wrapper {
+    margin-bottom: 30px;
+    margin-top: 15px;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: #ffd905;
+    box-sizing: border-box;
+    box-shadow: 0 3px 5px #cd231b;
+    position: relative;
+}
+
+.ararin-prizeSudoku-box {
+    border-radius: 6px;
+    background: #f49804;
+    padding: 3px;
+    box-sizing: border-box;
+}
+
+.ararin-prizeSudoku-zone {
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+}
+
+.arain-prizeSudoku-prize {
+    width: 32%;
+    padding: 2vw 0;
+    background: #fff;
+    float: left;
+    text-align: center;
+    box-sizing: border-box;
+    margin-right: 2%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    &.active {
+        background: #ff4f40;
+        p {
+            color: #fff;
+        }
+    }
+    span {
+        display: inline-block;
+        text-align: center;
+        margin-top: 1vw;
+        width: 14vw;
+        height: 14vw;
+        box-sizing: content-box;
+        img {
+            width: 100%;
+            border-radius: 12px;
+        }
+    }
+    p {
+        font-size: 2vw;
+        display: flex;
+        height: 5vw;
+        line-height: 1.5;
+        align-items: center;
+        text-align: center;
+        color: #7f3e3e;
+        margin: 1.5vw 0 0;
+    }
+    &:nth-child(3n) {
+        margin-right: 0;
+    }
+    &:nth-child(n+4) {
+        margin-top: 5px;
+    }
+
+    &:nth-child(5) div {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        background: transparent;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .draw-btn-txt {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        letter-spacing: 1vw;
+        font-size: 200%;
+        line-height: 1.4;
+    }
+}

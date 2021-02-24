@@ -563,3 +563,15 @@ main {
 [hidden] {
   display: none !important;
 }
+
+.ararin_clear_fix {
+  zoom: 1;
+}
+
+.ararin_clear_fix::after {
+  content: "";
+  display: block;
+  visibility: hidden;
+  height: 0;
+  clear: both;
+}

@@ -7,11 +7,12 @@ import React, {
 } from 'react'
 import classNames from 'classnames'
 import { requestAnimationFrame, canCelRequestAnimFrame } from '../../util/animateJs'
+import { wheelBg, arrowBg } from './imgRes'
 
 //底盘图片名称
-const arrowImgSrc = 'lottery_arrow.png'
+const arrowImgSrc = arrowBg
 //指针图标名称
-const bgImgSrc = 'lottery_bg.png'
+const bgImgSrc = wheelBg
 
 /**
  * data属性规范
@@ -25,7 +26,7 @@ export interface dataProps {
 }
 
 /**
- * data属性规范
+ * 渲染的data属性规范
  */
 interface renderDataProps {
     title: string,
@@ -252,9 +253,11 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
     // 点击事件
     const handleClick = (e: React.MouseEvent<HTMLImageElement>) => {
         e.stopPropagation()
+        if (!onClick) return
         if (state.wheeling) return
+        if (!renderData.length) return
         setState(props => ({ ...props, wheeling: true }))
-        onClick && onClick().then(award => {
+        onClick().then(award => {
             if (award.flag) {
                 setState(props => ({...props, awardIndex: award.index}))
                 state.awardIndex = award.index
@@ -262,6 +265,12 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
                 const distance = distanceToStop(award.index)
                 rotatePanel(distance)
             } else {
+                state.startRadian = 0
+                setState(props => ({
+                    ...props,
+                    startRadian: 0,
+                    wheeling: false
+                }))
                 failedFun && failedFun()
             }
         }, err => {
@@ -276,10 +285,10 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
     const rotatePanel = (distance: number) => {
         startWhell(distance)
         function startWhell (distance: number) {
-            let changeRadian = (distance - state.startRadian) / 100;
+            let changeRadian = (distance - state.startRadian) / 40;
             setState((props) => ({ ...props, startRadian: state.startRadian += changeRadian }));
             // 当最后的目标距离与startRadian之间的差距低于0.001时，就默认奖品抽完了，可以继续抽下一个了。
-            if (distance - state.startRadian <= 0.001) {
+            if (distance - state.startRadian <= 0.01) {
                 successFun && successFun({
                     awardIndex: state.awardIndex,
                     title: renderData[state.awardIndex].title
@@ -336,12 +345,12 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
         onClick?: (e: React.MouseEvent<HTMLImageElement>) => void
     ) => {
         if (!img || typeof img === 'string') {
-            return <img src={require(`./images/${img}`)} className={className} style={{ ...style, ...arrowStyle }} onClick={onClick} alt="" />
+            return <img src={img as string} className={className} style={{ ...style, ...arrowStyle }} onClick={onClick} alt="" />
         }
         return React.cloneElement(img, { className, style, onClick })
     }
 
-    return  <div className={`${classes} ararin_prizeWheel_wrapper`}>
+    return  <div className={`${classes} ararin-prizeWheel-wrapper`}>
                 <div style={{ width: renderWidth ? renderWidth : '', height: renderWidth ? renderWidth : '' }} className="ararin_prizeWheel_box">
                     {getBaseLotteryImg(bgImg, 'ararin-pw-wheel-bg', {}, handleClick)}
                     <div className="wheel_zone">
