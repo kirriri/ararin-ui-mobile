@@ -30,7 +30,7 @@ export interface DialogBaseProps {
     onClose?: (e: React.MouseEvent<HTMLSpanElement>) => void
 }
 
-export const Poup: React.FC<DialogBaseProps> = props => {
+export const Popup: React.FC<DialogBaseProps> = props => {
 
     let {
         maskClosable,
@@ -77,7 +77,7 @@ export const Poup: React.FC<DialogBaseProps> = props => {
     )
 }
 
-Poup.defaultProps = {
+Popup.defaultProps = {
     prefixCls: 'aap',
     maskAnimation: 'fade',
     maskClosable: false,
@@ -85,4 +85,4 @@ Poup.defaultProps = {
     closeIcon: true
 }
 
-export default Poup
+export default Popup
