@@ -68,9 +68,10 @@ class PrizeSudokuPage extends React.Component<any, any> {
     lottery = async() => await new Promise<any>((resolve, reject) => {
         setTimeout(() => {
             let awardIndex = Math.floor(Math.random()* 9)
+            console.log(awardIndex)
             resolve({
                 flag: true,
-                index: awardIndex === 4 ? awardIndex + 1 : awardIndex
+                index: awardIndex
             })
         }, 1000)
     })
