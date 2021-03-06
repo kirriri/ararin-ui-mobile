@@ -41,6 +41,7 @@ class PrizeSudokuPage extends React.Component<any, any> {
                     },{
                         title: '哈根达斯 折扣服务券 35元',
                         img: './imgs/present_06.jpg',
+                        id: '1'
                     },{
                         title: '必胜客 折扣服务券 50元',
                         img: './imgs/present_07.jpg',
@@ -68,9 +69,10 @@ class PrizeSudokuPage extends React.Component<any, any> {
     lottery = async() => await new Promise<any>((resolve, reject) => {
         setTimeout(() => {
             let awardIndex = Math.floor(Math.random()* 9)
+            console.log(5)
             resolve({
                 flag: true,
-                index: awardIndex === 4 ? awardIndex + 1 : awardIndex
+                index: 5
             })
         }, 1000)
     })

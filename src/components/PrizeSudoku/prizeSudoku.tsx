@@ -57,11 +57,10 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
         index: -1
     })
     const sudoku = useRef({
-        awardIndex: -1,
         index: -1,
         prize: -1,
         count: 8,     //总共有多少个位置
-        speed: 0,    //初始转动速度
+        speed: 20,    //初始转动速度
         times: 0,     //转动次数
         cycle: 50,    //转动基本次数：即至少需要转动多少次再进入抽奖环节
     })
@@ -129,7 +128,9 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
             }))
             onClick().then(award => {
                 if (award.flag) {
-                    setState(props => ({...props, awardIndex: award.index > 4 ? award.index - 1 : award.index, speed: 100}))
+                    setState(props => ({...props, awardIndex: award.index > 3 ? award.index - 1 : award.index}))
+                    sudoku.current.speed = 100
+                    roll(award.index > 3 ? award.index - 1 : award.index)
                 } else {
                     setState(props => ({
                         ...props,
@@ -148,14 +149,15 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
         }
     }
 
-    useEffect(() => {
-        if(state.awardIndex != -1 && state.wheeling === true) {
-            sudoku.current.speed = 100
-            roll()
-        }
-    }, [state.awardIndex])
+    // useEffect(() => {
+    //     if(state.awardIndex != -1 && state.wheeling === true) {
+    //         sudoku.current.speed = 100
+    //         roll()
+    //     }
+    // }, [state.awardIndex])
 
-    const roll = () => {
+    const roll = (awardIndex: number) => {
+        console.log(awardIndex)
         sudoku.current.times = sudoku.current.times + 1
         sudoku.current.index += 1
         if(sudoku.current.index > sudoku.current.count - 1) {
@@ -165,8 +167,7 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
             ...props,
             index: sudoku.current.index
         }))
-        
-        if(sudoku.current.times > sudoku.current.cycle + 10 && sudoku.current.prize === state.awardIndex) {
+        if((sudoku.current.times > sudoku.current.cycle + 10) && awardIndex === sudoku.current.index) {
             clearTimeout(animateTimer.current)
             sudoku.current.prize = -1
             sudoku.current.times = 0
@@ -181,20 +182,19 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
                 sudoku.current.prize = state.awardIndex
             }else {
                 if(sudoku.current.times > sudoku.current.cycle + 10 && ((sudoku.current.prize == 0 && sudoku.current.index == 7) || sudoku.current.prize == sudoku.current.index + 1)) {
-                    sudoku.current.speed = sudoku.current.speed + 110
+                    sudoku.current.speed += 110
                 }else {
-                    sudoku.current.speed = sudoku.current.speed + 20
+                    sudoku.current.speed += 20
                 }
             }
             if(sudoku.current.speed < 40) {
                 sudoku.current.speed = 40
             }
-            animateTimer.current = setTimeout(roll, sudoku.current.speed)
+            animateTimer.current = setTimeout(() => roll(awardIndex), sudoku.current.speed)
         }
+        return false;
     }
     
-    console.log(state, sudoku.current);
-
     return  <div {...restProps} className={`${classes} ararin-prizeSudoku-wrapper`}>
                 <div className="ararin-prizeSudoku-box">
                     <div className="ararin-prizeSudoku-zone">
