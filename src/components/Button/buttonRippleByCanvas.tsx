@@ -89,7 +89,7 @@ export const Button: FC<ButtonProps> = props => {
     if(state === 'loading') {
         disabled = true
         iconEle =   <Icon
-                        iconState="spin"
+                        state="spin"
                         type="loading"
                     ></Icon>
         
@@ -103,7 +103,7 @@ export const Button: FC<ButtonProps> = props => {
                     </Icon>
     }else if(typeof icon === 'string') {
         iconEle =   <Icon
-                        iconState={iconState}
+                        state={iconState}
                         type={icon}
                     ></Icon>
     }else if(icon) {

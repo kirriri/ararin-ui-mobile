@@ -43,7 +43,7 @@ export interface BasePrizeSudokuProps {
     data: Array<dataProps>,
     size?: PrizeSudokulSize,
     onClick?: () => Promise<lotteryPromiseProps>,
-    successFun?: (award: any) => void,
+    successFun?: ({award: any}) => void,
     failedFun?: () => void
 }
 
@@ -59,8 +59,8 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
     const sudoku = useRef({
         index: -1,
         prize: -1,
-        count: 9,     //总共有多少个位置
-        speed: 0,    //初始转动速度
+        count: 8,     //总共有多少个位置
+        speed: 20,    //初始转动速度
         times: 0,     //转动次数
         cycle: 50,    //转动基本次数：即至少需要转动多少次再进入抽奖环节
     })
@@ -128,7 +128,17 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
             }))
             onClick().then(award => {
                 if (award.flag) {
-                    setState(props => ({...props, awardIndex: award.index, speed: 100}))
+                    const awardIndex = parseInt(keyMap.current[award.index])
+                    if(awardIndex + '' !== 'NaN') {
+                        setState(props => ({...props, awardIndex}))
+                        sudoku.current.speed = 100
+                        roll(awardIndex)
+                    }else {
+                        setState(props => ({
+                            ...props,
+                            wheeling: false
+                        }))
+                    }
                 } else {
                     setState(props => ({
                         ...props,
@@ -143,18 +153,12 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
                     ...props,
                     wheeling: false
                 }))
+                failedFun && failedFun()
             })
         }
     }
 
-    useEffect(() => {
-        if(state.awardIndex != -1 && state.wheeling === true) {
-            sudoku.current.speed = 100
-            roll()
-        }
-    }, [state.awardIndex])
-
-    const roll = () => {
+    const roll = (awardIndex: number) => {
         sudoku.current.times = sudoku.current.times + 1
         sudoku.current.index += 1
         if(sudoku.current.index > sudoku.current.count - 1) {
@@ -164,9 +168,7 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
             ...props,
             index: sudoku.current.index
         }))
-        
-        if(sudoku.current.times > sudoku.current.cycle + 10 && sudoku.current.prize === state.awardIndex) {
-            console.log(1111111111111)
+        if((sudoku.current.times > sudoku.current.cycle + 10) && awardIndex === sudoku.current.index) {
             clearTimeout(animateTimer.current)
             sudoku.current.prize = -1
             sudoku.current.times = 0
@@ -174,13 +176,14 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
                 ...props,
                 wheeling: false
             }))
+            successFun && successFun({award: awardIndex})
         }else {
             if(sudoku.current.times < sudoku.current.cycle) {
                 sudoku.current.speed -= 10
             }else if(sudoku.current.times == sudoku.current.cycle) {
                 sudoku.current.prize = state.awardIndex
             }else {
-                if(sudoku.current.times > sudoku.current.cycle + 10 && ((sudoku.current.prize == 0 && sudoku.current.index == 8) || sudoku.current.prize == sudoku.current.index)) {
+                if(sudoku.current.times > sudoku.current.cycle + 10 && ((sudoku.current.prize == 0 && sudoku.current.index == 7) || sudoku.current.prize == sudoku.current.index + 1)) {
                     sudoku.current.speed += 110
                 }else {
                     sudoku.current.speed += 20
@@ -189,11 +192,11 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
             if(sudoku.current.speed < 40) {
                 sudoku.current.speed = 40
             }
-            animateTimer.current = setTimeout(roll, sudoku.current.speed)
+            animateTimer.current = setTimeout(() => roll(awardIndex), sudoku.current.speed)
         }
-        return false
+        return false;
     }
-
+    
     return  <div {...restProps} className={`${classes} ararin-prizeSudoku-wrapper`}>
                 <div className="ararin-prizeSudoku-box">
                     <div className="ararin-prizeSudoku-zone">
@@ -203,7 +206,6 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
                                 ?   <li 
                                         className={`
                                             arain-prizeSudoku-prize 
-                                            ${index} 
                                             prize-${keyMap.current[index]} 
                                             ${state.index == keyMap.current[index] ? 'active' : ''}`} 
                                         key={`arain-prizeSudoku-prize arain-prizeSudoku-prize${index}`}
@@ -235,7 +237,7 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
 }
 
 PrizeSudoku.defaultProps = {
-
+    size: 'md'
 }
 
 export default PrizeSudoku;

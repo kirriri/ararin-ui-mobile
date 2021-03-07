@@ -5,7 +5,8 @@ import ButtonDetail from './pages/Button/button.d';
 import ButtonPhone from './pages/Button/button';
 import IconPhone from './pages/Icon/icon';
 import PrizeWheelPhone from './pages/PrizeWheel/prizeWheel';
-import PrizeSudokuPhone from './pages/PrizeSudoku/prizeSudoku'
+import PrizeSudokuPhone from './pages/PrizeSudoku/prizeSudoku';
+import DialogPhone from './pages/Dialog/dialog';
 
 const metaType = type => {
 	const qMeta = document.querySelector('meta[name="viewport"]')
@@ -51,6 +52,7 @@ export const Content = () => (
 					<Route exact path="/ararin-components-mobile/phone/icon" component={IconPhone} />
 					<Route exact path="/ararin-components-mobile/phone/prizewheel" component={PrizeWheelPhone} />
 					<Route exact path="/ararin-components-mobile/phone/prizeSudoku" component={PrizeSudokuPhone} />
+					<Route exact path="/ararin-components-mobile/phone/dialog" component={DialogPhone} />
 				</Switch>
 			</>
 		}/>

@@ -8,12 +8,29 @@
         display: flex;
         justify-content: center;
         li {
-            width: .6rem;
-            height: .6rem;
+            width: .68rem;
+            height: .68rem;
             border: 1px solid rgba($color: #000000, $alpha: .1);
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
+            p {
+                height: .23rem;
+                line-height: .23rem;
+                margin: 0;
+                text-align: center;    
+                color: #888;
+            }
         }
+    }
+
+    .list_item {
+        margin-top: 10px;
+        border: 1px solid rgba($color: #000000, $alpha: .1);
+        padding: 0 21px;
+        height: .6rem;
+        display: flex;
+        align-items: center;
     }
 }

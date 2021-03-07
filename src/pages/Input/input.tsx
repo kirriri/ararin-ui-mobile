@@ -3,7 +3,7 @@ import Button from '../../components/Button/button'
 import './button.scss'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
-class ButtonPage extends React.Component<any, any> {
+class InputPage extends React.Component<any, any> {
 
     constructor(props) {
         super(props)
@@ -12,31 +12,10 @@ class ButtonPage extends React.Component<any, any> {
             active: -1,
             data: [
                 <div>
-                    <Button
-                        type="default"
-                        size="sm"
-                        onClick={() => {this.setState({visible: true})}}
-                    >sm 按钮</Button>
-                    <Button
-                        style={{marginTop: '3vw'}}
-                        state="loading"
-                        size="sm"
-                        onClick={() => {this.setState({visible: true})}}
-                    >暂停 按钮</Button>
-                    <Button
-                        type="danger"
-                        style={{marginTop: '3vw'}}
-                        onClick={() => {console.log('点击生效')}}
-                    >md 按钮</Button>
                     
                 </div>,
                 <div>
-                    <Button
-                        ripple
-                        size="lg"
-                        style={{marginTop: '3vw'}}
-                        type="primary"
-                    >lg 水波纹按钮</Button>
+                
                 </div>
             ]
         }
@@ -86,4 +65,4 @@ class ButtonPage extends React.Component<any, any> {
     }
 }
 
-export default ButtonPage;
+export default InputPage;

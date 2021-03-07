@@ -10,7 +10,7 @@ import { IconType } from './index'
 
 export interface BaseIconProps {
     type?: keyof typeof IconRes,
-    iconState?: IconType,
+    state?: IconType,
     style?: React.CSSProperties,
     className?: string,
     onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void
@@ -26,7 +26,7 @@ export const Icon: FC<BaseIconProps> = props => {
         type,
         style,
         className,
-        iconState,
+        state,
         children,
         onClick,
         ...restProps
@@ -34,7 +34,7 @@ export const Icon: FC<BaseIconProps> = props => {
 
     const classes = classNames('ararin-icon', className, {
         [`ararin-icon-${type}`]: type && IconRes[type],
-        'ararin-icon-spin': iconState
+        'ararin-icon-spin': state
     })
 
     const svgSprite = (contents: string) => `

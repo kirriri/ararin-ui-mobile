@@ -41,6 +41,7 @@ class PrizeSudokuPage extends React.Component<any, any> {
                     },{
                         title: '哈根达斯 折扣服务券 35元',
                         img: './imgs/present_06.jpg',
+                        id: '1'
                     },{
                         title: '必胜客 折扣服务券 50元',
                         img: './imgs/present_07.jpg',

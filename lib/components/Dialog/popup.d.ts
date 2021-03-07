@@ -24,5 +24,5 @@ export interface DialogBaseProps {
     footer?: FooterBaseProps[];
     onClose?: (e: React.MouseEvent<HTMLSpanElement>) => void;
 }
-export declare const Poup: React.FC<DialogBaseProps>;
-export default Poup;
+export declare const Popup: React.FC<DialogBaseProps>;
+export default Popup;
