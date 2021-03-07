@@ -1,6 +1,5 @@
 import React from 'react';
-import Button from '../../components/Button/button'
-import './button.scss'
+import './input.scss'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 class InputPage extends React.Component<any, any> {
@@ -44,21 +43,8 @@ class InputPage extends React.Component<any, any> {
         return (
             <>
                 <style dangerouslySetInnerHTML={{__html: this.getResetStyle()}}/>
-                <div className="phone_button" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
-                    {
-                        this.state.data.map((item, index) => 
-                            <CSSTransition 
-                                key={`ele_1${index}`} 
-                                style={{position: 'relative'}}
-                                in={index === this.state.active ? true : false}
-                                classNames="eleFocus"
-                                timeout={1200}
-                                onEntered={() => this.setState({active: -1})}
-                            >
-                                <div>{item}</div>
-                            </CSSTransition>
-                        )
-                    }
+                <div className="phone_input" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
+                    
                 </div>
             </>
         );

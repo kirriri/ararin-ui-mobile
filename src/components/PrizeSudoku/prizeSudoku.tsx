@@ -230,9 +230,6 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
                         </ul>
                     </div>
                 </div>
-                <div>
-
-                </div>
             </div>
 }
 

@@ -1,5 +1,5 @@
 import React, {
-    FC
+    FC, InputHTMLAttributes
 } from 'react'
 import classNames from 'classnames'
 
@@ -9,10 +9,32 @@ import classNames from 'classnames'
 
  type InputType = 'inpit' | 'block'
 
- type InputJudge = 'default'| 'mobilePhone'| 'adsl'| 'telePhone'| 'pwd'| 'allIdCard'| 'name'| 'code'| 'idCard'
+ type InputJudge = 'default'| 'mobilePhone'| 'adsl'| 'telPhone'| 'pwd'| 'allIdCard'| 'name'| 'code'| 'idCard'
 
- interface InputBaseProps {
-     className?: string,
-     type?: InputType,
-     judge?: InputJudge
+ interface BaseInputProps {
+    title?: string,
+    className?: string,
+    type?: InputType,
+    judge?: InputJudge
+ }
+
+ type InputProps = BaseInputProps & Omit<InputHTMLAttributes<HTMLElement>, 'type'>
+
+ export const Input: FC<InputProps> = props => {
+
+     const {
+         title,
+         className,
+         type,
+         judge
+     } = props
+
+    const classes = classNames('ararin-input', className, {
+		[`ararin-button-${type}`]: type,
+	})
+
+    return  <div className={classes}>
+                <label></label>
+                <input></input>
+            </div>
  }

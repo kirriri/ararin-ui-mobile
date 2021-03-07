@@ -3,7 +3,7 @@ import { IconRes } from './IconRes';
 import { IconType } from './index';
 export interface BaseIconProps {
     type?: keyof typeof IconRes;
-    iconState?: IconType;
+    state?: IconType;
     style?: React.CSSProperties;
     className?: string;
     onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void;

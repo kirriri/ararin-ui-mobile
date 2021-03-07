@@ -31,7 +31,9 @@ export interface BasePrizeSudokuProps {
     data: Array<dataProps>;
     size?: PrizeSudokulSize;
     onClick?: () => Promise<lotteryPromiseProps>;
-    successFun?: (award: any) => void;
+    successFun?: ({ award: any }: {
+        award: any;
+    }) => void;
     failedFun?: () => void;
 }
 export declare const PrizeSudoku: FC<BasePrizeSudokuProps>;
