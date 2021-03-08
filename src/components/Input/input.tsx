@@ -31,10 +31,15 @@ import classNames from 'classnames'
 
     const classes = classNames('ararin-input', className, {
 		[`ararin-button-${type}`]: type,
-	})
+    })
+    
+
 
     return  <div className={classes}>
                 <label></label>
                 <input></input>
+                <span></span>
             </div>
  }
+
+ export default Input

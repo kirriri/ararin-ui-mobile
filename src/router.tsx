@@ -54,7 +54,7 @@ export const Content = () => (
 					<Route exact path="/ararin-components-mobile/phone/prizewheel" component={PrizeWheelPhone} />
 					<Route exact path="/ararin-components-mobile/phone/prizeSudoku" component={PrizeSudokuPhone} />
 					<Route exact path="/ararin-components-mobile/phone/dialog" component={DialogPhone} />
-					<Route exact path="/ararin-components-mobile/Input/input" component={Input} />
+					<Route exact path="/ararin-components-mobile/phone/input" component={Input} />
 				</Switch>
 			</>
 		}/>

@@ -1,6 +1,7 @@
 import React from 'react';
 import './input.scss'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import Input from '../../components/Input/input'
 
 class InputPage extends React.Component<any, any> {
 
@@ -44,7 +45,7 @@ class InputPage extends React.Component<any, any> {
             <>
                 <style dangerouslySetInnerHTML={{__html: this.getResetStyle()}}/>
                 <div className="phone_input" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
-                    
+                    <Input />
                 </div>
             </>
         );
