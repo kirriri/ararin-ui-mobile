@@ -1,0 +1,8 @@
+.ararin-input {
+    display: flex;
+
+    & > lable {
+        flex-shrink: 0;
+        min-width: .6rem;    
+    }
+}
