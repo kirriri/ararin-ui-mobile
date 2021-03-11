@@ -271,10 +271,10 @@ main {
 [hidden] {
   display: none !important; }
 
-.ararin_clear_fix {
+.ararin-clear-fix {
   zoom: 1; }
 
-.ararin_clear_fix::after {
+.ararin-clear-fix::after {
   content: "";
   display: block;
   visibility: hidden;

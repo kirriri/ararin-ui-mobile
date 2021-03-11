@@ -3,8 +3,10 @@ import React, {
     InputHTMLAttributes,
     useState,
     useImperativeHandle,
+    forwardRef
 } from 'react'
 import classNames from 'classnames'
+import { state } from '../../util/state';
 
 /**
  * Input可适应多种类型校验
@@ -26,50 +28,82 @@ import classNames from 'classnames'
 
  type InputProps = BaseInputProps & Omit<InputHTMLAttributes<HTMLElement>, 'type'>
 
- export const Input: FC<InputProps> = props => {
+ export const Input: FC<InputProps> = 
+    forwardRef((props, ref) => {
 
-    const {
-        title,
-        className,
-        type,
-        judge,
-        onclick,
-        codeTxt,
-        times
-    } = props
+        const {
+            title,
+            className,
+            type,
+            judge,
+            onclick,
+            codeTxt,
+            times
+        } = props
 
-    const [value, setValue] = useState<string | number>('')
-
-    const classes = classNames('ararin-input', className, {
-		[`ararin-input-${type}`]: type,
-    })
+        const [firstInput, setFirstInput] = useState(true)
+        const [judgeState, setJudgeState] = useState(state.STATIC)
+        const [value, setValue] = useState<string | number>('')
 
 
-    return  <div className={classes}>
-                { title && <label>{title}</label> }
-                { type === 'input' &&
-                    <React.Fragment>
-                        <input 
-                            value={value}
-                            onChange={e => { e.persist(); setValue(() => { return e.target.value })}}
-                        />
-                        <span></span>
-                    </React.Fragment>
-                }
-                { judge === 'code' &&
-                    ( times > 0 ?
-                        <span className="ararin-disabled">
-                            {times}s
-                        </span> : 
-                        <span 
-                            onClick={onclick}
-                        >
-                            {codeTxt}
-                        </span>
-                    )
-                }
-            </div>
- }
+        useImperativeHandle(ref, () => ({
+            setJudgeState: v => {
+                setJudgeState(() => v)
+                setFirstInput(() => false)
+            },
+            getJudgeState: () => judgeState,
+            getValue: () => value,
+            setValue: (v: (number | string)) => v
+        }))
+    
+        const classes = classNames('ararin-input', className, {
+            [`ararin-input-${type}`]: type,
+        })
+
+        const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+            e.persist()
+            const text = e.target.value.replace(/\s+/g, "")
+            
+            switch(judge) {
+
+                case 'default':
+                    setValue(() => text)
+            }
+        }
+        
+    
+        return  <div className={classes}>
+                    { title && <label>{title}</label> }
+                    <div className="ararin-input-zone">
+                        { type === 'input' &&
+                            <React.Fragment>
+                                <input 
+                                    value={value}
+                                    onChange={handleInput}
+                                />
+                                <span></span>
+                            </React.Fragment>
+                        }
+                        { type === 'block' &&
+                            <div>
+    
+                            </div>
+                        }
+                    </div>
+                    { judge === 'code' &&
+                        ( times > 0 ?
+                            <span className="ararin-disabled">
+                                {times}s
+                            </span> : 
+                            <span 
+                                onClick={onclick}
+                            >
+                                {codeTxt}
+                            </span>
+                        )
+                    }
+                </div>
+     })
 
  Input.defaultProps = {
     type: 'input',
