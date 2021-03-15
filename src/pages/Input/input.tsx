@@ -46,6 +46,7 @@ class InputPage extends React.Component<any, any> {
                 <style dangerouslySetInnerHTML={{__html: this.getResetStyle()}}/>
                 <div className="phone_input" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
                     <Input 
+                        judge="mobilePhone"
                         title="姓名"
                     />
                 </div>
