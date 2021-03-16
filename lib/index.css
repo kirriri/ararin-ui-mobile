@@ -959,3 +959,9 @@ main {
     letter-spacing: 1vw;
     font-size: 200%;
     line-height: 1.4; }
+
+.ararin-input {
+  display: flex; }
+  .ararin-input > lable {
+    flex-shrink: 0;
+    min-width: .6rem; }
