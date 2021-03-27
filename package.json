@@ -1,11 +1,11 @@
 {
   "name": "ararin-cmp-mobile",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": false,
   "description": "一个react组件库。测试阶段中。",
-  "main": "lib/index.js",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/indexCmp.js",
+  "module": "lib/indexCmp.js",
+  "types": "lib/indexCmp.d.ts",
   "author": "ararin",
   "license": "MIT",
   "sideEffects": false,
@@ -19,16 +19,14 @@
     "url": "https://github.com/kirriri/ararin-ui-mobile.git"
   },
   "files": [
-    "lib",
-    "README.md"
+    "lib"
   ],
   "dependencies": {
     "classnames": "^2.2.6",
     "omit.js": "^1.0.2",
     "react-transition-group": "^4.4.1",
     "rmc-dialog": "^1.1.1",
-    "rmc-feedback": "^2.0.0",
-    "typescript": "^3.7.5"
+    "rmc-feedback": "^2.0.0"
   },
   "peerDependencies": {
     "react": ">= 16.8.0",
@@ -78,6 +76,7 @@
     "@types/react-dom": "^16.9.8",
     "react-scripts": "3.4.1",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "typescript": "^3.7.5"
   }
 }

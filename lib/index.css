@@ -271,15 +271,18 @@ main {
 [hidden] {
   display: none !important; }
 
-.ararin_clear_fix {
+.ararin-clear-fix {
   zoom: 1; }
 
-.ararin_clear_fix::after {
+.ararin-clear-fix::after {
   content: "";
   display: block;
   visibility: hidden;
   height: 0;
   clear: both; }
+
+html {
+  font-size: 26.66667vw; }
 
 .ararin-button {
   position: relative;
@@ -961,7 +964,64 @@ main {
     line-height: 1.4; }
 
 .ararin-input {
-  display: flex; }
-  .ararin-input > lable {
+  height: 12vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
+  .ararin-input > label {
+    padding-left: .1rem;
     flex-shrink: 0;
-    min-width: .6rem; }
+    min-width: .2rem;
+    margin: 0 .2rem 0 0;
+    padding: 0 .1rem;
+    font-size: 0.16rem; }
+  .ararin-input .ararin-input-zone {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    position: relative; }
+    .ararin-input .ararin-input-zone > input {
+      height: 100%;
+      outline: none;
+      flex: 1;
+      border: none;
+      margin: 0;
+      padding: 0 .1rem;
+      font-size: .15rem;
+      text-align: right; }
+    .ararin-input .ararin-input-zone input::-webkit-input-placeholder,
+    .ararin-input .ararin-input-zone textarea::-webkit-input-placeholder {
+      color: #969090;
+      font-size: 3.9vw; }
+    .ararin-input .ararin-input-zone input:-moz-placeholder,
+    .ararin-input .ararin-input-zone textarea:-moz-placeholder {
+      color: #969090;
+      font-size: 3.9vw; }
+    .ararin-input .ararin-input-zone input::-moz-placeholder,
+    .ararin-input .ararin-input-zone textarea::-moz-placeholder {
+      color: #969090;
+      font-size: 3.9vw; }
+    .ararin-input .ararin-input-zone input:-ms-input-placeholder,
+    .ararin-input .ararin-input-zone textarea:-ms-input-placeholder {
+      color: #969090;
+      font-size: 3.9vw; }
+    .ararin-input .ararin-input-zone input + span {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: #2f86cd;
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.35s ease; }
+    .ararin-input .ararin-input-zone input:focus + span {
+      transform: scaleX(1);
+      transition: transform .35s ease;
+      transform-origin: center; }
+
+.failed .ararin-input-zone input + span {
+  background: #ee3f4d;
+  transform: scale(1);
+  transition: background 0.3s ease !important; }

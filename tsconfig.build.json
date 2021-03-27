@@ -9,8 +9,7 @@
       "allowSyntheticDefaultImports": true
     },
     "include": [
-        "src/components",
-        "src/index.tsx",
+        "src/indexCmp.tsx",
     ],
     "exclude": [
       "node_modules",

@@ -1,8 +1,82 @@
 .ararin-input {
+    height: 12vw;
     display: flex;
-
-    & > lable {
+    flex-direction: row;
+    // padding: 0 10px;
+    align-items: center;
+    border-bottom: 1px solid rgba($color: #000000, $alpha: .05);
+    & > label {
+        padding-left: .1rem;
         flex-shrink: 0;
-        min-width: .6rem;    
+        min-width: .2rem;   
+        margin: 0 .2rem 0 0;
+        padding: 0 .1rem; 
+        font-size: .16rem,
+    }
+    .ararin-input-zone {
+        height: 100%;
+        flex: 1;
+        display: flex;
+        position: relative;
+        
+        & > input {
+            height: 100%;
+            outline: none;
+            flex: 1;
+            border: none;
+            margin: 0;
+            padding: 0 .1rem;
+            font-size: .15rem;
+            text-align: right;
+        }
+        input::-webkit-input-placeholder, 
+        textarea::-webkit-input-placeholder {
+            color: #969090;
+            font-size: 3.9vw;
+        }
+        
+        input:-moz-placeholder, 
+        textarea:-moz-placeholder {
+            color: #969090;
+            font-size: 3.9vw;
+        }
+        
+        input::-moz-placeholder, 
+        textarea::-moz-placeholder {
+            color: #969090;
+            font-size: 3.9vw;
+        }
+        
+        input:-ms-input-placeholder, 
+        textarea:-ms-input-placeholder {
+            color: #969090;
+            font-size: 3.9vw;
+        }
+        input + span {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 1px;
+            background: rgb(47,134,205);
+            transform: scaleX(0);
+            transform-origin:  center;
+            transition: transform 0.35s ease;
+        }
+        input:focus + span {
+            transform: scaleX(1);
+            transition: transform .35s ease;
+            transform-origin:  center;
+        }
+    }
+}
+
+.failed {
+    .ararin-input-zone {
+        input + span {
+            background: #ee3f4d;
+            transform: scale(1);
+            transition: background .3s ease!important;
+        }
     }
 }

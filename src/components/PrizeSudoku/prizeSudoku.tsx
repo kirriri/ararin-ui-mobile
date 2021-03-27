@@ -200,7 +200,7 @@ export const PrizeSudoku: FC<BasePrizeSudokuProps> = props => {
     return  <div {...restProps} className={`${classes} ararin-prizeSudoku-wrapper`}>
                 <div className="ararin-prizeSudoku-box">
                     <div className="ararin-prizeSudoku-zone">
-                        <ul className="ararin_clear_fix">
+                        <ul className="ararin-clear-fix">
                             {renderData.map((item, index) => 
                                 index != 4
                                 ?   <li 

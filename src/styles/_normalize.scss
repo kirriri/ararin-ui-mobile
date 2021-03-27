@@ -564,14 +564,18 @@ main {
   display: none !important;
 }
 
-.ararin_clear_fix {
+.ararin-clear-fix {
   zoom: 1;
 }
 
-.ararin_clear_fix::after {
+.ararin-clear-fix::after {
   content: "";
   display: block;
   visibility: hidden;
   height: 0;
   clear: both;
+}
+
+html {
+  font-size: 26.66667vw;
 }
