@@ -5,7 +5,7 @@ import React, {
     FunctionComponentElement
  } from 'react'
 import classNames from 'classnames'
-import { IconRes } from './IconRes'
+import { IconRes, IconSpecialRes } from './IconRes'
 import { IconType } from './index'
 
 export interface BaseIconProps {
@@ -13,6 +13,7 @@ export interface BaseIconProps {
     state?: IconType,
     style?: React.CSSProperties,
     className?: string,
+    trigger?: boolean,
     onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void
 }
 
@@ -29,21 +30,23 @@ export const Icon: FC<BaseIconProps> = props => {
         state,
         children,
         onClick,
+        trigger,
         ...restProps
     } = props
 
     const classes = classNames('ararin-icon', className, {
-        [`ararin-icon-${type}`]: type && IconRes[type],
-        'ararin-icon-spin': state
+        [`ararin-icon-${type}`]: type && (IconRes[type] || IconSpecialRes[type]),
+        'ararin-icon-spin': state,
     })
 
     const svgSprite = (contents: string) => `
+        
         <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             id="__ararin_MOBILE_SVG_ICON"
             style="display:none;overflow:hidden;width:0;height:0"
-        >
+        >   
             <defs>
                 ${contents}
             </defs>
@@ -60,6 +63,9 @@ export const Icon: FC<BaseIconProps> = props => {
 
             const symbols = Object.keys(IconRes).map(iconName => {
                 const svgContent = IconRes[iconName].split('svg')[1];
+                if(className === 'showHide') {
+                    return `<symbol id=${iconName}${svgContent}symbol>`;
+                }
                 return `<symbol id=${iconName}${svgContent}symbol>`;
             }).join('')
 
@@ -80,6 +86,10 @@ export const Icon: FC<BaseIconProps> = props => {
                 console.error('Icon component only expected to receive a svg or imgage HTMLElement')
             }
             console.error('Icon component only expected to receive a React component')
+        }else if(type && IconSpecialRes[type]) {
+            return React.cloneElement(IconSpecialRes[type], {
+                className: trigger ? `ararin-icon-${type}-trigger-active` : '',
+            })
         }
         return ''
     }
@@ -90,8 +100,12 @@ export const Icon: FC<BaseIconProps> = props => {
                 onClick={onClick}
                 {...restProps}
             >
-                {renderChildren()}
+                { renderChildren() }
             </span>
 }
 
 export default Icon
+
+Icon.defaultProps = {
+    trigger: false
+}

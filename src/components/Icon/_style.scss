@@ -30,3 +30,39 @@
         transform: rotate(360deg)
     }
 }
+
+.ararin-icon-showHide {
+    cursor: pointer;
+    svg {
+        stroke: #32b5e9;
+    }
+    .ararin-icon-showHide-top {
+        d: path("M10,49 Q50,10 90,49");
+        transition:  .3s all ease-in-out;
+    }
+
+    .ararin-icon-showHide-bottom {
+        transition:  .3s all ease-in-out;
+    }
+    
+    .ararin-icon-showHide-eye-ball {
+        stroke-dasharray: 100;
+        stroke-dashoffset: 0;
+        transition:  .3s all ease-in-out;
+        transition-delay: 0.15s;
+    }
+    
+    .ararin-icon-showHide-trigger-active {
+        stroke: rgba($color: #000000, $alpha: .1);
+
+        .ararin-icon-showHide-top {
+            transition-delay: .1s;
+            d: path("M10,50 Q50,90 90,50");
+        }
+    
+        .ararin-icon-showHide-eye-ball {
+            stroke-dashoffset: 100;
+            transition-delay: 0s;
+        }
+    }
+}
