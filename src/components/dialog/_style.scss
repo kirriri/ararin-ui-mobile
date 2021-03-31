@@ -311,6 +311,15 @@
     }
 }
 
+.aap .aap-header,
+.aad .aad-header {
+    font-size: .16rem;
+    line-height: .4rem;
+    text-align: center;
+    color: $gray-600;
+    border-bottom: 1px solid $gray-200;
+}
+
 .aap-fade-enter,
 .aap-fade-appear {
     animation-duration: .45s;

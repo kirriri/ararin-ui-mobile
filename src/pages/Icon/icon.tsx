@@ -44,10 +44,6 @@ class IconPage extends React.Component<any, any> {
                 <div className="list_item">
                     <Icon 
                         type="showHide"
-                        style={{
-                            width: '.3rem',
-                            height: '.3rem'
-                        }}
                         trigger={this.showHideTrigger}
                         onClick={() => this.handleClickShowHide(2)}
                     />
