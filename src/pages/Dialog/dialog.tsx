@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../../components/Button/button'
+import Input from '../../components/Input/input'
 import Popup from '../../components/Dialog/popup'
 import './dialog.scss'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
@@ -12,8 +13,9 @@ class PopupPage extends React.Component<any, any> {
         this.state = {
             active: -1,
             visible: false,
+            times: 0,
+            codeText: '点击获取',
             data: [
-                ,
                 
             ]
         }
@@ -36,7 +38,19 @@ class PopupPage extends React.Component<any, any> {
         this.setState({active: index})
     }
     
-    getResetStyle = () => ``
+    getResetStyle = () => `
+        .login_popup {
+            border-radius: .1rem .1rem 0 0;
+        }
+
+        .login_popup .aap-body {
+            padding: .2rem .25rem .3rem;
+        }
+
+        .login_popup .aap-body .ararin-button {
+
+        }
+    `
     
     render() {
 
@@ -46,11 +60,34 @@ class PopupPage extends React.Component<any, any> {
                     type="default"
                     size="sm"
                     onClick={() => {this.setState({visible: true})}}
-                >sm 按钮</Button>
+                >登 录</Button>
                 <Popup
+                    className="login_popup"
                     visible={this.state.visible}
+                    maskClosable
+                    onClose={() => this.setState({visible: false})}
+                    title="登 录"
                 >
-                    test
+                    <Input 
+                        judge="mobilePhone"
+                        title="手机号码："
+                        placeholder="请输入您的手机号码"
+                    />
+                    <Input 
+                        judge="code"
+                        title="验证码："
+                        placeholder="请输入4位数验证码"
+                        codeTxt={this.state.codeText}
+                        times={this.state.times}
+                    />
+                    <Button 
+                        type="primary"
+                        ripple
+                        size="sm"
+                        style={{marginTop: '.3rem'}}
+                    >
+                        立即登录
+                    </Button>
                 </Popup>
             </div>
         ]

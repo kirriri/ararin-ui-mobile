@@ -27,14 +27,15 @@ import Icon from '../Icon';
     onclick?: () => void,
     judgeFun?: (text: string) => boolean,
     codeTxt?: string,
-    noHide?: boolean
+    noHide?: boolean,
+    noJudge?: boolean
  }
 
  type InputProps = BaseInputProps & Omit<InputHTMLAttributes<HTMLElement>, 'type'>
 
  export const Input: FC<InputProps> = 
     forwardRef((props, ref) => {
-        const {
+        let {
             title,
             className,
             type,
@@ -45,6 +46,7 @@ import Icon from '../Icon';
             onBlur,
             onFocus,
             noHide,
+            noJudge,
             ...restPros
         } = props
 
@@ -63,7 +65,8 @@ import Icon from '../Icon';
             },
             getJudgeState: () => judgeState,
             getValue: () => value,
-            setValue: (v: (number | string)) => v
+            setValue: (v: (number | string)) => v,
+            getDesc: () => desc
         }))
     
         const classes = classNames('ararin-input', className, {
@@ -74,7 +77,7 @@ import Icon from '../Icon';
         const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
             e.persist()
             const text = e.target.value.replace(/\s+/g, "") as any
-            
+            if(noJudge) judge = 'default'
             switch(judge) {
                 case "mobilePhone":
                     if((/^1[0-9]{0,}$/.test(text)) || text === "") {
@@ -139,6 +142,9 @@ import Icon from '../Icon';
                                     return 
                                 }
                                 setJudgeState(() => JUDE_STATE.SUCCESS)
+                            }else {
+                                setJudgeState(() => JUDE_STATE.FAILED)
+                                setDesc(() => '身份证长度错误')
                             }
                         }
                     }
@@ -178,10 +184,12 @@ import Icon from '../Icon';
                     </div>
                     { judge === 'code' &&
                         ( times > 0 ?
-                            <span className="ararin-disabled">
+                            <span className="ararin-disabled ararin-input-code">
                                 {times}s
                             </span> : 
                             <span 
+                                style={{cursor: 'pointer'}}
+                                className="ararin-input-code"
                                 onClick={onclick}
                             >
                                 {codeTxt}
@@ -203,7 +211,8 @@ import Icon from '../Icon';
     judge: 'default',
     title: '',
     placeholder: '',
-    noHide: false
+    noHide: false,
+    noJudge: false,
 }
 
  export default Input
