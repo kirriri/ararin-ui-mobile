@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zn-ch">
+<html lang="zn-ch" style="font-size: 26.6666vw">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -17,5 +17,77 @@
   <body style="background: rgba(0,0,0, .04)">
     <noscript>use your srcipt plz.</noscript>
     <div id="root"></div>
+    <div style="text-align: center">
+      <svg class="ararin-failed ararin-failed-active" viewBox="0 0 100 100" style="width: .7rem; height: .7rem;">
+        <circle cx="50" cy="50" r="45" stroke-width="5" fill="none" stroke="rgba(0,0,0, .1)"></circle>
+        <circle class="ararin-circle" stroke-dashoffset="300" stroke-linecap="round" stroke-dasharray="282" cx="50" cy="50" r="45" stroke-width="5" fill="none" transform="rotate(-135, 50, 50)"></circle>
+        <path class="ararin-lineOne" stroke-width="5" fill="none" stroke-linecap="round"></path>
+        <path class="ararin-lineTwo" stroke-width="5" fill="none" stroke-linecap="round"></path>
+      </svg>
+    </div>
   </body>
 </html>
+
+<style>
+
+.ararin-failed  {
+  stroke: rgba(50,181,233, 1);
+  transition:  1.8s all ease-in-out;
+}
+
+.ararin-failed-active {
+  stroke: rgba(237,90,101, 1);
+}
+
+.ararin-failed-active .ararin-circle {
+  animation: ararinAllCircle .55s linear;
+  animation-fill-mode: forwards;
+}
+
+  @keyframes ararinAllCircle {
+    from {
+      stroke-dashoffset: 300
+    }
+    to {
+      stroke-dashoffset: 564
+    }
+  }
+  .ararin-failed-active .ararin-lineOne {
+    animation: ararinLineOne .35s linear;
+    animation-fill-mode: forwards;
+    animation-delay: .55s
+  }
+
+  .ararin-failed-active .ararin-lineTwo {
+    animation: ararinLineTwo .55s ease;
+    animation-fill-mode: forwards;
+    animation-delay: .9s;
+  }
+
+  @keyframes ararinAllCircle {
+    from {
+      stroke-dashoffset: 300
+    }
+    to {
+      stroke-dashoffset: 564
+    }
+  }
+
+  @keyframes ararinLineOne {
+    from {
+      d: path("M28 28 28 28");
+    }
+    to {
+      d: path("M28 28 L72 72");
+    }
+  }
+
+  @keyframes ararinLineTwo {
+    from {
+      d: path("M72 28 L72 28");
+    }
+    to {
+      d: path("M72 28 L28 72");
+    }
+  }
+</style>
