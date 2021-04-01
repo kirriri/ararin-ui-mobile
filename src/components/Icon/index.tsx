@@ -1,5 +1,5 @@
 import Icon from './icon'
 
-export type IconType = 'spin' | 'static'
+export type IconType = 'static' | 'success' | 'failed'
 
 export default Icon

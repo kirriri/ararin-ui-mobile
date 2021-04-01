@@ -36,7 +36,7 @@ export const Icon: FC<BaseIconProps> = props => {
 
     const classes = classNames('ararin-icon', className, {
         [`ararin-icon-${type}`]: type && (IconRes[type] || IconSpecialRes[type]),
-        'ararin-icon-spin': state,
+        [`ararin-icon-${state}`]: state
     })
 
     const svgSprite = (contents: string) => `

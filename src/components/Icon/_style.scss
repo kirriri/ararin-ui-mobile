@@ -66,3 +66,71 @@
         }
     }
 }
+
+@keyframes ararinStaticSpin {
+    from {
+        transform: rotate(-135deg);
+        transform-origin: 50% 50%;
+    }
+    to {
+        transform: rotate(-495deg);
+        transform-origin: 50% 50%;
+    }
+}
+
+.ararin-icon-loading  {
+    stroke: rgba(50,181,233, 1);
+    transition:  1.8s all ease-in-out;
+    
+    .ararin-circle {
+        animation: ararinStaticSpin 1s linear infinite;
+    }
+}
+
+.ararin-icon-loading.ararin-icon-failed {
+    stroke: rgba(237,90,101, 1);
+
+    .ararin-circle {
+        animation: ararinAllCircle .55s linear;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes ararinAllCircle {
+        from {
+          stroke-dashoffset: 330
+        }
+        to {
+          stroke-dashoffset: 564
+        }
+      }
+    
+  .ararin-lineOne {
+    animation: ararinLineOne .35s linear;
+    animation-fill-mode: forwards;
+    animation-delay: .55s
+  }
+
+  @keyframes ararinLineOne {
+    from {
+      d: path("M28 28 28 28");
+    }
+    to {
+      d: path("M28 28 L72 72");
+    }
+  }
+
+  .ararin-lineTwo {
+    animation: ararinLineTwo .55s ease;
+    animation-fill-mode: forwards;
+    animation-delay: .9s;
+  }
+
+  @keyframes ararinLineTwo {
+    from {
+      d: path("M72 28 L72 28");
+    }
+    to {
+      d: path("M72 28 L28 72");
+    }
+  }
+}
