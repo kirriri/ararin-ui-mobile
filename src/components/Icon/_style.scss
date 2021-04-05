@@ -40,11 +40,24 @@
         d: path("M10,49 Q50,10 90,49");
         transition:  .3s all ease-in-out;
     }
-
+    .ararin-icon-showHide-lash-1,
+    .ararin-icon-showHide-lash-2,
+    .ararin-icon-showHide-lash-3 {
+        transition:  .1s all ease-in-out;
+        transition-delay: 0s;
+    }
+    .ararin-icon-showHide-lash-1 {
+        d: path("M24,64 24,64");
+    }
+    .ararin-icon-showHide-lash-2 {
+        d: path("M50,70 50,70");
+    }
+    .ararin-icon-showHide-lash-3 {
+        d: path("M76,64 76,64");
+    }
     .ararin-icon-showHide-bottom {
         transition:  .3s all ease-in-out;
     }
-    
     .ararin-icon-showHide-eye-ball {
         stroke-dasharray: 100;
         stroke-dashoffset: 0;
@@ -53,7 +66,7 @@
     }
     
     .ararin-icon-showHide-trigger-active {
-        stroke: rgba($color: #000000, $alpha: .1);
+        stroke: #CECECE;
 
         .ararin-icon-showHide-top {
             transition-delay: .1s;
@@ -64,6 +77,39 @@
             stroke-dashoffset: 100;
             transition-delay: 0s;
         }
+
+        .ararin-icon-showHide-lash-1 {
+            d: path("M24,64 19,70");
+
+        }
+        .ararin-icon-showHide-lash-2 {
+            d: path("M50,70 50 78");
+
+
+        }
+        .ararin-icon-showHide-lash-3 {
+            d: path("M76,64 81,70");
+
+        }
+        .ararin-icon-showHide-lash-1,
+        .ararin-icon-showHide-lash-2,
+        .ararin-icon-showHide-lash-3 {
+            transition:  .1s d ease-in-out;
+            transition-delay: .3s;
+        }
+    }
+}
+
+.ararin-icon-loading  {
+    stroke: rgba(50,181,233, 1);
+    transition:  1.8s all ease-in-out;
+    animation-fill-mode: forwards;
+    .ararin-circle {
+        animation: ararinStaticSpin 1s linear infinite;
+    }
+    .ararin-icon-loading-success-line {
+        stroke-dasharray: 80;
+        stroke-dashoffset: 80;
     }
 }
 
@@ -78,36 +124,32 @@
     }
 }
 
-.ararin-icon-loading  {
-    stroke: rgba(50,181,233, 1);
-    transition:  1.8s all ease-in-out;
-    
-    .ararin-circle {
-        animation: ararinStaticSpin 1s linear infinite;
-    }
-}
-
 .ararin-icon-loading.ararin-icon-failed {
-    stroke: rgba(237,90,101, 1);
+    stroke: $danger;
 
     .ararin-circle {
-        animation: ararinAllCircle .55s linear;
+        animation: ararinAllCircle 1.5s linear, ararinStaticSpin 1s linear infinite;
         animation-fill-mode: forwards;
     }
 
     @keyframes ararinAllCircle {
-        from {
-          stroke-dashoffset: 330
+        0% {
+            stroke-dashoffset: 330;
+            transform-origin: 50% 50%;
         }
-        to {
-          stroke-dashoffset: 564
+        60% {
+            stroke-dashoffset: 564;
+        }
+        100% {
+            transform-origin: 50% 50%;
+            stroke-dashoffset: 564;
         }
       }
     
-  .ararin-lineOne {
+  .ararin-icon-loading-failed-lineOne {
     animation: ararinLineOne .35s linear;
     animation-fill-mode: forwards;
-    animation-delay: .55s
+    animation-delay: 1s
   }
 
   @keyframes ararinLineOne {
@@ -119,10 +161,10 @@
     }
   }
 
-  .ararin-lineTwo {
+  .ararin-icon-loading-failed-lineTwo {
     animation: ararinLineTwo .55s ease;
     animation-fill-mode: forwards;
-    animation-delay: .9s;
+    animation-delay: 1.35s;
   }
 
   @keyframes ararinLineTwo {
@@ -133,4 +175,41 @@
       d: path("M72 28 L28 72");
     }
   }
+}
+
+.ararin-icon-loading.ararin-icon-success {
+    stroke: $success;
+
+    .ararin-circle {
+        animation: ararinAllCircle 1.5s linear, ararinStaticSpin 1s linear infinite;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes ararinAllCircle {
+        0% {
+            stroke-dashoffset: 330;
+            transform-origin: 50% 50%;
+        }
+        60% {
+            stroke-dashoffset: 564;
+        }
+        100% {
+            transform-origin: 50% 50%;
+            stroke-dashoffset: 564;
+        }
+      }
+    .ararin-icon-loading-success-line {
+        animation: ararinloadingSuccessLine .83s ease-in-out;
+        animation-fill-mode: forwards;
+        animation-delay: 1s
+    }
+
+    @keyframes ararinloadingSuccessLine {
+        from {
+          stroke-dashoffset: 80;
+        }
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
 }

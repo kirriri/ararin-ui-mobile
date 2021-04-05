@@ -23,7 +23,7 @@ export type ButtonProps = Partial<IconSvgProps & IconImgProps>
 
 export const Icon: FC<BaseIconProps> = props => {
 
-    const {
+     const {
         type,
         style,
         className,
@@ -76,6 +76,10 @@ export const Icon: FC<BaseIconProps> = props => {
             return <svg>
                         <use xlinkHref={`#${type}`} />
                     </svg>
+        }else if(type && IconSpecialRes[type]) {
+            return React.cloneElement(IconSpecialRes[type], {
+                className: trigger ? `ararin-icon-${type}-trigger-active` : '',
+            })
         }else if(children){
             React.Children.only(children)
             const Icon = children as FunctionComponentElement<ImgHTMLAttributes<HTMLImageElement>>
@@ -86,10 +90,6 @@ export const Icon: FC<BaseIconProps> = props => {
                 console.error('Icon component only expected to receive a svg or imgage HTMLElement')
             }
             console.error('Icon component only expected to receive a React component')
-        }else if(type && IconSpecialRes[type]) {
-            return React.cloneElement(IconSpecialRes[type], {
-                className: trigger ? `ararin-icon-${type}-trigger-active` : '',
-            })
         }
         return ''
     }

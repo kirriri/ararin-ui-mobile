@@ -3,6 +3,7 @@ import Icon from '../../components/Icon'
 import { IconRes, IconSpecialRes } from '../../components/Icon/IconRes'
 import './icon.scss'
 import { CSSTransition } from 'react-transition-group'
+import { Notify } from '../../components/Notify/notify';
 
 class IconPage extends React.Component<any, any> {
 
@@ -10,32 +11,24 @@ class IconPage extends React.Component<any, any> {
     
     constructor(props: any) {
         super(props)
-
         
         this.state = {
-            state: 'static',
+            state1: 'static',
+            state2: 'static',
+            showHideTrigger: true,
             active: -1,
         }
     }
-
-    handleClickShowHide = (index) => {
-        this.setState(prevState => {
-            let { data } = prevState
-            data[index] =   <div className="list_item">
-                                <Icon 
-                                    type="showHide"
-                                    trigger={!this.showHideTrigger}
-                                    onClick={() => this.handleClickShowHide(2)}
-                                />
-                            </div>
-            this.showHideTrigger = !this.showHideTrigger
-            return data
-        })
-    }
     
     componentDidMount() {
+
+        Notify.Info('111', 22)
+        
         setTimeout(() => {
-            this.setState({ state: 'failed' })
+            this.setState({ 
+                state1: 'failed',
+                state2: 'success'
+            })
         }, 1000)
         window.addEventListener('message', this.getMsg)
         if(window.parent) {
@@ -59,6 +52,8 @@ class IconPage extends React.Component<any, any> {
     
     render() {
 
+        let { showHideTrigger } = this.state
+
         let data = [
             <React.Fragment>
                 <ul className="wrapper">
@@ -78,10 +73,20 @@ class IconPage extends React.Component<any, any> {
             <div className="list_item">
                 <Icon 
                     type="loading"
-                    state={this.state.state}
+                    state={this.state.state1}
                     style={{
-                        width: '.3rem',
-                        height: '.3rem'
+                        width: '.22rem',
+                        height: '.22rem'
+                    }}
+                    onClick={() => alert('点击成功')}
+                />
+                <Icon 
+                    type="loading"
+                    state={this.state.state2}
+                    style={{
+                        marginLeft: '.2rem',
+                        width: '.22rem',
+                        height: '.22rem'
                     }}
                     onClick={() => alert('点击成功')}
                 />
@@ -89,8 +94,8 @@ class IconPage extends React.Component<any, any> {
             <div className="list_item">
                 <Icon 
                     type="showHide"
-                    trigger={this.showHideTrigger}
-                    onClick={() => this.handleClickShowHide(2)}
+                    trigger={showHideTrigger}
+                    onClick={() => this.setState({ showHideTrigger: !showHideTrigger })}
                 />
             </div>
         ]

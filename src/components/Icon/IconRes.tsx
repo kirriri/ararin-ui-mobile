@@ -13,6 +13,9 @@ export const IconRes: IconResProps = {
 
 export const IconSpecialRes = {
     'showHide': <svg viewBox="0 0 100 100">
+                    <path className="ararin-icon-showHide-lash-1" fill="none" stroke-linecap="round" stroke-width="6" ></path>
+                    <path className="ararin-icon-showHide-lash-2" fill="none" stroke-linecap="round" stroke-width="6" ></path>
+                    <path className="ararin-icon-showHide-lash-3" fill="none" stroke-linecap="round" stroke-width="6" ></path>
                     <path className="ararin-icon-showHide-top" fill="none" stroke-linecap="round" stroke-width="8"></path>
                     <path className="ararin-icon-showHide-bottom" fill="none" stroke-linecap="round" stroke-width="8" d="M10,51 Q50,90 90,51"></path>
                     <circle className="ararin-icon-showHide-eye-ball" fill="none" stroke-width="10" cx="50" cy="50" r="15" stroke-linecap="round" transform="rotate(90 50 50)"></circle>
@@ -20,7 +23,8 @@ export const IconSpecialRes = {
     'loading':  <svg viewBox="0 0 100 100">
                     <circle cx="50" cy="50" r="45" stroke-width="5" fill="none" stroke="rgba(0,0,0, .1)"></circle>
                     <circle className="ararin-circle" stroke-dashoffset="330" stroke-linecap="round" stroke-dasharray="282" cx="50" cy="50" r="45" stroke-width="5" fill="none"></circle>
-                    <path className="ararin-lineOne" stroke-width="5" fill="none" stroke-linecap="round"></path>
-                    <path className="ararin-lineTwo" stroke-width="5" fill="none" stroke-linecap="round"></path>
+                    <path className="ararin-icon-loading-failed-lineOne" stroke-width="5" fill="none" stroke-linecap="round"></path>
+                    <path className="ararin-icon-loading-failed-lineTwo" stroke-width="5" fill="none" stroke-linecap="round"></path>
+                    <polyline className="ararin-icon-loading-success-line" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" points="22,53 44,71 76,35"></polyline>
                 </svg>
 }
