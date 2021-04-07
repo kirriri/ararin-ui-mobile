@@ -1,0 +1,45 @@
+
+.ararin-notify {
+    & > div {
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.ararin-notify-no-mask {
+    & > div {
+        pointer-events: none;
+    }
+}
+
+.ararin-notify-notice {
+    margin-top: -.3rem;
+    padding: .05rem .12rem;
+    background: rgba(0, 0, 0, .5);
+    color: #fff;
+    border-radius: .05rem;
+}
+
+.an-notify {
+
+}
+
+.an-fade-appear {
+    opacity: 0;
+} 
+.an-fade-appear-active {
+    opacity: 1;
+    transition: .3s all ease;
+}
+
+.an-fade-exit-active {
+    opacity: 0;
+    transition: .3s all ease;
+}

@@ -6,6 +6,7 @@ export interface BaseIconProps {
     state?: IconType;
     style?: React.CSSProperties;
     className?: string;
+    trigger?: boolean;
     onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void;
 }
 declare type IconSvgProps = BaseIconProps & SVGAttributes<SVGSVGElement>;

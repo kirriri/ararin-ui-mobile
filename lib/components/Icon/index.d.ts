@@ -1,3 +1,3 @@
 import Icon from './icon';
-export declare type IconType = 'spin' | 'static';
+export declare type IconType = 'static' | 'success' | 'failed';
 export default Icon;

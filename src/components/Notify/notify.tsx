@@ -1,6 +1,7 @@
 import React from 'react'
 import Notification  from 'rc-notification'
 import classnames from 'classnames';
+import Icon from '../Icon';
 
 export interface NoticeProps {
     content?: React.ReactNode,
@@ -8,7 +9,7 @@ export interface NoticeProps {
     type: string,
     onClose?: () => void,
     mask?: boolean,
-    className?: string
+    className?: string,
 }
 
 let instance: any
@@ -22,6 +23,18 @@ const iconType: { [propsNames: string]: string } = {
 }
 
 export class Notify {
+
+    private static instance: Notify
+    private constructor() {}
+    private notificationInstance: any = null
+    private needClose: boolean = false
+
+    static getInstance() {
+        if(!this.instance) {
+            this.instance = new Notify()
+        }
+        return this.instance
+    }
     
     public static Info = (
         content: React.ReactNode,
@@ -30,39 +43,72 @@ export class Notify {
         mask?: boolean,
         className?: string
     ) => {
-        return Notify.notice({content, duration, type: 'info', onClose, mask, className})
+        Notify.getInstance()
+            .notice({ content, duration, type: 'info', onClose, mask, className })
     }
+    
 
-    constructor(props) {
-        console.log(props)
-    }
-
-    private static renderInstance = () => {
-
-    }
-
-    public static Failed = (props: NoticeProps) => {
-        
-    }
-
-    private static notice(props: NoticeProps) {
+    private notice(props: NoticeProps) {
         const {
             content,
             duration,
             type,
             onClose,
             mask,
-            className
+            className,
         } = props
 
-        const classes = classnames('ararin-notify', className, {
+        const classes = classnames(className, {
             [`ararin-notify-mask`]: type,
             [`ararin-notify-no-mask`]: mask
         })
-        
-        // Notify.renderInstance({
-            
-        // })
+
+        this.renderNotification({ classes, onClose, prefixCls: 'ararin-notify', type, content, duration }) 
     }
 
+    private renderNotification({ classes, onClose, prefixCls, type, content, duration }) {
+        this.needClose = false
+
+        Notification.newInstance({
+            prefixCls,
+            className: classes,
+            transitionName: 'an-fade'
+        }, notification => {
+            
+            if(!notification) return
+
+            if(this.notificationInstance) {
+                this.notificationInstance.destroy()
+                this.notificationInstance = null
+            }
+
+            if(this.needClose) {
+                this.notificationInstance.destroy()
+                this.notificationInstance = null
+                return
+            }
+
+            this.notificationInstance = notification
+
+            notification.notice({
+                duration,
+                style: {},
+                content:  <div className={`${prefixCls}-text`}>
+                                { !!iconType[type] && <div className={`${prefixCls}-text-icon`}>
+                                            <Icon type={iconType[type]} />
+                                          </div> }
+                                <div>{content}</div>
+                          </div>,
+                closable: true,
+                onClose() {
+                    if (onClose) {
+                      onClose();
+                    }
+                    notification.destroy();
+                    this.notificationInstance = null;
+                    notification = null;
+                  },
+            });
+        })
+    }
 }

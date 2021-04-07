@@ -23,6 +23,8 @@ class IconPage extends React.Component<any, any> {
     componentDidMount() {
 
         Notify.Info('111', 22)
+        Notify.Info('222', 22)
+        Notify.Info('333', 3)
         
         setTimeout(() => {
             this.setState({ 
