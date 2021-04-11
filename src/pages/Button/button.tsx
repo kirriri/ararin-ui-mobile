@@ -18,14 +18,14 @@ class ButtonPage extends React.Component<any, any> {
                         onClick={() => {this.setState({visible: true})}}
                     >sm 按钮</Button>
                     <Button
-                        style={{marginTop: '3vw'}}
+                        style={{marginTop: '.1rem'}}
                         state="loading"
                         size="sm"
                         onClick={() => {this.setState({visible: true})}}
                     >暂停 按钮</Button>
                     <Button
                         type="danger"
-                        style={{marginTop: '3vw'}}
+                        style={{marginTop: '.1rem'}}
                         onClick={() => {console.log('点击生效')}}
                     >md 按钮</Button>
                     
@@ -34,7 +34,7 @@ class ButtonPage extends React.Component<any, any> {
                     <Button
                         ripple
                         size="lg"
-                        style={{marginTop: '3vw'}}
+                        style={{marginTop: '.1rem'}}
                         type="primary"
                     >lg 水波纹按钮</Button>
                 </div>

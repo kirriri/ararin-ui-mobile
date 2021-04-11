@@ -4,6 +4,7 @@ import Input from '../../components/Input/input'
 import Popup from '../../components/Dialog/popup'
 import './dialog.scss'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { Icon } from '../../indexCmp';
 
 class PopupPage extends React.Component<any, any> {
 
@@ -65,6 +66,7 @@ class PopupPage extends React.Component<any, any> {
                     className="login_popup"
                     visible={this.state.visible}
                     maskClosable
+                    closeIcon
                     onClose={() => this.setState({visible: false})}
                     title="登 录"
                 >
@@ -95,7 +97,7 @@ class PopupPage extends React.Component<any, any> {
         return (
             <>
                 <style dangerouslySetInnerHTML={{__html: this.getResetStyle()}}/>
-                <div className="phone_button" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
+                <div className="phone_dialog" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
                     {
                         data.map((item, index) => 
                             <CSSTransition 

@@ -1,6 +1,7 @@
 import React from 'react'
 import BaseDialog from 'rmc-dialog';
 import classnames from 'classnames'
+import { Icon } from '../Icon/icon'
 
 export interface FooterBaseProps {
     text?: string,
@@ -44,6 +45,7 @@ export const Popup: React.FC<DialogBaseProps> = props => {
         closeIcon,
         children,
         footer,
+        title,
         ...restProps
     } = props
 
@@ -59,6 +61,8 @@ export const Popup: React.FC<DialogBaseProps> = props => {
         [`${className}`]: className,
         [`${prefixCls}-${animation}`]: animation
     })
+
+    const head = () =>  closeIcon ? <div className="app-header-zone">{ title }{ closeIcon && <Icon type="close" onClick={onClose}/>}</div> : title
     
     return (
         <BaseDialog
@@ -69,6 +73,7 @@ export const Popup: React.FC<DialogBaseProps> = props => {
             animation={animation}
             maskAnimation="fade"
             className={classes}
+            title={head()}
             prefixCls={prefixCls}
             {...restProps}
         >

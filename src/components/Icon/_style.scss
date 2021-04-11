@@ -34,7 +34,7 @@
 .ararin-icon-showHide {
     cursor: pointer;
     svg {
-        stroke: #32b5e9;
+        stroke: $primary;
     }
     .ararin-icon-showHide-top {
         d: path("M10,49 Q50,10 90,49");
@@ -128,7 +128,7 @@
     stroke: $danger;
 
     .ararin-circle {
-        animation: ararinAllCircle 1.5s linear, ararinStaticSpin 1s linear infinite;
+        animation: ararinAllCircle 1.1s linear, ararinStaticSpin 1s linear infinite;
         animation-fill-mode: forwards;
     }
 
@@ -149,7 +149,7 @@
   .ararin-icon-loading-failed-lineOne {
     animation: ararinLineOne .35s linear;
     animation-fill-mode: forwards;
-    animation-delay: 1s
+    animation-delay: 0.8s
   }
 
   @keyframes ararinLineOne {
@@ -164,7 +164,7 @@
   .ararin-icon-loading-failed-lineTwo {
     animation: ararinLineTwo .55s ease;
     animation-fill-mode: forwards;
-    animation-delay: 1.35s;
+    animation-delay: 1.15s;
   }
 
   @keyframes ararinLineTwo {
@@ -181,7 +181,7 @@
     stroke: $success;
 
     .ararin-circle {
-        animation: ararinAllCircle 1.5s linear, ararinStaticSpin 1s linear infinite;
+        animation: ararinAllCircle 1.1s linear, ararinStaticSpin 1s linear infinite;
         animation-fill-mode: forwards;
     }
 
@@ -201,7 +201,7 @@
     .ararin-icon-loading-success-line {
         animation: ararinloadingSuccessLine .83s ease-in-out;
         animation-fill-mode: forwards;
-        animation-delay: 1s
+        animation-delay: 0.8s
     }
 
     @keyframes ararinloadingSuccessLine {

@@ -375,3 +375,16 @@
         transform:  translate3d(0, 100%, 0);
     }
 }
+
+.aap-header {
+    position: relative;
+    .ararin-icon-close {
+        cursor: pointer;
+        width: .2rem;
+        height: .2rem;
+        position: absolute;
+        right: .2rem;
+        top: 50%;
+        margin-top: -.1rem;
+    }
+}

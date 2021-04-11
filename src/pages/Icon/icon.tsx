@@ -3,7 +3,6 @@ import Icon from '../../components/Icon'
 import { IconRes, IconSpecialRes } from '../../components/Icon/IconRes'
 import './icon.scss'
 import { CSSTransition } from 'react-transition-group'
-import { Notify } from '../../components/Notify/notify';
 
 class IconPage extends React.Component<any, any> {
 
@@ -22,10 +21,6 @@ class IconPage extends React.Component<any, any> {
     
     componentDidMount() {
 
-        Notify.Info('111', 22)
-        Notify.Info('222', 22)
-        Notify.Info('333', 3)
-        
         setTimeout(() => {
             this.setState({ 
                 state1: 'failed',
@@ -105,7 +100,7 @@ class IconPage extends React.Component<any, any> {
         return (
             <>
                 <style dangerouslySetInnerHTML={{__html: this.getStyle()}}/>
-                <div className="pageIcon" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
+                <div className="page_icon" style={{padding: '15vw 5vw 10vw', background: '#fff'}}>
                     {
                         data.map((item, index) => 
                             <CSSTransition 

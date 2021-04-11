@@ -24,7 +24,7 @@ import Icon from '../Icon';
     type?: InputType,
     judge?: InputJudge,
     times?: number,
-    onclick?: () => void,
+    onClick?: () => void,
     judgeFun?: (text: string) => boolean,
     codeTxt?: string,
     noHide?: boolean,
@@ -40,7 +40,7 @@ import Icon from '../Icon';
             className,
             type,
             judge,
-            onclick,
+            onClick,
             codeTxt,
             times,
             onBlur,
@@ -149,6 +149,18 @@ import Icon from '../Icon';
                         }
                     }
                     return
+                case 'code':
+                    if((/[0-9a-zA-Z]{0,4}$/.test(text)) || text === "") {
+                        if(text.length <= 4) {
+                            setValue(() => text)
+                            if(text.length === 4) {
+                                setJudgeState(() => JUDE_STATE.SUCCESS)
+                            }else {
+                                setJudgeState(() => JUDE_STATE.FAILED)
+                            }
+                        }
+                    }
+                    return
                 case 'default':
                     setValue(() => text)
             }
@@ -190,7 +202,7 @@ import Icon from '../Icon';
                             <span 
                                 style={{cursor: 'pointer'}}
                                 className="ararin-input-code"
-                                onClick={onclick}
+                                onClick={onClick}
                             >
                                 {codeTxt}
                             </span>

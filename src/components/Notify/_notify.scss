@@ -21,14 +21,22 @@
 
 .ararin-notify-notice {
     margin-top: -.3rem;
-    padding: .05rem .12rem;
-    background: rgba(0, 0, 0, .5);
+    padding: .07rem .12rem;
+    background: rgba(0, 0, 0, .55);
     color: #fff;
     border-radius: .05rem;
 }
 
-.an-notify {
-
+.ararin-notify-with-icon {
+    min-width: .8rem;
+    margin-top: .1rem;
+    text-align: center;
+    .ararin-notify-text-icon {
+        .ararin-icon {
+            width: 0.33rem;
+            height: 0.33rem;
+        }
+    }
 }
 
 .an-fade-appear {
