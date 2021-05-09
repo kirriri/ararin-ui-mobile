@@ -1,0 +1,21 @@
+.ararin_sc_wrapper {
+    height: 50vw;
+    width: 100%;
+    .ararin_sc_zone {
+        height: 100%;
+        position: relative;
+    }
+    .ararin_sc_prize_hide {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 10;
+    }
+    .ararin_sc_prize {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
+    }
+
+}

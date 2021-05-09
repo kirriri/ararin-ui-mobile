@@ -52,7 +52,7 @@ class NotifyPage extends React.Component<any, any> {
                     type="success"
                     ripple
                     onClick={() => {
-                        Notify.success('用户密码不能为空', 3)
+                        Notify.success('成功！', 3)
                     }}
                     style={{marginTop: '.13rem'}}
                 >
@@ -62,7 +62,7 @@ class NotifyPage extends React.Component<any, any> {
                     type="danger"
                     ripple
                     onClick={() => {
-                        Notify.failed('成功', 3)
+                        Notify.failed('失败', 3)
                     }}
                     style={{marginTop: '.13rem'}}
                 >
@@ -76,7 +76,9 @@ class NotifyPage extends React.Component<any, any> {
                         ripple
                         onClick={() => {
                             Notify.loading('加载中...', 0)
-                            setTimeout(() => Notify.animateSuccess('充值成功！'), 3000)
+                            setTimeout(() => Notify.animateSuccess('充值成功！', 3, () => {
+                                console.log('end')
+                            }), 3000)
                         }}
                         style={{marginTop: '.13rem'}}
                     >提 示 (animateSuccess)</Button>
@@ -97,14 +99,14 @@ class NotifyPage extends React.Component<any, any> {
                         ripple
                         onClick={() => {
                             Notify.info(
-                            <div style={{textAlign: 'center', paddingTop: '.13rem'}}>
-                                <Icon type="failed"/>
-                                <p style={{margin: 0}}>测试</p>
-                            </div>
-                            , 0)
+                                <div style={{textAlign: 'center', paddingTop: '.13rem'}}>
+                                    <Icon type="failed"/>
+                                    <p style={{margin: 0}}>测试</p>
+                                </div>
+                            )
                         }}
                         style={{marginTop: '.13rem'}}
-                    >提 示 (animateSuccess)</Button>
+                    >提 示 (info)</Button>
             </React.Fragment>
         ]
         
