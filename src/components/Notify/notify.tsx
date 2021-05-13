@@ -100,7 +100,10 @@ export class Notify {
         if(stance.notificationInstance && stance.type == 'loading') {
             stance.contentRef.current.setCurrentData('success', content)
             stance.timer = setTimeout(
-                () => stance.notificationInstance.destroy()
+                () => {
+                    onClose && onClose()
+                    stance.notificationInstance.destroy()
+                }
             , !!duration ? duration * 1000 : 3 * 1000)
         }else {
             stance.notice({ content, duration, type: 'success', onClose, mask, className })
@@ -205,3 +208,5 @@ export class Notify {
 
     }
 }
+
+export default Notify

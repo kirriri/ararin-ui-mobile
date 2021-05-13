@@ -4,7 +4,8 @@ import React, {
     useState,
     useImperativeHandle,
     useRef,
-    forwardRef
+    forwardRef,
+    useEffect
 } from 'react'
 import classNames from 'classnames'
 import { JUDE_STATE } from '../../util/state';
@@ -28,7 +29,8 @@ import Icon from '../Icon';
     judgeFun?: (text: string) => boolean,
     codeTxt?: string,
     noHide?: boolean,
-    noJudge?: boolean
+    noJudge?: boolean,
+    initValue?: string
  }
 
  type InputProps = BaseInputProps & Omit<InputHTMLAttributes<HTMLElement>, 'type'>
@@ -47,6 +49,7 @@ import Icon from '../Icon';
             onFocus,
             noHide,
             noJudge,
+            initValue,
             ...restPros
         } = props
 
@@ -68,6 +71,10 @@ import Icon from '../Icon';
             setValue: (v: (number | string)) => v,
             getDesc: () => desc
         }))
+
+        useEffect(() => {
+            initValue && setValue(() => initValue)
+        }, [])
     
         const classes = classNames('ararin-input', className, {
             [`ararin-input-${type}`]: type,

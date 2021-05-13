@@ -13,7 +13,9 @@ class InputPage extends React.Component<any, any> {
         this.state = {
             active: -1,
             times: 0,
-            codeText: '点击获取'
+            codeText: '点击获取',
+
+            test: '测试测试'
         }
     }
 
@@ -61,6 +63,7 @@ class InputPage extends React.Component<any, any> {
                     judge="name"
                     title="姓名："
                     placeholder="请输入您的姓名"
+                    initValue={this.state.test}
                 />,
                 <Input 
                     judge="pwd"

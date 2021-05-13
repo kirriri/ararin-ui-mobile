@@ -4,6 +4,6 @@ export interface IconResProps {
 }
 export declare const IconRes: IconResProps;
 export declare const IconSpecialRes: {
-    'showHide': JSX.Element;
-    'loading': JSX.Element;
+    showHide: JSX.Element;
+    loading: JSX.Element;
 };

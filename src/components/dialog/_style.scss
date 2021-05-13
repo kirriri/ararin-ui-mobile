@@ -38,7 +38,7 @@
 }
 // mask动画效果
 @mixin fade-effect() {
-    animation-duration: .35s;
+    animation-duration: .3s;
     animation-fill-mode: both;
     animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
 }

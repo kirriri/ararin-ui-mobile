@@ -76,7 +76,9 @@ class NotifyPage extends React.Component<any, any> {
                         ripple
                         onClick={() => {
                             Notify.loading('加载中...', 0)
-                            setTimeout(() => Notify.animateSuccess('充值成功！'), 3000)
+                            setTimeout(() => {
+                                Notify.animateSuccess('充值成功！', 3, () => { console.log(111) })
+                            }, 3000)
                         }}
                         style={{marginTop: '.13rem'}}
                     >提 示 (animateSuccess)</Button>
