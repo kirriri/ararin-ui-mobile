@@ -7,6 +7,8 @@ import { Notify } from '../../components/Notify/notify';
 
 class InputPage extends React.Component<any, any> {
 
+    nameRef: React.RefObject<any>
+    
     constructor(props) {
         super(props)
         
@@ -17,6 +19,8 @@ class InputPage extends React.Component<any, any> {
 
             test: '测试测试'
         }
+
+        this.nameRef = React.createRef<any>()
     }
 
     componentDidMount() {
@@ -60,6 +64,7 @@ class InputPage extends React.Component<any, any> {
 
         const data= [
                 <Input 
+                    ref={this.nameRef}
                     judge="name"
                     title="姓名："
                     placeholder="请输入您的姓名"

@@ -9,6 +9,7 @@ import PrizeSudokuPhone from './pages/PrizeSudoku/prizeSudoku';
 import DialogPhone from './pages/Dialog/dialog';
 import InputPhone from './pages/Input/input';
 import NotifyPhone from './pages/Notify/notify';
+import ScratchCard from './pages/ScratchCard/scratchCard';
 
 const metaType = type => {
 	const qMeta = document.querySelector('meta[name="viewport"]')
@@ -57,6 +58,7 @@ export const Content = () => (
 					<Route exact path="/ararin-components-mobile/phone/dialog" component={DialogPhone} />
 					<Route exact path="/ararin-components-mobile/phone/input" component={InputPhone} />
 					<Route exact path="/ararin-components-mobile/phone/notify" component={NotifyPhone} />
+					<Route exact path="/ararin-components-mobile/phone/scratchCard" component={ScratchCard} />
 				</Switch>
 			</>
 		}/>

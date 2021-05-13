@@ -274,7 +274,6 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
                 failedFun && failedFun()
             }
         }, err => {
-            console.log(err)
             setState(props => ({
                 ...props,
                 wheeling: false
