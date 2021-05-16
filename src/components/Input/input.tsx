@@ -25,16 +25,15 @@ import Icon from '../Icon';
     judge?: InputJudge,
     times?: number,
     onClick?: () => void,
-    judgeFun?: (text: string) => boolean,
+    RegExp?: string,
     codeTxt?: string,
     noHide?: boolean,
     noJudge?: boolean
  }
 
- type InputProps = BaseInputProps & Omit<InputHTMLAttributes<HTMLElement>, 'type'>
+ type InputProps = BaseInputProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>
 
- export const Input: FC<InputProps> = 
-    forwardRef((props, ref) => {
+ export const Input = forwardRef<any, InputProps>((props, ref) => {
         let {
             title,
             className,
@@ -47,6 +46,8 @@ import Icon from '../Icon';
             onFocus,
             noHide,
             noJudge,
+            RegExp,
+            maxLength,
             ...restPros
         } = props
 
@@ -65,7 +66,7 @@ import Icon from '../Icon';
             },
             getJudgeState: () => judgeState,
             getValue: () => value,
-            setValue: (v: (number | string)) => v,
+            setValue: (v: (number | string)) => setValue(() => v),
             getDesc: () => desc
         }))
     
@@ -77,92 +78,109 @@ import Icon from '../Icon';
         const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
             e.persist()
             const text = e.target.value.replace(/\s+/g, "") as any
-            if(noJudge) judge = 'default'
-            switch(judge) {
-                case "mobilePhone":
-                    if((/^1[0-9]{0,}$/.test(text)) || text === "") {
-                        if(text.length <= 11) {
+            if(noJudge) {
+                setValue(() => text)
+                return
+            }
+            if(!RegExp) {
+                switch(judge) {
+                    case "mobilePhone":
+                        if((/^1[0-9]{0,}$/.test(text)) || text === "") {
+                            if(text.length <= 11) {
+                                setValue(() => text)
+                                if(text.length === 11) {
+                                    setJudgeState(() => JUDE_STATE.SUCCESS)
+                                }else {
+                                    setJudgeState(() => JUDE_STATE.FAILED)
+                                }
+                            }
+                        }
+                        return
+                    case "name":
+                        if(text.length <= 10) {
                             setValue(() => text)
-                            if(text.length === 11) {
+                            if(text.length <= 6 && /[\u4e00-\u9fa5]+$/.test(text)) {
                                 setJudgeState(() => JUDE_STATE.SUCCESS)
                             }else {
                                 setJudgeState(() => JUDE_STATE.FAILED)
                             }
                         }
-                    }
-                    return
-                case "name":
-                    if(text.length <= 10) {
+                        return
+                    case 'pwd':
+                        if((/^[0-9]{0,}$/.test(text)) || text === "") {
+                            if(text.length <= 6) {
+                                // if()
+                                setValue(() => text)
+                                if(text.length === 6) {
+                                    setJudgeState(() => JUDE_STATE.SUCCESS)
+                                }else {
+                                    setJudgeState(() => JUDE_STATE.FAILED)
+                                }
+                            }
+                        }
+                        return
+                    case 'allIdCard': 
+                        if(/\d+/.test(text)|| text === "") {
+                            if(text.length <= 18) {
+                                setValue(() => text)
+                                if(text.length >= 15) {
+                                    if (!/(^\d{15}$)|(^\d{17}(\d|X|x)$)/.test(text)) {
+                                        setJudgeState(() => JUDE_STATE.FAILED)
+                                        setDesc('身份证长度或格式错误')
+                                        return
+                                    }
+                                    if (!idCity.current[parseInt(text.substr(0, 2))]) {
+                                        setJudgeState(() => JUDE_STATE.FAILED)
+                                        setDesc('身份证地区非法')
+                                        return 
+                                    }
+                                    let sum = 0,
+                                        weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2],
+                                        codes = "10X98765432"
+                                    for (let i = 0; i < text.length - 1; i++) {
+                                        sum += text[i] * weights[i];
+                                    }
+                                    let last = codes[sum % 11]; //计算出来的最后一位身份证号码
+                                    if (text[text.length - 1] != last) {
+                                        setJudgeState(() => JUDE_STATE.FAILED)
+                                        setDesc('身份证非法')
+                                        return 
+                                    }
+                                    setJudgeState(() => JUDE_STATE.SUCCESS)
+                                }else {
+                                    setJudgeState(() => JUDE_STATE.FAILED)
+                                    setDesc(() => '身份证长度错误')
+                                }
+                            }
+                        }
+                        return
+                    case 'code':
+                        if((/[0-9a-zA-Z]{0,4}$/.test(text)) || text === "") {
+                            if(text.length <= 4) {
+                                setValue(() => text)
+                                if(text.length === 4) {
+                                    setJudgeState(() => JUDE_STATE.SUCCESS)
+                                }else {
+                                    setJudgeState(() => JUDE_STATE.FAILED)
+                                }
+                            }
+                        }
+                        return
+                    case 'default':
                         setValue(() => text)
-                        if(text.length <= 6 && /[\u4e00-\u9fa5]+$/.test(text)) {
-                            setJudgeState(() => JUDE_STATE.SUCCESS)
-                        }else {
-                            setJudgeState(() => JUDE_STATE.FAILED)
-                        }
+                }
+            }else {
+                let reg = new window.RegExp(RegExp,"g");
+                setValue(() => text)
+                if(text.match(reg)) {
+                    if(maxLength && text.length == maxLength) {
+                        setJudgeState(() => JUDE_STATE.SUCCESS)
+                    } else {
+                        setJudgeState(() => JUDE_STATE.FAILED)
                     }
-                    return
-                case 'pwd':
-                    if((/^[0-9]{0,}$/.test(text)) || text === "") {
-                        if(text.length <= 6) {
-                            // if()
-                            setValue(() => text)
-                            if(text.length === 6) {
-                                setJudgeState(() => JUDE_STATE.SUCCESS)
-                            }else {
-                                setJudgeState(() => JUDE_STATE.FAILED)
-                            }
-                        }
-                    }
-                    return
-                case 'allIdCard': 
-                    if(/\d+/.test(text)|| text === "") {
-                        if(text.length <= 18) {
-                            setValue(() => text)
-                            if(text.length >= 15) {
-                                if (!/(^\d{15}$)|(^\d{17}(\d|X|x)$)/.test(text)) {
-                                    setJudgeState(() => JUDE_STATE.FAILED)
-                                    setDesc('身份证长度或格式错误')
-                                    return
-                                }
-                                if (!idCity.current[parseInt(text.substr(0, 2))]) {
-                                    setJudgeState(() => JUDE_STATE.FAILED)
-                                    setDesc('身份证地区非法')
-                                    return 
-                                }
-                                let sum = 0,
-                                    weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2],
-                                    codes = "10X98765432"
-                                for (let i = 0; i < text.length - 1; i++) {
-                                    sum += text[i] * weights[i];
-                                }
-                                let last = codes[sum % 11]; //计算出来的最后一位身份证号码
-                                if (text[text.length - 1] != last) {
-                                    setJudgeState(() => JUDE_STATE.FAILED)
-                                    setDesc('身份证非法')
-                                    return 
-                                }
-                                setJudgeState(() => JUDE_STATE.SUCCESS)
-                            }else {
-                                setJudgeState(() => JUDE_STATE.FAILED)
-                                setDesc(() => '身份证长度错误')
-                            }
-                        }
-                    }
-                    return
-                case 'code':
-                    if((/[0-9a-zA-Z]{0,4}$/.test(text)) || text === "") {
-                        if(text.length <= 4) {
-                            setValue(() => text)
-                            if(text.length === 4) {
-                                setJudgeState(() => JUDE_STATE.SUCCESS)
-                            }else {
-                                setJudgeState(() => JUDE_STATE.FAILED)
-                            }
-                        }
-                    }
-                    return
-                case 'default':
-                    setValue(() => text)
+                }else {
+                    setJudgeState(() => JUDE_STATE.FAILED)
+                }
             }
         }
     
@@ -179,6 +197,7 @@ import Icon from '../Icon';
                                         onFocus && onFocus(e)
                                         // setFirstInput(() => false)
                                     }}
+                                    maxLength={maxLength}
                                     onBlur={e => {
                                         onBlur && onBlur(e)
                                         setFirstInput(() => false)

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+    RefObject
+} from 'react';
 import './input.scss'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import Input from '../../components/Input/input'
@@ -6,6 +8,8 @@ import Button from '../../components/Button';
 import { Notify } from '../../components/Notify/notify';
 
 class InputPage extends React.Component<any, any> {
+
+    testRef: RefObject<any>
 
     constructor(props) {
         super(props)
@@ -15,6 +19,8 @@ class InputPage extends React.Component<any, any> {
             times: 0,
             codeText: '点击获取'
         }
+
+        this.testRef = React.createRef()
     }
 
     componentDidMount() {
@@ -84,7 +90,26 @@ class InputPage extends React.Component<any, any> {
                     codeTxt={this.state.codeText}
                     times={this.state.times}
                     onClick={this.handleClickCode}
-                />
+                />,
+                <Input 
+                    title="无检验："
+                    placeholder="测试"
+                    RegExp="^1[0-9]{0,}$"
+                    maxLength={11}
+                />,
+                <React.Fragment>
+                    <Input 
+                        ref={this.testRef}
+                        title="无检验："
+                        placeholder="测试点击"
+                    />
+                    <Button 
+                        type="primary" 
+                        ripple 
+                        style={{marginTop: '3vw'}}
+                        onClick={() => this.testRef.current.setValue("测试")}
+                    >使Input值为”测试“</Button>
+                </React.Fragment>
                 // <Button type="primary" style={{marginTop: '.5rem'}}>提交</Button>
         ]
 

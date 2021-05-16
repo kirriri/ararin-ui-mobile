@@ -10,6 +10,7 @@
     },
     "include": [
         "src/indexCmp.tsx",
+        "src/util/*.tsx"
     ],
     "exclude": [
       "node_modules",
