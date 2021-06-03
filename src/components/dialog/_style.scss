@@ -49,13 +49,11 @@
 .aap-fade-appear {
     opacity: 0;
     @include fade-effect();
-    animation-play-state: paused;
 }
 
 .aad-fade-leave,
 .aap-fade-leave {
     @include fade-effect();
-    animation-play-state: paused;
 }
 
 .aad-fade-enter.aad-fade-enter-active,
@@ -88,7 +86,7 @@
     }
 
     100% {
-        opacity: 0;
+        opacity: 0.5;
     }
 }
 

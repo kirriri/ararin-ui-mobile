@@ -23,8 +23,8 @@ export const IconSpecialRes = {
     'loading':  <svg viewBox="0 0 100 100">
                     <circle cx="50" cy="50" r="45" strokeWidth="6" fill="none" stroke="#e6e6e6"></circle>
                     <circle className="ararin-circle" strokeDashoffset="330" strokeLinecap="round" strokeDasharray="282" cx="50" cy="50" r="45" strokeWidth="6" fill="none"></circle>
-                    <path className="ararin-icon-loading-failed-lineOne" strokeWidth="5" fill="none" strokeLinecap="round"></path>
-                    <path className="ararin-icon-loading-failed-lineTwo" strokeWidth="5" fill="none" strokeLinecap="round"></path>
+                    <path className="ararin-icon-loading-failed-lineOne" d="M28 28 L72 72" strokeWidth="5" fill="none" strokeLinecap="round"></path>
+                    <path className="ararin-icon-loading-failed-lineTwo" d="M72 28 L28 72" strokeWidth="5" fill="none" strokeLinecap="round"></path>
                     <polyline className="ararin-icon-loading-success-line" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" points="22,53 44,71 76,35"></polyline>
                 </svg>,
 }

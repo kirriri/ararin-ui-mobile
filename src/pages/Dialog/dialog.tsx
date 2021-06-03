@@ -76,7 +76,7 @@ class PopupPage extends React.Component<any, any> {
                         placeholder="请输入您的手机号码"
                     />
                     <Input 
-                        judge="code"
+                        judge="msgCode"
                         title="验证码："
                         placeholder="请输入4位数验证码"
                         codeTxt={this.state.codeText}

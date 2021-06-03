@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+    RefObject
+} from 'react';
 import './input.scss'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import Input from '../../components/Input/input'
@@ -7,8 +9,8 @@ import { Notify } from '../../components/Notify/notify';
 
 class InputPage extends React.Component<any, any> {
 
-    nameRef: React.RefObject<any>
-    
+    testRef: RefObject<any>
+
     constructor(props) {
         super(props)
         
@@ -20,7 +22,7 @@ class InputPage extends React.Component<any, any> {
             test: '测试测试'
         }
 
-        this.nameRef = React.createRef<any>()
+        this.testRef = React.createRef()
     }
 
     componentDidMount() {
@@ -64,7 +66,6 @@ class InputPage extends React.Component<any, any> {
 
         const data= [
                 <Input 
-                    ref={this.nameRef}
                     judge="name"
                     title="姓名："
                     placeholder="请输入您的姓名"
@@ -86,13 +87,39 @@ class InputPage extends React.Component<any, any> {
                     placeholder="请输入15位或18位身份证"
                 />,
                 <Input 
-                    judge="code"
+                    judge="imgCode"
+                    title="图形验证码："
+                    placeholder="测试"
+                    imgCodeSrc="http://222.180.221.85/scloud/ecscwapfaultfastrepair/randImage"
+                />,
+                <Input 
+                    judge="msgCode"
                     title="验证码："
                     placeholder="请输入4位数验证码"
                     codeTxt={this.state.codeText}
                     times={this.state.times}
                     onClick={this.handleClickCode}
-                />
+                />,
+                <Input 
+                    title="无检验："
+                    placeholder="测试"
+                    RegExp="^1[0-9]{0,}$"
+                    maxLength={11}
+                />,
+                <React.Fragment>
+                    <Input 
+                        ref={this.testRef}
+                        title="无检验："
+                        placeholder="测试点击"
+                        lengthMode={[5, 'equal']}
+                    />
+                    <Button 
+                        type="primary" 
+                        ripple 
+                        style={{marginTop: '3vw'}}
+                        onClick={() => this.testRef.current.setValue("测试")}
+                    >使Input值为”测试“</Button>
+                </React.Fragment>,
                 // <Button type="primary" style={{marginTop: '.5rem'}}>提交</Button>
         ]
 
