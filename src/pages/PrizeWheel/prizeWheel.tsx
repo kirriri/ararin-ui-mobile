@@ -1,9 +1,13 @@
 import React from 'react';
 import './prizeWheel.scss'
-import PrizeWheel from '../../components/PrizeWheel/prizeWheel'
+import PrizeWheel, { prizeWheelRefProps } from '../../components/PrizeWheel/prizeWheel'
+import Dialog from '../../components/Dialog/dialog';
+import Button from '../../components/Button';
 
 class PrizeWheelPage extends React.Component<any, any> {
 
+    prizeWheelRef: React.RefObject<prizeWheelRefProps>
+    
     constructor(props: any) {
         super(props)
         
@@ -28,7 +32,8 @@ class PrizeWheelPage extends React.Component<any, any> {
                     
                 },{
                     title: '5元',
-                    img: <img src="./imgs/present_05.png" alt=""/>,
+                    // img: <img src="./imgs/present_05.png" alt=""/>,
+                    img: './imgs/present_05.png',
                     bgColor: '#FFC200',
                     txtColor: '#fa4445'
 
@@ -45,18 +50,24 @@ class PrizeWheelPage extends React.Component<any, any> {
                     txtColor: '#fa4445'
                 }
             ],
-            value: 2
+            dialogVisible: false,
+            award: {
+                awardIndex: '',
+                title: '',
+                imgSrc: ''
+            }
         }
+
+        this.prizeWheelRef = React.createRef()
     }
 
-    lottery = async() => await new Promise<any>((resolve, reject) => {
+    lottery = () => {
+        let awardIndex = Math.floor(Math.random()* 5)
+        console.log(awardIndex)
         setTimeout(() => {
-            resolve({
-                flag: true,
-                index: Math.floor(Math.random()* 5)
-            })
+            this.prizeWheelRef.current.setPrize(awardIndex)
         }, 1000)
-    })
+    }
     
     componentDidMount() {
         window.addEventListener('message', this.getMsg)
@@ -73,8 +84,20 @@ class PrizeWheelPage extends React.Component<any, any> {
         const { index } = e.data
         this.setState({active: index})
     }
+
+    handleCloseDialog = () => {
+        this.setState({ dialogVisible: false })
+    }
     
-    getResetStyle = () => ``
+    getResetStyle = () => `
+        .aad-body {
+            padding: .1rem;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+    `
     
     render() {
         return (
@@ -82,13 +105,27 @@ class PrizeWheelPage extends React.Component<any, any> {
                     <style dangerouslySetInnerHTML={{__html: this.getResetStyle()}}/>
                     <div className="phone_prizeWheel" style={{padding: '7vw 5vw 10vw', background: '#fff'}}>
                         <PrizeWheel 
+                            ref={this.prizeWheelRef}
                             onClick={this.lottery}
                             arrowStyle={{top: '48%'}}
                             arrowImg={<img src={require('../../images/lottery_arrow.png')} alt=""/>}
                             data={this.state.data}
-                            successFun={v => console.log(v)}
-                            failedFun={() => console.log('failed')}
+                            successFun={v => {
+                                console.log(v)
+                                this.setState({
+                                    award: v,
+                                    dialogVisible: true
+                                })
+                            }}
                         />
+                        <Dialog
+                            visible={this.state.dialogVisible}
+                            title="中奖提示"
+                            onClose={this.handleCloseDialog}
+                        >
+                            <img style={{width: '50%'}} src={this.state.award.imgSrc}/>
+                            <Button onClick={this.handleCloseDialog} style={{width: '100%', marginTop: '.3rem'}} type="primary">关闭</Button>
+                        </Dialog>
                     </div>
                 </div>
         );

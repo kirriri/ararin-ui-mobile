@@ -3,7 +3,9 @@ import React, {
     CanvasHTMLAttributes,
     useEffect,
     useState,
-    useRef
+    useRef,
+    useImperativeHandle,
+    forwardRef,
 } from 'react'
 import classNames from 'classnames'
 import { requestAnimationFrame, canCelRequestAnimFrame } from '../../util/animateJs'
@@ -36,53 +38,44 @@ interface renderDataProps {
     txtColor?: string
 }
 
-/**
- * PrizeWheel组件大小
- */
-type PrizeWheelSize = 'sm' | 'md' | 'lg'
-
-interface lotteryPromiseProps {
-    flag: boolean,
-    index?: number
-}
-
 export interface BasePrizeWheelProps {
-    style?: React.CSSProperties,
-    className?: string,
-    onClick?: () => Promise<lotteryPromiseProps>,
-    bgImg?: string | JSX.Element,
-    arrowImg?: string | JSX.Element,
-    data: Array<dataProps>,
-    size?: PrizeWheelSize,
-    arrowStyle?: React.CSSProperties,
+    autoResize?: boolean
+    style?: React.CSSProperties
+    bgImg?: string | JSX.Element
+    bgStyle?: React.CSSProperties
+    arrowImg?: string | JSX.Element
+    arrowStyle?: React.CSSProperties
+    className?: string
+    data: Array<dataProps>
     width?: number,
-    successFun?: (award: any) => void,
-    failedFun?: () => void
+    onClick?: () => void
+    successFun?: (award: any) => void
+    fontSize?: number
 }
 
 type PrizeWheelProps = BasePrizeWheelProps & CanvasHTMLAttributes<HTMLCanvasElement>
 
-const widthMap = {
-    sm: 0.74,
-    lg: 0.84,
-    md: 0.94,
+export interface prizeWheelRefProps {
+    reset: () => void
+    setPrize: (awardIndex: number) => void
 }
 
-export const PrizeWheel: FC<PrizeWheelProps> = props => {
+export const PrizeWheel = forwardRef<prizeWheelRefProps, PrizeWheelProps>((props, ref) => {
 
     const {
         style,
+        bgStyle,
         className,
         children,
         onClick,
         data,
-        size,
         width,
         bgImg,
         arrowImg,
         arrowStyle,
         successFun,
-        failedFun,
+        autoResize,
+        fontSize,
         ...restProps
     } = props
 
@@ -92,15 +85,17 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     // 动画id
     const animateRef = useRef<number>()
+    // 外层wrapper
+    const prizeWheelWrapperRef = useRef<any>()
     // 设置转盘宽度
     const [renderWidth, setRenderWidth] = useState<number>(0)
     // 设置渲染数据
     const [renderData, setRenderData] = useState<Array<renderDataProps>>()
     // 设置奖品位置
-    const [index, setIndex] = useState<number>(0)
+    // const [index, setIndex] = useState<number>(0)
     // 设置类名
     const classes = classNames('ararin-prize-wheel', className, {
-        [`ararin-wheel-${size}`]: size,
+        // [`ararin-wheel-${size}`]: size,
     })
 
     const [state, setState] = useState({
@@ -109,13 +104,24 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
         awardIndex: -1,
     })
 
+    useImperativeHandle(ref, () => ({
+        reset: () => {onLoad()},
+        setPrize: ( awardIndex: number ) => {
+            if(!state.wheeling) {
+                setPrize(awardIndex)
+            }
+        }
+    }))
+
     useEffect(() => {
-        setRenderWidth(() => parseInt(document.body.clientWidth * 0.85 + ''))
+        setRenderWidth(() => prizeWheelWrapperRef.current.offsetWidth)
     }, [])
 
     window.onresize = () => {
-        setRenderWidth(() => parseInt(document.body.clientWidth * 0.85 + ''))
-        canCelRequestAnimFrame(animateRef.current)
+        if(autoResize) {
+            setRenderWidth(() => prizeWheelWrapperRef.current.offsetWidth)
+            canCelRequestAnimFrame(animateRef.current)
+        }
     }
 
     useEffect(() => {
@@ -135,10 +141,8 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
     useEffect(() => {
         if (width) {
             setRenderWidth(() => width)
-        } else if (size) {
-            setRenderWidth(() => widthMap[size])
         }
-    }, [width, size])
+    }, [width])
 
     // 检测到传入data变化，开始处理为实际渲染data
     useEffect(() => {
@@ -181,18 +185,24 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
 
     // 初次加载
     const onLoad = (actualRenderWidth: number = renderWidth) => {
+
         if (!renderData) return
+
         const canvas = canvasRef.current
         const context = canvas.getContext('2d')
-        // console.log(actualRenderWidth)
-        const circlepointPos = actualRenderWidth / 2
-        let {startRadian} = state
+
+        canvas.style.width = `${actualRenderWidth}px`
+        canvas.style.height = `${actualRenderWidth}px`
+
+        const circlepointPos = actualRenderWidth / 2 * devicePixelRatio
+
+        let { startRadian } = state 
         context.save()
         context.beginPath();
         // 设置填充转盘用的颜色,fill是填充而不是绘制
         context.fillStyle = '#fff';
         // 绘制一个圆,有六个参数,分别表示:圆心的x坐标,圆心的y坐标,圆的半径,开始绘制的角度,结束的角度,绘制方向(false表示顺时针)
-        context.arc(circlepointPos + 1, circlepointPos, circlepointPos - actualRenderWidth * 0.1, 0, 2 * Math.PI, false);
+        context.arc(circlepointPos, circlepointPos, circlepointPos - actualRenderWidth * 0.1 * devicePixelRatio, 0, 2 * Math.PI, false);
         context.fill();
         // 将画布的状态恢复到上一次save()时的状态
         context.restore();
@@ -209,7 +219,7 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
             // 这里需要使用moveTo方法将初始位置定位在圆点处,这样绘制的圆弧都会以圆点作为闭合点
             context.moveTo(circlepointPos, circlepointPos);
             // 画圆弧时,每次都会自动调用moveTo,将画笔移动到圆弧的起点,半径设置的比转盘稍小一点
-            context.arc(circlepointPos, circlepointPos, circlepointPos - actualRenderWidth * 0.11, startRadian, endRadian, false);
+            context.arc(circlepointPos, circlepointPos, circlepointPos - actualRenderWidth * 0.1 * devicePixelRatio, startRadian, endRadian, false);
             context.fill();
             context.restore();
             // 开始绘制文字
@@ -217,7 +227,7 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
             //设置文字颜色
             context.fillStyle = renderData[i].txtColor;
             //设置文字样式
-            context.font = `${actualRenderWidth / 300 * 18}px bold Arial`;
+            context.font = `${actualRenderWidth / 300 * fontSize * devicePixelRatio}px bold Arial`;
             // 改变canvas原点的位置,translate到哪个坐标点,那么那个坐标点就将变为坐标(0, 0)
             context.translate(
                 circlepointPos + Math.cos(startRadian + RadianGap / 2) * circlepointPos,
@@ -250,35 +260,19 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
         }
     }
 
-    // 点击事件
-    const handleClick = (e: React.MouseEvent<HTMLImageElement>) => {
-        e.stopPropagation()
-        if (!onClick) return
-        if (state.wheeling) return
-        if (!renderData.length) return
-        setState(props => ({ ...props, wheeling: true }))
-        onClick().then(award => {
-            if (award.flag) {
-                setState(props => ({...props, awardIndex: award.index}))
-                state.awardIndex = award.index
-                state.startRadian = 0
-                const distance = distanceToStop(award.index)
-                rotatePanel(distance)
-            } else {
-                state.startRadian = 0
-                setState(props => ({
-                    ...props,
-                    startRadian: 0,
-                    wheeling: false
-                }))
-                failedFun && failedFun()
-            }
-        }, err => {
-            setState(props => ({
-                ...props,
-                wheeling: false
-            }))
-        })
+    const setPrize = (awardIndex: number) => {
+        if (
+            state.wheeling || // 正在出奖
+            !renderData.length || // 没有奖品
+            awardIndex < 0 || // 出奖index不应该小于0   
+            awardIndex > renderData.length - 1 // 出奖index不应该大于 奖品数
+        ) return
+        state.wheeling = true
+        state.awardIndex = awardIndex
+        setState(props => ({...props, awardIndex}))
+        state.startRadian = 0
+        const distance = distanceToStop(awardIndex)
+        rotatePanel(distance)
     }
 
     const rotatePanel = (distance: number) => {
@@ -290,7 +284,8 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
             if (distance - state.startRadian <= 0.01) {
                 successFun && successFun({
                     awardIndex: state.awardIndex,
-                    title: renderData[state.awardIndex].title
+                    title: renderData[state.awardIndex].title,
+                    imgSrc: data[state.awardIndex].img
                 })
                 setState((props) => ({ ...props, wheeling: false }))
                 return
@@ -349,30 +344,30 @@ export const PrizeWheel: FC<PrizeWheelProps> = props => {
         return React.cloneElement(img, { className, style, onClick })
     }
 
-    return  <div className={`${classes} ararin-prizeWheel-wrapper`}>
-                <div style={{ width: renderWidth ? renderWidth : '', height: renderWidth ? renderWidth : '' }} className="ararin_prizeWheel_box">
-                    {getBaseLotteryImg(bgImg, 'ararin-pw-wheel-bg', {}, handleClick)}
+    return  <div ref={prizeWheelWrapperRef} className={`${classes} ararin-prizeWheel-wrapper`} style={style}>
+                <div style={{ width: renderWidth || '', height: renderWidth || '' }} className="ararin_prizeWheel_box">
+                    { getBaseLotteryImg(bgImg, 'ararin-pw-wheel-bg', {...bgStyle}) }
                     <div className="wheel_zone">
                         <canvas
-                            height={renderWidth}
-                            width={renderWidth}
+                            height={renderWidth * devicePixelRatio}
+                            width={renderWidth * devicePixelRatio}
                             ref={canvasRef}
                             {...restProps}
                         />
                     </div>
-                    {getBaseLotteryImg(arrowImg, 'ararin-pw-arrow-bg', {
-                        width: renderWidth * 0.34,
-                        marginLeft: -renderWidth * 0.17,
-                        marginTop: -renderWidth * 0.17,
+                    { getBaseLotteryImg(arrowImg, 'ararin-pw-arrow-bg', {
+                        width: renderWidth * 0.33,
                         ...arrowStyle
-                    }, handleClick)}
+                    }, onClick)}
                 </div>
             </div>
-}
+})
 
 PrizeWheel.defaultProps = {
     data: [],
     bgImg: bgImgSrc,
+    fontSize: 18,
+    autoResize: true,
     arrowImg: arrowImgSrc,
 }
 

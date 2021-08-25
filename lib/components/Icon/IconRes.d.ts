@@ -1,4 +1,5 @@
 /// <reference types="react" />
+import './test.css';
 export interface IconResProps {
     [key: string]: string;
 }

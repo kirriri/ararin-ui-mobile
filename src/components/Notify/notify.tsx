@@ -203,7 +203,6 @@ export class Notify {
                     notification = null;
                   },
             });
-
         })
 
     }

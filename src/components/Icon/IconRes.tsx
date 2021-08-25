@@ -1,4 +1,5 @@
 import React from 'react'
+import './test.css'
 
 export interface IconResProps {
     [key: string]: string
@@ -12,15 +13,17 @@ export const IconRes: IconResProps = {
 }
 
 export const IconSpecialRes = {
-    'showHide': <svg viewBox="0 0 100 100">
-                    <path className="ararin-icon-showHide-lash-1" fill="none" strokeLinecap="round" strokeWidth="6" ></path>
-                    <path className="ararin-icon-showHide-lash-2" fill="none" strokeLinecap="round" strokeWidth="6" ></path>
-                    <path className="ararin-icon-showHide-lash-3" fill="none" strokeLinecap="round" strokeWidth="6" ></path>
+    'showHide': <svg viewBox="0 0 100 100" 
+                     xmlns="http://www.w3.org/2000/svg"
+                     xmlnsXlink="http://www.w3.org/1999/xlink">
+                    <path className="ararin-icon-showHide-lash-1" d="M24,64 19,70" fill="none" strokeLinecap="round" strokeWidth="6" ></path>
+                    <path className="ararin-icon-showHide-lash-2" d="M50,70 50 78" fill="none" strokeLinecap="round" strokeWidth="6" ></path>
+                    <path className="ararin-icon-showHide-lash-3" d="M76,64 81,70" fill="none" strokeLinecap="round" strokeWidth="6" ></path>
                     <path className="ararin-icon-showHide-top" fill="none" strokeLinecap="round" strokeWidth="8"></path>
                     <path className="ararin-icon-showHide-bottom" fill="none" strokeLinecap="round" strokeWidth="8" d="M10,51 Q50,90 90,51"></path>
                     <circle className="ararin-icon-showHide-eye-ball" fill="none" strokeWidth="10" cx="50" cy="50" r="15" strokeLinecap="round" transform="rotate(90 50 50)"></circle>
                 </svg>,
-    'loading':  <svg viewBox="0 0 100 100">
+    'loading':  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                     <circle cx="50" cy="50" r="45" strokeWidth="6" fill="none" stroke="#e6e6e6"></circle>
                     <circle className="ararin-circle" strokeDashoffset="330" strokeLinecap="round" strokeDasharray="282" cx="50" cy="50" r="45" strokeWidth="6" fill="none"></circle>
                     <path className="ararin-icon-loading-failed-lineOne" d="M28 28 L72 72" strokeWidth="5" fill="none" strokeLinecap="round"></path>

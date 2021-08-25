@@ -1,4 +1,4 @@
-import React, { FC, CanvasHTMLAttributes } from 'react';
+import React from 'react';
 /**
  * data属性规范
  */
@@ -9,27 +9,23 @@ export interface dataProps {
     bgColor?: string;
     txtColor?: string;
 }
-/**
- * PrizeWheel组件大小
- */
-declare type PrizeWheelSize = 'sm' | 'md' | 'lg';
-interface lotteryPromiseProps {
-    flag: boolean;
-    index?: number;
-}
 export interface BasePrizeWheelProps {
+    autoResize?: boolean;
     style?: React.CSSProperties;
-    className?: string;
-    onClick?: () => Promise<lotteryPromiseProps>;
     bgImg?: string | JSX.Element;
+    bgStyle?: React.CSSProperties;
     arrowImg?: string | JSX.Element;
-    data: Array<dataProps>;
-    size?: PrizeWheelSize;
     arrowStyle?: React.CSSProperties;
+    className?: string;
+    data: Array<dataProps>;
     width?: number;
+    onClick?: () => void;
     successFun?: (award: any) => void;
-    failedFun?: () => void;
+    fontSize?: number;
 }
-declare type PrizeWheelProps = BasePrizeWheelProps & CanvasHTMLAttributes<HTMLCanvasElement>;
-export declare const PrizeWheel: FC<PrizeWheelProps>;
+export interface prizeWheelRefProps {
+    reset: () => void;
+    setPrize: (awardIndex: number) => void;
+}
+export declare const PrizeWheel: React.ForwardRefExoticComponent<BasePrizeWheelProps & React.CanvasHTMLAttributes<HTMLCanvasElement> & React.RefAttributes<prizeWheelRefProps>>;
 export default PrizeWheel;

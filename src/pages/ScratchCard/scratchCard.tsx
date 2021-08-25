@@ -7,7 +7,8 @@ import Button from '../../components/Button';
 
 class PrizeWheelPage extends React.Component<any, any> {
 
-    contentRef: React.RefObject<any>
+    contentRef1: React.RefObject<any>
+    contentRef2: React.RefObject<any>
     
     constructor(props: any) {
         super(props)
@@ -18,7 +19,8 @@ class PrizeWheelPage extends React.Component<any, any> {
             prizeBoxFlag: false
         }
 
-        this.contentRef = React.createRef<any>()
+        this.contentRef1 = React.createRef<any>()
+        this.contentRef2 = React.createRef<any>()
     }
 
     lottery = async() => await new Promise<any>((resolve, reject) => {
@@ -65,22 +67,24 @@ class PrizeWheelPage extends React.Component<any, any> {
                     <style dangerouslySetInnerHTML={{__html: this.getResetStyle()}}/>
                     <div className="phone_prizeWheel" style={{padding: '7vw 5vw 10vw', background: '#fff'}}>
                         <ScratchCard 
-                            ref={this.contentRef}
+                            ref={this.contentRef1}
                             async
+                            // style={{top: '70vw', position: 'absolute'}}
                             hideImg="./imgs/prize_not_open.jpg"
                             openingImg="./imgs/opening.png"
                             loadRequest={this.loadRequest}
                         />
                         <ScratchCard 
                             style={{marginTop: '3vw'}}
-                            ref={this.contentRef}
+                            ref={this.contentRef2}
                             hideImg="./imgs/prize_not_open.jpg"
                             prizeImg="./imgs/btn_lottery.jpg"
                             successFun={() => this.setState({ prizeBoxFlag: true })}
                         />
                         <Button 
                             onClick={() => {
-                                this.contentRef.current.reset()
+                                this.contentRef1.current.reset()
+                                this.contentRef2.current.reset()
                             }} 
                             type="primary" 
                             style={{margin: '7vw auto 0'}}>重置</Button>

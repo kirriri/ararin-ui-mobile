@@ -487,12 +487,11 @@ html {
   .ararin-icon-showHide .ararin-icon-showHide-lash-3 {
     transition: .1s all ease-in-out;
     transition-delay: 0s; }
-  .ararin-icon-showHide .ararin-icon-showHide-lash-1 {
-    d: path("M24,64 24,64"); }
-  .ararin-icon-showHide .ararin-icon-showHide-lash-2 {
-    d: path("M50,70 50,70"); }
+  .ararin-icon-showHide .ararin-icon-showHide-lash-1,
+  .ararin-icon-showHide .ararin-icon-showHide-lash-2,
   .ararin-icon-showHide .ararin-icon-showHide-lash-3 {
-    d: path("M76,64 76,64"); }
+    stroke-dasharray: 10;
+    stroke-dashoffset: 10; }
   .ararin-icon-showHide .ararin-icon-showHide-bottom {
     transition: .3s all ease-in-out; }
   .ararin-icon-showHide .ararin-icon-showHide-eye-ball {
@@ -508,16 +507,12 @@ html {
     .ararin-icon-showHide .ararin-icon-showHide-trigger-active .ararin-icon-showHide-eye-ball {
       stroke-dashoffset: 100;
       transition-delay: 0s; }
-    .ararin-icon-showHide .ararin-icon-showHide-trigger-active .ararin-icon-showHide-lash-1 {
-      d: path("M24,64 19,70"); }
-    .ararin-icon-showHide .ararin-icon-showHide-trigger-active .ararin-icon-showHide-lash-2 {
-      d: path("M50,70 50 78"); }
-    .ararin-icon-showHide .ararin-icon-showHide-trigger-active .ararin-icon-showHide-lash-3 {
-      d: path("M76,64 81,70"); }
     .ararin-icon-showHide .ararin-icon-showHide-trigger-active .ararin-icon-showHide-lash-1,
     .ararin-icon-showHide .ararin-icon-showHide-trigger-active .ararin-icon-showHide-lash-2,
     .ararin-icon-showHide .ararin-icon-showHide-trigger-active .ararin-icon-showHide-lash-3 {
-      transition: .1s d ease-in-out;
+      stroke-dasharray: 0;
+      stroke-dashoffset: 0;
+      transition: all .1s ease-in-out;
       transition-delay: .3s; }
 
 .ararin-icon-loading {
@@ -1021,7 +1016,8 @@ html {
   position: absolute;
   z-index: 12;
   top: 50%;
-  left: 50%; }
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0); }
 
 .ararin-prizeSudoku-wrapper {
   margin-bottom: 30px;
@@ -1231,3 +1227,25 @@ html {
     left: 0;
     top: 0;
     z-index: 1; }
+
+.fade-enter,
+.fade-appear {
+  opacity: 1; }
+
+.fade-enter-active,
+.fade-appear-active {
+  opacity: 0;
+  transition: opacity .5s ease; }
+
+.fade-enter-done {
+  opacity: 0;
+  pointer-events: none; }
+
+.fade-exit {
+  opacity: 1; }
+
+.fade-exit-active {
+  opacity: 1; }
+
+.fade-exit-done {
+  opacity: 1; }

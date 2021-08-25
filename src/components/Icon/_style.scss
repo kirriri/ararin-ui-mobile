@@ -46,15 +46,24 @@
         transition:  .1s all ease-in-out;
         transition-delay: 0s;
     }
-    .ararin-icon-showHide-lash-1 {
-        d: path("M24,64 24,64");
-    }
-    .ararin-icon-showHide-lash-2 {
-        d: path("M50,70 50,70");
-    }
+    // .ararin-icon-showHide-lash-1 {
+    //     d: path("M24,64 24,64");
+    // }
+    // .ararin-icon-showHide-lash-2 {
+    //     d: path("M50,70 50,70");
+    // }
+    // .ararin-icon-showHide-lash-3 {
+    //     d: path("M76,64 76,64");
+    // }
+
+    .ararin-icon-showHide-lash-1,
+    .ararin-icon-showHide-lash-2,
     .ararin-icon-showHide-lash-3 {
-        d: path("M76,64 76,64");
+        // d: path("M50,70 50 78");
+        stroke-dasharray: 10;
+        stroke-dashoffset: 10;
     }
+    
     .ararin-icon-showHide-bottom {
         transition:  .3s all ease-in-out;
     }
@@ -78,23 +87,20 @@
             transition-delay: 0s;
         }
 
-        .ararin-icon-showHide-lash-1 {
-            d: path("M24,64 19,70");
-
-        }
-        .ararin-icon-showHide-lash-2 {
-            d: path("M50,70 50 78");
-
-
-        }
-        .ararin-icon-showHide-lash-3 {
-            d: path("M76,64 81,70");
-
-        }
+        // .ararin-icon-showHide-lash-1 {
+        //     // d: path("M24,64 19,70");
+        //     stroke-dasharray: 10;
+        //     stroke-dashoffset: 10;
+        // }
+        // .ararin-icon-showHide-lash-3 {
+        //     // d: path("M76,64 81,70");
+        // }
         .ararin-icon-showHide-lash-1,
         .ararin-icon-showHide-lash-2,
         .ararin-icon-showHide-lash-3 {
-            transition:  .1s d ease-in-out;
+            stroke-dasharray: 0;
+            stroke-dashoffset: 0;
+            transition: all .1s ease-in-out;
             transition-delay: .3s;
         }
     }

@@ -1,4 +1,4 @@
-export declare const JUDE_STATE: {
+export declare const JUDGE_STATE: {
     STATIC: string;
     FAILED: string;
     SUCCESS: string;

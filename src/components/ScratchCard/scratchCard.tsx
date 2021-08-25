@@ -8,6 +8,7 @@ import React, {
     useImperativeHandle
 } from 'react'
 import classNames from 'classnames'
+import { isPc } from '../../util/util'
 
 interface BaseScratchCardProps {
     className?: string,
@@ -29,7 +30,7 @@ type ScratchCardProps = BaseScratchCardProps & CanvasHTMLAttributes<HTMLCanvasEl
 export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
 
     const prizeWrapperRef = useRef<HTMLDivElement>(null)
-    const prizeHidRef = useRef<HTMLCanvasElement>(null)
+    const prizeHideRef = useRef<HTMLCanvasElement>(null)
     const prizeRef = useRef<HTMLCanvasElement>(null)
 
     const [canvasView, setCanvasView] = useState<{ width: number, height: number }>({width: 0, height: 0})
@@ -54,26 +55,39 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
         reset: () => {
             setShowPrize(() => false)
             setTimeout(() => {
-                const prizeWrapperEle = prizeWrapperRef.current
-                setCanvasView(() => ({
-                    width: prizeWrapperEle.offsetWidth,
-                    height: prizeWrapperEle.offsetHeight
-                }))
-                loadPrizeImg(prizeWrapperEle.offsetWidth, prizeWrapperEle.offsetHeight)
+                onLoad()
             }, 0);
         },
     }))
 
     useEffect(() => {
+        onLoad()
+    }, [])
+
+    const onLoad = () => {
         const prizeWrapperEle = prizeWrapperRef.current
         setCanvasView(() => ({
             width: prizeWrapperEle.offsetWidth,
             height: prizeWrapperEle.offsetHeight
         }))
+
+        if(prizeRef.current) {
+            const prizeCanvas = prizeRef.current
+            prizeCanvas.style.width = `${prizeWrapperEle.offsetWidth}px`
+            prizeCanvas.style.height = `${prizeWrapperEle.offsetHeight}px`    
+        }
+
+        if(prizeHideRef.current) {
+            const prizeHidecanvas = prizeHideRef.current
+            prizeHidecanvas.style.width = `${prizeWrapperEle.offsetWidth}px`
+            prizeHidecanvas.style.height = `${prizeWrapperEle.offsetHeight}px`    
+        }
+        
         loadPrizeImg(prizeWrapperEle.offsetWidth, prizeWrapperEle.offsetHeight)
-    }, [])
+    }
     
     const loadPrizeImg = (offsetWidth, offsetHeight) => {
+
         let hideImgCtx = new Image()
 
         if(hideImg) {
@@ -82,10 +96,16 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
             } else {
                 hideImgCtx.src = hideImg.props.src
             }
-            const hideCanvas = prizeHidRef.current.getContext("2d")
+            const hideCanvas = prizeHideRef.current.getContext("2d")
             hideImgCtx.onload = () => {
+
+                
                 hideCanvas.beginPath();
-                hideCanvas.drawImage(hideImgCtx, 0, 0, offsetWidth, offsetHeight);
+                hideCanvas.clearRect(0, 0, offsetWidth * devicePixelRatio, offsetHeight * devicePixelRatio);
+                
+                prizeHideRef.current.width = prizeHideRef.current.width
+
+                hideCanvas.drawImage(hideImgCtx, 0, 0, offsetWidth * devicePixelRatio, offsetHeight * devicePixelRatio);
                 hideCanvas.closePath();
                 
                 let prizeImgCtx = new Image()
@@ -103,13 +123,23 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
                         prizeImgCtx.src = prizeImg.props.src
                     }
                 }
+                
                 const prizeCanvas = prizeRef.current.getContext("2d")
+
                 prizeImgCtx.onload = () => {
                     prizeCanvas.beginPath();
-                    prizeCanvas.drawImage(prizeImgCtx, 0, 0, offsetWidth, offsetHeight);
+                    prizeCanvas.clearRect(0, 0, offsetWidth * devicePixelRatio, offsetHeight * devicePixelRatio);
+
+                    prizeRef.current.width = prizeRef.current.width
+
+                    prizeCanvas.drawImage(prizeImgCtx, 0, 0, offsetWidth * devicePixelRatio, offsetHeight * devicePixelRatio);
                     prizeCanvas.closePath();
-                    prizeHidRef.current.ontouchmove = e => drawHandleMove(e, offsetWidth, offsetHeight)
-                    prizeHidRef.current.ontouchend = e => drawMoveEnd(e, offsetWidth, offsetHeight)
+                    if(isPc()) {
+                        // prizeHideRef.current.
+                    }else {
+                        prizeHideRef.current.ontouchmove = e => drawHandleMove(e, offsetWidth, offsetHeight)
+                        prizeHideRef.current.ontouchend = e => drawMoveEnd(e, offsetWidth, offsetHeight)
+                    }
                 }
             }
         }
@@ -117,10 +147,10 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
 
     const drawMoveEnd = (e, offsetWidth, offsetHeight) => {
         if(asyncRequesting) return
-        if(!prizeHidRef.current) return
-        const hideCanvas = prizeHidRef.current.getContext("2d")
+        if(!prizeHideRef.current) return
+        const hideCanvas = prizeHideRef.current.getContext("2d")
 
-        let imageDate = hideCanvas.getImageData(0, 0, offsetWidth, offsetHeight);
+        let imageDate = hideCanvas.getImageData(0, 0, offsetWidth * devicePixelRatio, offsetHeight * devicePixelRatio);
 
         let allPX = imageDate.width * imageDate.height;
 
@@ -135,7 +165,6 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
             setShowPrize(() => true)
             if(async) {
                 loadRequest().then(data => {
-                    console.log(data)
                     setShowPrize(() => true)
                     asyncShowPrize(data, { offsetWidth, offsetHeight }, successFun)
                 }).catch(data => {
@@ -159,7 +188,7 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
         const prizeCanvas = prizeRef.current.getContext("2d")
         prizeImg.onload = () => {
             prizeCanvas.beginPath();
-            prizeCanvas.drawImage(prizeImg, 0, 0, view.offsetWidth, view.offsetHeight);
+            prizeCanvas.drawImage(prizeImg, 0, 0, view.offsetWidth * devicePixelRatio, view.offsetHeight * devicePixelRatio);
             prizeCanvas.closePath();
             callBack && callBack()
         }
@@ -167,34 +196,39 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
     
     // 手指滑动开奖
     const drawHandleMove = (e, offsetWidth, offsetHeight) => {
-        if(!prizeHidRef.current) return
+        if(!prizeHideRef.current) return
         e.preventDefault()
-        const hideCanvas = prizeHidRef.current.getContext("2d")
+
+        const hideCanvas = prizeHideRef.current.getContext("2d")
         const windowTop = document.body.scrollTop || document.documentElement.scrollTop
-        let x = e.touches[0].clientX - prizeWrapperRef.current.offsetLeft 
+        const windowLeft = document.body.scrollLeft || document.documentElement.scrollLeft
+
+        // console.log(e.touches[0].clientX, e.touches[0].clientY, document.body.offsetTop || document.documentElement.offsetTop)
+
+        let x = e.touches[0].clientX - prizeWrapperRef.current.offsetLeft + windowLeft
         let y = e.touches[0].clientY - prizeWrapperRef.current.offsetTop + windowTop
         hideCanvas.beginPath();
         hideCanvas.globalCompositeOperation = "destination-out";
-        hideCanvas.arc(x, y, 20, 0, Math.PI * 2, false);
+        hideCanvas.arc(x * devicePixelRatio, y * devicePixelRatio, 20 * devicePixelRatio, 0, Math.PI * 2, false);
         hideCanvas.fill();
         hideCanvas.closePath();
     }
     
-    return  <div className="ararin_sc_wrapper" style={{ ...style, width, height }}>
-                <div ref={prizeWrapperRef} className="ararin_sc_zone">
+    return  <div ref={prizeWrapperRef} className={`ararin_sc_wrapper ${className}`} style={{ ...style, width, height }}>
+                <div className="ararin_sc_zone">
                     {!showPrize &&
                         <canvas 
-                            ref={prizeHidRef}
+                            ref={prizeHideRef}
                             className="ararin_sc_prize_hide" 
-                            width={canvasView.width}
-                            height={canvasView.height}
+                            width={canvasView.width * devicePixelRatio}
+                            height={canvasView.height * devicePixelRatio}
                         />
                     }
                     <canvas 
                         ref={prizeRef}
                         className="ararin_sc_prize" 
-                        width={canvasView.width}
-                        height={canvasView.height}
+                        width={canvasView.width * devicePixelRatio}
+                        height={canvasView.height * devicePixelRatio}
                     />                        
                 </div>
             </div>
