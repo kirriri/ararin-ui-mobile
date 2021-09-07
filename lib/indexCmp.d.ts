@@ -7,3 +7,4 @@ export { default as PrizeSudoku } from './components/PrizeSudoku/prizeSudoku';
 export { default as Notify } from './components/Notify/notify';
 export { default as Input } from './components/Input/input';
 export { default as Sketch } from './components/Sketch/sketch';
+export { default as ScratchCard } from './components/ScratchCard/scratchCard';

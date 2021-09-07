@@ -23,6 +23,7 @@ interface BaseScratchCardProps {
     successFun?: () => void,
     failedFun?: () => void,
     reset?: () => void
+    disabled?: boolean
 }
 
 type ScratchCardProps = BaseScratchCardProps & CanvasHTMLAttributes<HTMLCanvasElement>
@@ -48,7 +49,8 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
         loadRequest,
         successFun,
         failedFun,
-        style
+        style,
+        disabled
     } = props
 
     useImperativeHandle(ref, () => ({
@@ -90,16 +92,19 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
 
         let hideImgCtx = new Image()
 
+        // hideImgCtx.setAttribute('crossOrigin', '')
+        
         if(hideImg) {
             if (typeof hideImg === 'string') {
-                hideImgCtx.src = hideImg
+                hideImgCtx.src = hideImg + `?timeSign=${new Date().getTime()}`
             } else {
                 hideImgCtx.src = hideImg.props.src
             }
+
             const hideCanvas = prizeHideRef.current.getContext("2d")
+
             hideImgCtx.onload = () => {
 
-                
                 hideCanvas.beginPath();
                 hideCanvas.clearRect(0, 0, offsetWidth * devicePixelRatio, offsetHeight * devicePixelRatio);
                 
@@ -109,6 +114,7 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
                 hideCanvas.closePath();
                 
                 let prizeImgCtx = new Image()
+                prizeImgCtx.crossOrigin = 'Anonymous'
 
                 if(async) {
                     if (typeof openingImg === 'string') {
@@ -134,11 +140,13 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
 
                     prizeCanvas.drawImage(prizeImgCtx, 0, 0, offsetWidth * devicePixelRatio, offsetHeight * devicePixelRatio);
                     prizeCanvas.closePath();
-                    if(isPc()) {
-                        // prizeHideRef.current.
-                    }else {
-                        prizeHideRef.current.ontouchmove = e => drawHandleMove(e, offsetWidth, offsetHeight)
-                        prizeHideRef.current.ontouchend = e => drawMoveEnd(e, offsetWidth, offsetHeight)
+                    if(!disabled) {
+                        if(isPc()) {
+                            // prizeHideRef.current.
+                        }else {
+                            prizeHideRef.current.ontouchmove = e => drawHandleMove(e, offsetWidth, offsetHeight)
+                            prizeHideRef.current.ontouchend = e => drawMoveEnd(e, offsetWidth, offsetHeight)
+                        }
                     }
                 }
             }
@@ -148,16 +156,17 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
     const drawMoveEnd = (e, offsetWidth, offsetHeight) => {
         if(asyncRequesting) return
         if(!prizeHideRef.current) return
+
         const hideCanvas = prizeHideRef.current.getContext("2d")
 
-        let imageDate = hideCanvas.getImageData(0, 0, offsetWidth * devicePixelRatio, offsetHeight * devicePixelRatio);
+        let imageData = hideCanvas.getImageData(0, 0, offsetWidth * devicePixelRatio, offsetHeight * devicePixelRatio);
 
-        let allPX = imageDate.width * imageDate.height;
+        let allPX = imageData.width * imageData.height;
 
         let iNum = 0;//记录刮开的像素点个数
 
         for (let i = 0; i < allPX; i++) {
-            if (imageDate.data[i * 4 + 3] == 0) {
+            if (imageData.data[i * 4 + 3] == 0) {
                 iNum++;
             }
         }
@@ -180,6 +189,8 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
 
     const asyncShowPrize = (data: { img: string | JSX.Element }, view: { offsetWidth: number, offsetHeight: number }, callBack) => {
         let prizeImg = new Image()
+        prizeImg.crossOrigin = 'Anonymous'
+
         if(typeof data.img == 'string') {
             prizeImg.src = data.img
         }else {
@@ -200,13 +211,11 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
         e.preventDefault()
 
         const hideCanvas = prizeHideRef.current.getContext("2d")
-        const windowTop = document.body.scrollTop || document.documentElement.scrollTop
-        const windowLeft = document.body.scrollLeft || document.documentElement.scrollLeft
-
+        // console.log(prizeHideRef.current.getBoundingClientRect() )
         // console.log(e.touches[0].clientX, e.touches[0].clientY, document.body.offsetTop || document.documentElement.offsetTop)
 
-        let x = e.touches[0].clientX - prizeWrapperRef.current.offsetLeft + windowLeft
-        let y = e.touches[0].clientY - prizeWrapperRef.current.offsetTop + windowTop
+        let x = e.touches[0].clientX - prizeHideRef.current.getBoundingClientRect().x
+        let y = e.touches[0].clientY - prizeHideRef.current.getBoundingClientRect().y
         hideCanvas.beginPath();
         hideCanvas.globalCompositeOperation = "destination-out";
         hideCanvas.arc(x * devicePixelRatio, y * devicePixelRatio, 20 * devicePixelRatio, 0, Math.PI * 2, false);
@@ -214,7 +223,7 @@ export const ScratchCard = forwardRef<any, ScratchCardProps>((props, ref) => {
         hideCanvas.closePath();
     }
     
-    return  <div ref={prizeWrapperRef} className={`ararin_sc_wrapper ${className}`} style={{ ...style, width, height }}>
+    return  <div ref={prizeWrapperRef} className={`ararin_sc_wrapper ${className || ''}`} style={{ ...style, width, height }}>
                 <div className="ararin_sc_zone">
                     {!showPrize &&
                         <canvas 

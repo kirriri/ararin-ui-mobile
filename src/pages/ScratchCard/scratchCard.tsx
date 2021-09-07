@@ -22,21 +22,13 @@ class PrizeWheelPage extends React.Component<any, any> {
         this.contentRef1 = React.createRef<any>()
         this.contentRef2 = React.createRef<any>()
     }
-
-    lottery = async() => await new Promise<any>((resolve, reject) => {
-        setTimeout(() => {
-            resolve({
-                flag: true,
-                index: Math.floor(Math.random()* 5)
-            })
-        }, 1000)
-    })
     
     componentDidMount() {
         window.addEventListener('message', this.getMsg)
         if(window.parent) {
             window.parent.postMessage({load: true}, "*")
         }
+        
     }
 
     componentWillUnmount() {
@@ -66,14 +58,14 @@ class PrizeWheelPage extends React.Component<any, any> {
                 <div>
                     <style dangerouslySetInnerHTML={{__html: this.getResetStyle()}}/>
                     <div className="phone_prizeWheel" style={{padding: '7vw 5vw 10vw', background: '#fff'}}>
-                        <ScratchCard 
+                        {/* <ScratchCard 
                             ref={this.contentRef1}
                             async
                             // style={{top: '70vw', position: 'absolute'}}
                             hideImg="./imgs/prize_not_open.jpg"
                             openingImg="./imgs/opening.png"
                             loadRequest={this.loadRequest}
-                        />
+                        /> */}
                         <ScratchCard 
                             style={{marginTop: '3vw'}}
                             ref={this.contentRef2}
@@ -83,7 +75,7 @@ class PrizeWheelPage extends React.Component<any, any> {
                         />
                         <Button 
                             onClick={() => {
-                                this.contentRef1.current.reset()
+                                // this.contentRef1.current.reset()
                                 this.contentRef2.current.reset()
                             }} 
                             type="primary" 

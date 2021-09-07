@@ -90,7 +90,7 @@ class InputPage extends React.Component<any, any> {
                     judge="imgCode"
                     title="图形验证码："
                     placeholder="测试"
-                    imgCodeSrc="http://222.180.221.85/scloud/ecscwapfaultfastrepair/randImage"
+                    imgCodeSrc=""
                 />,
                 <Input 
                     judge="msgCode"

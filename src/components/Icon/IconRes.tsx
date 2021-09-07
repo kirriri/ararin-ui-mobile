@@ -1,5 +1,4 @@
 import React from 'react'
-import './test.css'
 
 export interface IconResProps {
     [key: string]: string
